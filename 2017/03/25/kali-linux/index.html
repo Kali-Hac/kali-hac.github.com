@@ -14,16 +14,52 @@
 <meta name="author" content="Kali-Hac" />
 
 
-    
-    
 
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ykhc">
-<meta property="og:url" content="http://yikunhaocong.xyz/index.html">
+<meta name="description" content="记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。
+开始安装和配置Kali-Linux(1)虚拟机VMware下载与安装VMware 12 Pro 12.1 发行说明http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.htmlVMware">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kali-linux 几行指令制作最简单的木马">
+<meta property="og:url" content="http://yikunhaocong.xyz/2017/03/25/kali-linux/index.html">
 <meta property="og:site_name" content="Ykhc">
+<meta property="og:description" content="记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。
+开始安装和配置Kali-Linux(1)虚拟机VMware下载与安装VMware 12 Pro 12.1 发行说明http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.htmlVMware">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325161736981?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325161801806?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2015/0324/155308_53he_1585857.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2015/0324/155309_hNVR_1585857.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2015/0324/155309_pot5_1585857.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2015/0324/155309_hhkz_1585857.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2015/0324/155310_ejOb_1585857.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2015/0324/155310_H384_1585857.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2015/0324/155310_0cj5_1585857.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2015/0324/155310_ePcN_1585857.png">
+<meta property="og:image" content="http://www.2cto.com/uploadfile/Collfiles/20150714/20150714102041606.png">
+<meta property="og:image" content="http://www.2cto.com/uploadfile/Collfiles/20150714/20150714102041611.png">
+<meta property="og:image" content="http://www.2cto.com/uploadfile/Collfiles/20150714/20150714102041612.png">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325192729117?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325192831399?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325193034199?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325193205603?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325193239682?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325193317104?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325193358604?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325193442933?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325193919822?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325194041967?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325194146937?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325194929539?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325195017149?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325195048071?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325195144651?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325195219582?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325195259614?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170325195349099?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:updated_time" content="2017-03-25T12:03:48.182Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ykhc">
+<meta name="twitter:title" content="kali-linux 几行指令制作最简单的木马">
+<meta name="twitter:description" content="记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。
+开始安装和配置Kali-Linux(1)虚拟机VMware下载与安装VMware 12 Pro 12.1 发行说明http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.htmlVMware">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170325161736981?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -51,13 +87,11 @@
 <link rel="stylesheet" href="/css/style.css">
 
 
-    <style> .article { opacity: 0;} </style>
-
 
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Ykhc</title>
+<title>kali-linux 几行指令制作最简单的木马 | Ykhc</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -66,8 +100,8 @@
     var yiliaConfig = {
         fancybox: true,
         animate: true,
-        isHome: true,
-        isPost: false,
+        isHome: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
         isCategory: false,
@@ -267,9 +301,7 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-kali-linux" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-kali-linux" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2017/03/25/kali-linux/" class="article-date">
@@ -287,12 +319,27 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/25/kali-linux/">kali-linux 几行指令制作最简单的木马</a>
+    <h1 class="article-title" itemprop="name">
+      kali-linux 几行指令制作最简单的木马
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/渗透笔记/">渗透笔记</a><a class="article-category-link" href="/categories/渗透笔记/后台游戏/">后台游戏</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Payloads/">Payloads</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -381,649 +428,133 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/渗透笔记/">渗透笔记</a><a class="article-category-link" href="/categories/渗透笔记/后台游戏/">后台游戏</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Payloads/">Payloads</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
   
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/24/hello-world/" class="article-date">
-      <time datetime="2017-03-24T14:32:26.655Z" itemprop="datePublished">2017-03-24</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/24/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-public-dns" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/11/public-dns/" class="article-date">
-      <time datetime="2016-05-11T12:57:08.000Z" itemprop="datePublished">2016-05-11</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>　　之前 <a href="http://www.bootcdn.cn/">有个网站</a> 自己经常上不去，查了挺久才发现是 DNS 的问题，更换为公共 DNS 后访问恢复正常。由此可见，挑选一个合适自己网络的 DNS 还是挺有必要的。</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/">来自MOxFIVE的优秀笔记</a><a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/网络应用/">网络应用</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DNS/">DNS</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/05/11/public-dns/#more">阅读全文 >></a>
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/25/kali-linux/">kali-linux 几行指令制作最简单的木马</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
+        <p><span>发布时间:</span>2017-03-25, 15:30:40</p>
+        <p><span>最后更新:</span>2017-03-25, 20:03:48</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/25/kali-linux/" title="kali-linux 几行指令制作最简单的木马">http://yikunhaocong.xyz/2017/03/25/kali-linux/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.xyz/2017/03/25/kali-linux/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-markdown-table-style" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/04/markdown-table-style/" class="article-date">
-      <time datetime="2016-03-04T12:39:17.000Z" itemprop="datePublished">2016-03-04</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>　　Markdown 写的表格最终会被解析成 HTML 代码，如果使用的编辑器支持自定义 CSS，就能方便的调整样式。如果可以引入 JavaScript，样式自适应也能较好地实现。</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/来自MOxFive的优秀笔记/">来自MOxFive的优秀笔记</a><a class="article-category-link" href="/categories/来自MOxFive的优秀笔记/博客语言的使用/">博客语言的使用</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Table/">Table</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/03/04/markdown-table-style/#more">阅读全文 >></a>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
         </p>
-      
-      <div class="clearfix"></div>
     </div>
-    
-  </div>
-  
-</article>
 
 
 
-
-
-
-
-
-
-  
-    <article id="post-front-end-tools" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/16/front-end-tools/" class="article-date">
-      <time datetime="2016-02-16T10:53:03.000Z" itemprop="datePublished">2016-02-16</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+    <nav id="article-nav">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>　　面对日益纷杂的前端工具，作为新人常感无从下手。经过一番检索和简单对比，再结合自己的喜好，筛选了将要学习和使用的工具，以适应日益工程化、专业化的 Web 前端开发工作。</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/">来自MOxFIVE的优秀笔记</a><a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/前端工具/">前端工具</a>
-    </div>
-
-
-      
-      
-        <p class="article-more-link">
-          <a href="/2016/02/16/front-end-tools/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-hexo-comments" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/02/hexo-comments/" class="article-date">
-      <time datetime="2016-01-01T17:26:48.000Z" itemprop="datePublished">2016-01-02</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><h2 id="intro">前言</h2>目前自己的主题 <a href="https://github.com/MOxFIVE/hexo-theme-yelee">Yelee</a> 已支持使用 Disqus, 多说和友言评论，代码逻辑和配置也做了些优化，应该是比较完善了。简单分离整理一下，分享于此，方便大家添加到自己制作或使用的主题中。</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/">来自MOxFIVE的优秀笔记</a><a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/博客配置/">博客配置</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2016/01/02/hexo-comments/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-css-font-family" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/12/09/css-font-family/" class="article-date">
-      <time datetime="2015-12-08T16:33:55.000Z" itemprop="datePublished">2015-12-09</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/24/hello-world/">
+                    Hello World
+                </a>
+            </div>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a>
-    </h1>
-  
+    </nav>
 
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><h2 id="intro">前言</h2>一直到最近才开始调整博客的字体，之前都是全站微软雅黑了事。慢慢调整后发现 font-family 这个属性相关的知识还是不少的，整理一下常用的部分，分享于此。</p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/">来自MOxFIVE的优秀笔记</a><a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/网页设计/">网页设计</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/font-family/">font-family</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2015/12/09/css-font-family/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
   
 </article>
 
-
-
-
-
-
-
-
-
-  
-    <article id="post-sublime-config" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/30/sublime-config/" class="article-date">
-      <time datetime="2015-11-30T13:07:38.000Z" itemprop="datePublished">2015-11-30</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>　　记录安装配置 Sublime 的过程，同时列出所用到的插件，方便自己在新系统新电脑上快速用上熟悉的 Sublime。 </p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/">来自MOxFIVE的优秀笔记</a><a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/软件配置/">软件配置</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sublime/">Sublime</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2015/11/30/sublime-config/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-git-command" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/11/23/git-command/" class="article-date">
-      <time datetime="2015-11-22T19:01:30.000Z" itemprop="datePublished">2015-11-23</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始安装和配置Kali-Linux"><span class="toc-number">1.</span> <span class="toc-text">开始安装和配置Kali-Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-虚拟机VMware下载与安装"><span class="toc-number">1.1.</span> <span class="toc-text">(1)虚拟机VMware下载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Kali-liunx-镜像下载与安装"><span class="toc-number">1.2.</span> <span class="toc-text">(2)Kali-liunx 镜像下载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VMware安装之后（下面是VM10-0的教程与最新版本差不多）"><span class="toc-number">1.3.</span> <span class="toc-text">VMware安装之后（下面是VM10.0的教程与最新版本差不多）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行Kali-Linux虚拟机并在系统内安装的教程"><span class="toc-number">1.4.</span> <span class="toc-text">运行Kali Linux虚拟机并在系统内安装的教程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kali-linux系统装完后启动，进行进一步配置"><span class="toc-number">1.5.</span> <span class="toc-text">Kali-linux系统装完后启动，进行进一步配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kali-linux配置完成后，开始用自带的msfvenom库构建攻击负荷"><span class="toc-number">2.</span> <span class="toc-text">Kali-linux配置完成后，开始用自带的msfvenom库构建攻击负荷</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#先简单看一下我们要用到的msfvenom库吧"><span class="toc-number">2.1.</span> <span class="toc-text">先简单看一下我们要用到的msfvenom库吧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#msfvenom使用简介"><span class="toc-number">2.2.</span> <span class="toc-text">msfvenom使用简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在虚拟机运行kalilinux以及Windows7然后开始监听目标主机"><span class="toc-number">2.3.</span> <span class="toc-text">在虚拟机运行kalilinux以及Windows7然后开始监听目标主机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#看了上面的教程，如果还觉得实战有问题的话，那就直接看-我的图片教程咯-从头开始创建一个小木马"><span class="toc-number">2.4.</span> <span class="toc-text">看了上面的教程，如果还觉得实战有问题的话，那就直接看    我的图片教程咯(从头开始创建一个小木马)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动的木马-实现控制"><span class="toc-number">2.5.</span> <span class="toc-text">启动的木马 实现控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自己好好去实践玩一下吧"><span class="toc-number">2.6.</span> <span class="toc-text">自己好好去实践玩一下吧</span></a></li></ol></li></ol>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>　　作者MOxFIVE的笔记基本上整理自网站 <a href="https://try.github.io">Try Git</a>，一套很不错的 Git 在线入门教程。</p>
-          
-      
     </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
     
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/">来自MOxFIVE的优秀笔记</a><a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/程序猿指令应用/">程序猿指令应用</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2015/11/23/git-command/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
+<div class="share">
     
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-windows-mac-software" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/09/20/windows-mac-software/" class="article-date">
-      <time datetime="2015-09-19T16:00:00.000Z" itemprop="datePublished">2015-09-20</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"kali-linux 几行指令制作最简单的木马　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
     
-      <input type="hidden" class="isFancy" />
+
     
+</div>
+
+
+
+
+
+
+
     
-      <header class="article-header">
+        <section class="youyan" id="comments">
+	<div id="uyan_frame"></div>
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2128463';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a>
-    </h1>
-  
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
 
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p><h2 id="intro">前言</h2>罗列自己正在使用的 Windows 和 Mac OS 软件，基本上都是同类中能较好满足个人需求的软件，作表记录，方便自己检索，也顺便推荐给大家。</p>
-<h3 id="软件分类说明"><a href="#软件分类说明" class="headerlink" title="软件分类说明"></a>软件分类说明</h3><ul>
-<li><strong>编程开发:</strong> 目前写代码用到的一些软件；</li>
-<li><strong>网络应用:</strong> 依赖于网络运行的软件，比如浏览器，聊天软件，下载工具等；</li>
-<li><strong>文档处理:</strong> 查看和处理 Word, Excel, PDF 等文档；</li>
-<li><strong>影音图像:</strong> 查看和处理多媒体文件，比如看图，听歌，视频处理等；</li>
-<li><strong>系统工具:</strong> 增强、个性化系统或者系统自带软件的功能，比如资源管理器增强，任务栏个性化等；</li>
-<li><strong>应用软件:</strong> 不属于以上分类的软件；</li>
-</ul>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/">来自MOxFIVE的优秀笔记</a><a class="article-category-link" href="/categories/来自MOxFIVE的优秀笔记/软件推荐/">软件推荐</a>
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/24/hello-world/" title="下一篇: Hello World">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
     </div>
 
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Software/">Software</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Windows/">Windows</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2015/09/20/windows-mac-software/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">kali-linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
 
 
 
 
-
-
-
-
-
-  
-  
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
@@ -1077,10 +608,6 @@
         })
     </script>
 
-
-    
-
-     
 
 
 
