@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[kali-linux 几行指令制作最简单的木马]]></title>
+      <title><![CDATA[安全渗透测试①:Kali-Linux 几行指令制作最简单的木马]]></title>
       <url>http://yikunhaocong.xyz/2017/03/25/kali-linux/</url>
       <content type="html"><![CDATA[<pre><code>记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。
 </code></pre><h2 id="开始安装和配置Kali-Linux"><a href="#开始安装和配置Kali-Linux" class="headerlink" title="开始安装和配置Kali-Linux"></a>开始安装和配置Kali-Linux</h2><h3 id="1-虚拟机VMware下载与安装"><a href="#1-虚拟机VMware下载与安装" class="headerlink" title="(1)虚拟机VMware下载与安装"></a>(1)虚拟机VMware下载与安装</h3><p>VMware 12 Pro 12.1 发行说明<br><a href="http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.html" target="_blank" rel="external">http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.html</a><br>VMware 12 官方功能特性介绍：<br><a href="http://vmware.com/cn/products/workstation" target="_blank" rel="external">http://vmware.com/cn/products/workstation</a><br>VMware 12 专业版永久许可证密钥<br>5A02H-AU243-TZJ49-GTC7K-3C61N<br>VMware Workstation 12 官方简体中文专业版 + 注册机<br>VMware v11.x / v10.x  官方简体中文版经典版 + 注册机<br>v12.1.1 Build 3770994  官方本地下载  大小，293.67M<br><a href="http://pan.baidu.com/s/1cdWqF8" target="_blank" rel="external">http://pan.baidu.com/s/1cdWqF8</a>  访问密码: 28b4<br>注：新版不支持32位系统，系统是32位的请用VM10</p>
