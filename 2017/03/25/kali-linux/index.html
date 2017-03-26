@@ -54,7 +54,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20170325195219582?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="http://img.blog.csdn.net/20170325195259614?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="http://img.blog.csdn.net/20170325195349099?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:updated_time" content="2017-03-25T17:42:31.634Z">
+<meta property="og:updated_time" content="2017-03-26T01:26:52.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kali-linux 几行指令制作最简单的木马">
 <meta name="twitter:description" content="记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。
@@ -107,7 +107,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: undefined
+        search: true
     }
 </script>
 
@@ -143,6 +143,13 @@
         <p class="header-subtitle">走自己的路，给这个世界更好的路。</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -439,7 +446,7 @@
         <p><span>本文标题:</span><a href="/2017/03/25/kali-linux/">kali-linux 几行指令制作最简单的木马</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
         <p><span>发布时间:</span>2017-03-25, 15:30:40</p>
-        <p><span>最后更新:</span>2017-03-26, 01:42:31</p>
+        <p><span>最后更新:</span>2017-03-26, 09:26:52</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/03/25/kali-linux/" title="kali-linux 几行指令制作最简单的木马">http://yikunhaocong.xyz/2017/03/25/kali-linux/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.xyz/2017/03/25/kali-linux/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
