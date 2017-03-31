@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kali-Hac" />
+
+
+
+<meta name="description" content="主要讲解VS内置OpenMP库的使用和Intel_TBB开源库的配置，与普通C++代码串行运行的速度进行对比，教会你如何快速使用OpenMP和Intel_TBB内置的并行算法使你的C++代码运行速度大幅度提升(充分调用CPU开启多线程)。
+Hac博客声明！
+本博客中带有http://blog.csdn.net/CSDN568302203博客水印的图片都是本人Hac所有，一年前开的博客，现用于方便地">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几行指令让你的C++代码速度提升100%+">
+<meta property="og:url" content="http://yikunhaocong.xyz/2017/03/31/tbb/index.html">
+<meta property="og:site_name" content="Ykhc">
+<meta property="og:description" content="主要讲解VS内置OpenMP库的使用和Intel_TBB开源库的配置，与普通C++代码串行运行的速度进行对比，教会你如何快速使用OpenMP和Intel_TBB内置的并行算法使你的C++代码运行速度大幅度提升(充分调用CPU开启多线程)。
+Hac博客声明！
+本博客中带有http://blog.csdn.net/CSDN568302203博客水印的图片都是本人Hac所有，一年前开的博客，现用于方便地">
+<meta property="og:image" content="http://img.blog.csdn.net/20170331234249525?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170331234821856?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170331235422125?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401002947814?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401003208271?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170331234249525?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170331235422125?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401012154244?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401012344198?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401013308781?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401013444391?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401013523905?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401013500656?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401013756299?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401021405551?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401020226795?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401020336066?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401020402832?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://img.blog.csdn.net/20170401022800636?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:updated_time" content="2017-03-31T18:37:43.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="几行指令让你的C++代码速度提升100%+">
+<meta name="twitter:description" content="主要讲解VS内置OpenMP库的使用和Intel_TBB开源库的配置，与普通C++代码串行运行的速度进行对比，教会你如何快速使用OpenMP和Intel_TBB内置的并行算法使你的C++代码运行速度大幅度提升(充分调用CPU开启多线程)。
+Hac博客声明！
+本博客中带有http://blog.csdn.net/CSDN568302203博客水印的图片都是本人Hac所有，一年前开的博客，现用于方便地">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170331234249525?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Ykhc" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>几行指令让你的C++代码速度提升100%+ | Ykhc</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Kali-Hac</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">走自己的路，给这个世界更好的路。</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://www.csdn.net/" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com/" title="StackOverflow"></a>
+                            
+                                <a class="fa 微信" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
+                            
+                                <a class="fa 豆瓣" href="https://movie.douban.com/" title="豆瓣"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payloads/">Payloads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Software/">Software</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Table/">Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/font-family/">font-family</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">把好运留给别人，把实力留给自己。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Kali-Hac</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Kali-Hac</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">走自己的路，给这个世界更好的路。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://www.csdn.net/" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/" title="StackOverflow"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
+                            
+                                <a class="fa 豆瓣" target="_blank" href="https://movie.douban.com/" title="豆瓣"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-tbb" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/31/tbb/" class="article-date">
+      <time datetime="2017-03-31T08:21:23.000Z" itemprop="datePublished">2017-03-31</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      几行指令让你的C++代码速度提升100%+
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/作者-Hac/">作者:Hac</a><a class="article-category-link" href="/categories/作者-Hac/多线程并行算法的使用/">多线程并行算法的使用</a><a class="article-category-link" href="/categories/作者-Hac/多线程并行算法的使用/C-调试优化/">C++调试优化</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>主要讲解VS内置OpenMP库的使用和Intel_TBB开源库的配置，与普通C++代码串行运行的速度进行对比，教会你如何快速使用OpenMP和Intel_TBB内置的并行算法使你的C++代码运行速度大幅度提升(充分调用CPU开启多线程)。</p>
+<h2 id="Hac博客声明！"><a href="#Hac博客声明！" class="headerlink" title="Hac博客声明！"></a>Hac博客声明！</h2><ul>
+<li>本博客中带有<a href="http://blog.csdn.net/CSDN568302203" target="_blank" rel="external">http://blog.csdn.net/CSDN568302203</a>博客水印的图片都是本人Hac所有，一年前开的博客，现用于方便地存储文章图片。<h2 id="直接上相同代码速度对比图-记录C-运行速度，python绘图"><a href="#直接上相同代码速度对比图-记录C-运行速度，python绘图" class="headerlink" title="直接上相同代码速度对比图(记录C++运行速度，python绘图)"></a>直接上相同代码速度对比图(记录C++运行速度，python绘图)</h2></li>
+</ul>
+<h3 id="C-内置快排与tbb-openmp内置快排的速度对比图"><a href="#C-内置快排与tbb-openmp内置快排的速度对比图" class="headerlink" title="C++内置快排与tbb,openmp内置快排的速度对比图"></a>C++内置快排与tbb,openmp内置快排的速度对比图</h3><blockquote>
+<ul>
+<li>排序数量级由1到10^7，在10^5之前似乎看不出区别<br><img src="http://img.blog.csdn.net/20170331234249525?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="在10^5数量级之后会有很显著的区别"></li>
+<li>可以看到，使用tbb,openmp内置并行排序算法所用的时间不到普通<algorithm>库串行sort算法的一半，原代码是一模一样的，只是调用cpu线程执行的方式不同，可以看一下我的cpu情况：<br><img src="http://img.blog.csdn.net/20170331234821856?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="每个CPU都被调用了，不过这个并不是执行时的真实情况，但是基本情况相同"></algorithm></li>
+</ul>
+</blockquote>
+<h3 id="再看一下随机赋值情况，10-7为基数，增加1到100个10-6的数量级的速度对比"><a href="#再看一下随机赋值情况，10-7为基数，增加1到100个10-6的数量级的速度对比" class="headerlink" title="再看一下随机赋值情况，10^7为基数，增加1到100个10^6的数量级的速度对比"></a>再看一下随机赋值情况，10^7为基数，增加1到100个10^6的数量级的速度对比</h3><p><img src="http://img.blog.csdn.net/20170331235422125?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="代码执行速度超过普通的2倍！"></p>
+<blockquote>
+<p>可以看到虽然执行时间有所波动，但是以openMP和Inter_tbb库并行执行for循环赋值速度还是基本稳定在普通for循环赋值速度的两倍以上，可见OpenMP和Intel_TBB多线程库的强大。</p>
+</blockquote>
+<ul>
+<li>上面只是最简单的两个效率测试，实质上tbb在OpenCV应用以及OpenMP一起在大数据算法处理上能力出众，提供封装好的各类并行算法(TBB可能需要重写处理类，但应用更高效)<blockquote>
+<p>文末会进行数据挖掘(入门算法)Apriori频繁项集分类算法的在tbb下的速度测试</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="说了这么多，教你怎么快速地配置OpenMP和Intel-TBB吧"><a href="#说了这么多，教你怎么快速地配置OpenMP和Intel-TBB吧" class="headerlink" title="说了这么多，教你怎么快速地配置OpenMP和Intel_TBB吧~"></a>说了这么多，教你怎么快速地配置OpenMP和Intel_TBB吧~</h2><h3 id="OpenMP是VS里面内置好的，配置很简单"><a href="#OpenMP是VS里面内置好的，配置很简单" class="headerlink" title="OpenMP是VS里面内置好的，配置很简单"></a>OpenMP是VS里面内置好的，配置很简单</h3><ul>
+<li><p>例如你在vs建立了一个C++项目(我这里命名为tbb)</p>
+<blockquote>
+<p>点击上方菜单中的 项目-&gt; 属性<br><img src="http://img.blog.csdn.net/20170401002947814?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="选择项目属性"><br>在属性里面的 配置属性-&gt; C/C++ -&gt; 语言 -&gt; OpenMP支持选择 ‘是’，然后确定就行<br><img src="http://img.blog.csdn.net/20170401003208271?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="开启OpenMP支持"></p>
+</blockquote>
+</li>
+<li><p>但是有一点要注意，这里开启OpenMP支持只是暂时的，也就是当前项目，如果你下次新建项目时可能还需要这样操作，如果想一劳永逸地开启，需要对项目配置表.props进行配置，稍后讲tbb会介绍到。</p>
+</li>
+</ul>
+<blockquote>
+<p>开启后就可以直接调用了，此处介绍最简单的也是最常用的parallel指令(并行执行指令)</p>
+<pre><code>- parallel 是用来构造一个并行块的，也可以使用其他指令如for、sections等和它配合使用。
+</code></pre></blockquote>
+<pre><code>在C/C++中，parallel的使用方法如下：
+
+#pragma omp parallel [for | sections] [子句[子句]…]
+
+{
+
+       //代码
+
+}
+
+parallel语句后面要跟一个大括号对将要并行执行的代码括起来。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">void main(int argc, char *argv[]) &#123;</div><div class="line">#pragma omp parallel</div><div class="line">&#123;	           printf(“Hello, World!\n”);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">执行以上代码将会打印出以下结果</div><div class="line">Hello, World!</div><div class="line">Hello, World!</div><div class="line">Hello, World!</div><div class="line">Hello, World!</div></pre></td></tr></table></figure>
+<pre><code>可以看得出parallel语句中的代码被执行了四次，说明总共创建了4个线程去执行parallel语句中的代码。
+</code></pre><blockquote>
+<p>也可以指定使用多少个线程来执行，需要使用num_threads子句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">void main(int argc, char *argv[]) &#123;</div><div class="line">#pragma omp parallel num_threads(8)</div><div class="line">&#123;</div><div class="line">              printf(“Hello, World!, ThreadId=%d\n”, omp_get_thread_num() );</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">执行以上代码，将会打印出以下结果：</div><div class="line">Hello, World!, ThreadId = 2</div><div class="line">Hello, World!, ThreadId = 6</div><div class="line">Hello, World!, ThreadId = 4</div><div class="line">Hello, World!, ThreadId = 0</div><div class="line">Hello, World!, ThreadId = 5</div><div class="line">Hello, World!, ThreadId = 7</div><div class="line">Hello, World!, ThreadId = 1</div><div class="line">Hello, World!, ThreadId = 3</div></pre></td></tr></table></figure></p>
+<p>从ThreadId的不同可以看出创建了8个线程来执行以上代码。所以parallel指令是用来为一段代码创建多个线程来执行它的。parallel块中的每行代码都被多个线程重复执行。</p>
+</blockquote>
+<p>和传统的创建线程函数比起来，相当于为一个线程入口函数重复调用创建线程函数来创建线程并等待线程执行完。<br>for指令的使用方法</p>
+<p>for指令则是用来将一个for循环分配到多个线程中执行。for指令一般可以和parallel指令合起来形成parallel for指令使用，也可以单独用在parallel语句的并行块中。</p>
+<blockquote>
+<p>   #pragma omp [parallel] for [子句]<br>    for循环语句<br>    先看看单独使用for语句时是什么效果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">int j = 0;</div><div class="line">#pragma omp for</div><div class="line">for ( j = 0; j &lt; 4; j++ )&#123;</div><div class="line">         printf(“j = %d, ThreadId = %d\n”, j, omp_get_thread_num());</div><div class="line">     &#125;</div><div class="line">执行以上代码后打印出以下结果</div><div class="line">j = 0, ThreadId = 0</div><div class="line">j = 1, ThreadId = 0</div><div class="line">j = 2, ThreadId = 0</div><div class="line">j = 3, ThreadId = 0</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>从结果可以看出四次循环都在一个线程里执行，可见for指令要和parallel指令结合起来使用才有效果：<br>如以下代码就是parallel 和for一起结合成parallel for的形式使用的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">int j = 0;</div><div class="line">#pragma omp parallel for</div><div class="line">for ( j = 0; j &lt; 4; j++ )&#123;</div><div class="line">         printf(“j = %d, ThreadId = %d\n”, j, omp_get_thread_num());</div><div class="line">     &#125;</div><div class="line">执行后会打印出以下结果：</div><div class="line">j = 0, ThreadId = 0</div><div class="line">j = 2, ThreadId = 2</div><div class="line">j = 1, ThreadId = 1</div><div class="line">j = 3, ThreadId = 3</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可见循环被分配到四个不同的线程中执行。<br>  上面这段代码也可以改写成以下形式：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">int j = 0;</div><div class="line">#pragma omp parallel</div><div class="line">&#123;</div><div class="line">#pragma omp for</div><div class="line">for ( j = 0; j &lt; 4; j++ )&#123;</div><div class="line">         printf(“j = %d, ThreadId = %d\n”, j, omp_get_thread_num());</div><div class="line">     &#125;</div><div class="line">&#125;</div><div class="line">执行以上代码会打印出以下结果：</div><div class="line">j = 1, ThreadId = 1</div><div class="line">j = 3, ThreadId = 3</div><div class="line">j = 2, ThreadId = 2</div><div class="line">j = 0, ThreadId = 0</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在一个parallel 块中也可以有多个for语句，如：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">int j;</div><div class="line">#pragma omp parallel</div><div class="line">&#123;</div><div class="line">#pragma omp for</div><div class="line">for ( j = 0; j &lt; 100; j++ )&#123;</div><div class="line">…</div><div class="line">     &#125;</div><div class="line">#pragma omp for</div><div class="line">for ( j = 0; j &lt; 100; j++ )&#123;</div><div class="line">…</div><div class="line">     &#125;</div><div class="line">…</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="详细的OpenMP指令可以参见这里http-www-cnblogs-com-me115-archive-2011-01-25-1944598-html"><a href="#详细的OpenMP指令可以参见这里http-www-cnblogs-com-me115-archive-2011-01-25-1944598-html" class="headerlink" title="详细的OpenMP指令可以参见这里http://www.cnblogs.com/me115/archive/2011/01/25/1944598.html"></a>详细的OpenMP指令可以参见这里<a href="http://www.cnblogs.com/me115/archive/2011/01/25/1944598.html" target="_blank" rel="external">http://www.cnblogs.com/me115/archive/2011/01/25/1944598.html</a></h3><p><img src="http://img.blog.csdn.net/20170331234249525?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="在10^5数量级之后会有很显著的区别"></p>
+<p><img src="http://img.blog.csdn.net/20170331235422125?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="代码执行速度超过普通的2倍！"></p>
+<h3 id="附上文首两张对比图的我的源代码"><a href="#附上文首两张对比图的我的源代码" class="headerlink" title="附上文首两张对比图的我的源代码"></a>附上文首两张对比图的我的源代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div></pre></td><td class="code"><pre><div class="line">#include&lt;tbb/parallel_for.h&gt;</div><div class="line">#include&lt;iostream&gt;</div><div class="line">#include &lt;tbb/parallel_sort.h&gt;</div><div class="line">#include &lt;math.h&gt;</div><div class="line">#include&lt;ctime&gt;</div><div class="line">#include&lt;algorithm&gt;</div><div class="line">#include&lt;random&gt;</div><div class="line">#include&lt;fstream&gt;</div><div class="line">using namespace std;</div><div class="line">long double sum;</div><div class="line">long long test_arr[222222222];</div><div class="line">void apply_transformation(long long &amp;x) &#123;</div><div class="line">	srand(time(NULL));</div><div class="line">	x = rand();</div><div class="line">	/*sum += double(double(x) / 100);*/ </div><div class="line">&#125;</div><div class="line">class apply_transform &#123;</div><div class="line">	long long *arr;</div><div class="line">public:</div><div class="line">	apply_transform(long long *a) : arr(a) &#123;&#125;</div><div class="line">	void operator()(const tbb::blocked_range&lt;long long&gt;&amp; r) const &#123;</div><div class="line">		for (long long i = r.begin(); i != r.end(); i++) &#123;</div><div class="line">			apply_transformation(arr[i]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">void do_parallel_the_tbb_way(long long *a,int size) &#123;</div><div class="line">	tbb::parallel_for(tbb::blocked_range&lt;long long&gt;(0, size), apply_transform(a));</div><div class="line">&#125;</div><div class="line">void print_arr(float arr[]) &#123;</div><div class="line">	for (int i = 0; i &lt; 50; i++) &#123;</div><div class="line">		cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;</div><div class="line">	&#125;</div><div class="line">	cout &lt;&lt; &quot;......&quot; &lt;&lt; endl;</div><div class="line">&#125;</div><div class="line">void init_arr(float arr[], float brr[],int N) &#123;</div><div class="line">	for (int i = 0; i &lt; N; i++) &#123;</div><div class="line">		arr[i] = sin((double)i);</div><div class="line">		brr[i] = cos((double)i);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">void init_arr2(long long size) &#123;</div><div class="line">	for (int i = 0; i &lt; size; i++)</div><div class="line">		test_arr[i] = 0;</div><div class="line">&#125;</div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">	ofstream outfile;</div><div class="line">	outfile.open(&quot;D://v_compare.txt&quot;);</div><div class="line">	clock_t start, end;</div><div class="line">	long long i;</div><div class="line">	//准备排序原料</div><div class="line">	long long size =1;</div><div class="line">	for (int j = 0; j &lt; 107; j++) &#123;</div><div class="line">		if (j &lt; 7) &#123;</div><div class="line">			size *= 10;</div><div class="line">		&#125;</div><div class="line">		else</div><div class="line">			size += 1000000;</div><div class="line">		init_arr2(size);</div><div class="line">			start = clock();</div><div class="line">			for (int i = 0; i &lt; size;i++)</div><div class="line">				apply_transformation(test_arr[i]);</div><div class="line">		end = clock();</div><div class="line">		cout &lt;&lt; &quot;普通串行赋值随机数所用时间:&quot;;</div><div class="line">		cout &lt;&lt; double(end - start) / CLOCKS_PER_SEC &lt;&lt; endl;</div><div class="line">		outfile &lt;&lt; double(end - start) / CLOCKS_PER_SEC &lt;&lt; &apos;\t&apos;;</div><div class="line">		init_arr2(size);</div><div class="line">		start = clock();</div><div class="line">		do_parallel_the_tbb_way(test_arr, size);</div><div class="line">		end = clock();</div><div class="line">		cout &lt;&lt; &quot;使用intel_tbb并行赋值随机数所用时间:&quot;;</div><div class="line">		cout &lt;&lt; double(end - start) / CLOCKS_PER_SEC &lt;&lt; endl;</div><div class="line">		outfile &lt;&lt; double(end - start) / CLOCKS_PER_SEC &lt;&lt; &apos;\t&apos;;</div><div class="line">		init_arr2(size);</div><div class="line">		start = clock();</div><div class="line">#pragma omp parallel  for</div><div class="line">		for (i = 0; i &lt; size; i++) &#123;</div><div class="line">			apply_transformation(test_arr[i]);</div><div class="line">		&#125;</div><div class="line">		end = clock();</div><div class="line">		cout &lt;&lt; &quot;vs自带Openmp并行赋值随机数所用时间:&quot;;</div><div class="line">		cout &lt;&lt; double(end - start) / CLOCKS_PER_SEC &lt;&lt; endl;</div><div class="line">		outfile &lt;&lt; double(end - start) / CLOCKS_PER_SEC &lt;&lt; &apos;\t&apos;;</div><div class="line">		outfile &lt;&lt; &quot;\n&quot;;</div><div class="line">	&#125;</div><div class="line">	outfile.close();</div><div class="line">	std::system(&quot;pause&quot;);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>可以看到里面引进了#include’tbb/blocked_range.h’ #include’tbb/parallel_for.h’ #include ‘tbb/parallel_sort.h’这三个库，没错，OpenMP由于是内置的，可以直接调用指令，而Intel_tbb需要自己把库导进去，需要下载、配置、使用</p>
+</blockquote>
+<h3 id="Intel-TBB配置教程-图文"><a href="#Intel-TBB配置教程-图文" class="headerlink" title="Intel_TBB配置教程(图文)"></a>Intel_TBB配置教程(图文)</h3><blockquote>
+<p>这个TBB配置还是略有难度，我刚开始没有配置成功，后来在配置OpenCV时顺便配置成功了…个人建议直接参照百度文库vs2013配置tbb的教程(vs2015也是一样的)，-<a href="https://wenku.baidu.com/view/cde69b86551810a6f4248650.html" target="_blank" rel="external">点这里看教程</a></p>
+<h3 id="还没配置TBB成功的小伙伴看这里"><a href="#还没配置TBB成功的小伙伴看这里" class="headerlink" title="还没配置TBB成功的小伙伴看这里"></a>还没配置TBB成功的小伙伴看这里</h3><p>注意不要下载错了，官网上有个下载的坑，我们需要下载的是在官网的Release Page里面的,放到github上了<br><img src="http://img.blog.csdn.net/20170401012154244?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="点击Release Page"><br>-<a href="https://github.com/01org/tbb/releases" target="_blank" rel="external">点击这里直接进入下载页面</a><br><img src="http://img.blog.csdn.net/20170401012344198?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="可以看到各个版本，直接下载最新的压缩包"></p>
+<p>-<a href="https://wenku.baidu.com/view/cde69b86551810a6f4248650.html" target="_blank" rel="external">点这里看TBB配置教程</a> 然后下面附上我的配置过程（VS2015）:<br>找到c++项目的配置管理器:<br><img src="http://img.blog.csdn.net/20170401013308781?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="一般在 视图-&gt;其它窗口-&gt;属性管理器可以找到"><br><img src="http://img.blog.csdn.net/20170401013444391?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="TBB可执行文件目录添加进去"><br><img src="http://img.blog.csdn.net/20170401013523905?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="TBB包含目录添加进去"><br><img src="http://img.blog.csdn.net/20170401013500656?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="TBB库目录添加进去，点确定后就Ok了"><br>注意，如果debug x86调试程序不行的话，试试debug x64和release x64的模式，可能你没有配置32位的属性<br><img src="http://img.blog.csdn.net/20170401013756299?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="这里是64位调试模式"></p>
+</blockquote>
+<h3 id="TBB配置好了的话，来点干货"><a href="#TBB配置好了的话，来点干货" class="headerlink" title="TBB配置好了的话，来点干货"></a>TBB配置好了的话，来点干货</h3><blockquote>
+<p>TBB的使用的确比OpenMP更复杂一点，但功能略丰富一些，可以查看-<a href="http://www.ibm.com/developerworks/cn/aix/library/au-intelthreadbuilding/" target="_blank" rel="external">IBM的TBB使用文档</a>,开始尝试自己的第一个TBB多线程C++代码，如果示例代码可以运行的话，说明配置成功！</p>
+</blockquote>
+<h2 id="TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率"><a href="#TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率" class="headerlink" title="TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率"></a>TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率</h2><blockquote>
+<p>(普通执行)串行输出结果<br><figure class="highlight plain"><figcaption><span>result of computation is 				followed——————————————</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Get the data using time：0.084 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 3</div><div class="line">Finish the level1 computation using time：24.309 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：10.061 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 6</div><div class="line">Finish the level2 computation using time：46.021 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：5.079 s</div><div class="line">The Final Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 9</div><div class="line">&#123; 1 1232 15 17 4 5 6 9  &#125;               2</div><div class="line">Finish the level3 computation using time：76.491 s</div></pre></td></tr></table></figure></p>
+<p>(利用TBB并行执行)输出结果:<br><figure class="highlight plain"><figcaption><span>result of computation is followed——————————————</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Get the data using time：0.076 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：5.147 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：10.097 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 3</div><div class="line">Finish the level1 computation using time：31.086 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 6</div><div class="line">Finish the level2 computation using time：57.545 s</div><div class="line">The Final Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 9</div><div class="line">&#123; 1 1232 15 17 4 5 6 9  &#125;               2</div><div class="line">Finish the level3 computation using time：91.35 s</div></pre></td></tr></table></figure></p>
+</blockquote>
+<ul>
+<li>已经可以看到多线程并行和单线程串行的区别了，多线程并行是3个level一起读取数据，一起处理数据，而单线程串行是读取一个level数据处理一个level，一个一个来<blockquote>
+<p>可能有人会有疑惑，用TBB执行不是更慢了吗，每个level的数据集所用时间都更长，而且最后用了91.35s &gt; 76.491s？！还有，读取数据的时间为什么这么长？</p>
+<h3 id="实际所用的时间是这样"><a href="#实际所用的时间是这样" class="headerlink" title="实际所用的时间是这样:"></a>实际所用的时间是这样:</h3><p>串行用了24.309+46.021+76.491 s(读取数据的时间不算入)<br>而并行，只用了91.35 s(读取数据的时间不算入)<br>，效率是原来的1.6倍多！因为TBB是多线程运行，所以level1-level3一起同时开启，最终所有level完成所用时间就是最长的时间，即91.35 s，<br>而普通执行是一个接一个，所有时间要相加。</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>执行代码多线程调用非常简单，只需要用tbb::task_group就可以了，不过需要自己定义一个可以被tbb调用的类，这里我用run<br><img src="http://img.blog.csdn.net/20170401021405551?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="调用TBB多线程的代码"><br>看起来是不是很像python里面的threading.Thread(target=function())模块,然后调用start()。不过这里的run并非一个函数，而是一个类模板。</p>
+</blockquote>
+<ul>
+<li>再看一下CPU的变化情况，跟之前的平滑还是略有不同<br><img src="http://img.blog.csdn.net/20170401020226795?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="可以看出cpu略有波动"><blockquote>
+<p>有兴趣的话可以尝试让cpu变成正弦图像，很有趣！<br><img src="http://img.blog.csdn.net/20170401020336066?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="有线程暂歇的情况"><br>当然，当多线程执行完全一样的for循环且for范围足够大，cpu的调度就会维持在系统默认的最大值(像我的电脑是70%),这种看起来还是比较协调<br><img src="http://img.blog.csdn.net/20170401020402832?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="完全调度"></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="赶紧动手实践，用几行TBB-amp-OpenMP指令让你的C-代码执行速度提升吧！"><a href="#赶紧动手实践，用几行TBB-amp-OpenMP指令让你的C-代码执行速度提升吧！" class="headerlink" title="赶紧动手实践，用几行TBB&amp;OpenMP指令让你的C++代码执行速度提升吧！"></a>赶紧动手实践，用几行TBB&amp;OpenMP指令让你的C++代码执行速度提升吧！</h2><blockquote>
+<p>有任何问题可以在评论区留言，我会及时解答或订正。<br><img src="http://img.blog.csdn.net/20170401022800636?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
+        <p><span>发布时间:</span>2017-03-31, 16:21:23</p>
+        <p><span>最后更新:</span>2017-04-01, 02:37:43</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/31/tbb/" title="几行指令让你的C++代码速度提升100%+">http://yikunhaocong.xyz/2017/03/31/tbb/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.xyz/2017/03/31/tbb/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/25/kali-linux/">
+                    安全渗透测试①:Kali-Linux 几行指令制作最简单的木马
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hac博客声明！"><span class="toc-number">1.</span> <span class="toc-text">Hac博客声明！</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#直接上相同代码速度对比图-记录C-运行速度，python绘图"><span class="toc-number">2.</span> <span class="toc-text">直接上相同代码速度对比图(记录C++运行速度，python绘图)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#C-内置快排与tbb-openmp内置快排的速度对比图"><span class="toc-number">2.1.</span> <span class="toc-text">C++内置快排与tbb,openmp内置快排的速度对比图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#再看一下随机赋值情况，10-7为基数，增加1到100个10-6的数量级的速度对比"><span class="toc-number">2.2.</span> <span class="toc-text">再看一下随机赋值情况，10^7为基数，增加1到100个10^6的数量级的速度对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说了这么多，教你怎么快速地配置OpenMP和Intel-TBB吧"><span class="toc-number">3.</span> <span class="toc-text">说了这么多，教你怎么快速地配置OpenMP和Intel_TBB吧~</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenMP是VS里面内置好的，配置很简单"><span class="toc-number">3.1.</span> <span class="toc-text">OpenMP是VS里面内置好的，配置很简单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#详细的OpenMP指令可以参见这里http-www-cnblogs-com-me115-archive-2011-01-25-1944598-html"><span class="toc-number">3.2.</span> <span class="toc-text">详细的OpenMP指令可以参见这里http://www.cnblogs.com/me115/archive/2011/01/25/1944598.html</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#附上文首两张对比图的我的源代码"><span class="toc-number">3.3.</span> <span class="toc-text">附上文首两张对比图的我的源代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Intel-TBB配置教程-图文"><span class="toc-number">3.4.</span> <span class="toc-text">Intel_TBB配置教程(图文)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#还没配置TBB成功的小伙伴看这里"><span class="toc-number">3.5.</span> <span class="toc-text">还没配置TBB成功的小伙伴看这里</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TBB配置好了的话，来点干货"><span class="toc-number">3.6.</span> <span class="toc-text">TBB配置好了的话，来点干货</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率"><span class="toc-number">4.</span> <span class="toc-text">TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实际所用的时间是这样"><span class="toc-number">4.1.</span> <span class="toc-text">实际所用的时间是这样:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#赶紧动手实践，用几行TBB-amp-OpenMP指令让你的C-代码执行速度提升吧！"><span class="toc-number">5.</span> <span class="toc-text">赶紧动手实践，用几行TBB&OpenMP指令让你的C++代码执行速度提升吧！</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"几行指令让你的C++代码速度提升100%+　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+	<div id="uyan_frame"></div>
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2128463';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/25/kali-linux/" title="下一篇: 安全渗透测试①:Kali-Linux 几行指令制作最简单的木马">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 Kali-Hac
+            </div>
+            <div class="footer-right">
+                <a href="yikunhaocong.xyz" target="_blank" title="Contact with me">Hac's</a>  Blog Powered</a> by <a href="http://hexo.io/" target="_blank" >Hexo <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+             tags: ".article-tag a", 
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
