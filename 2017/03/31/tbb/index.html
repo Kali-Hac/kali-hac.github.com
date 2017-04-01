@@ -44,7 +44,7 @@ Hac博客声明！
 <meta property="og:image" content="http://img.blog.csdn.net/20170401020336066?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="http://img.blog.csdn.net/20170401020402832?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="http://img.blog.csdn.net/20170401022800636?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:updated_time" content="2017-03-31T18:37:43.418Z">
+<meta property="og:updated_time" content="2017-04-01T02:28:03.330Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="几行指令让你的C++代码速度提升100%+">
 <meta name="twitter:description" content="主要讲解VS内置OpenMP库的使用和Intel_TBB开源库的配置，与普通C++代码串行运行的速度进行对比，教会你如何快速使用OpenMP和Intel_TBB内置的并行算法使你的C++代码运行速度大幅度提升(充分调用CPU开启多线程)。
@@ -196,6 +196,12 @@ Hac博客声明！
                         
                             <li><a href="/archives/">所有文章</a></li>
                         
+                            <li><a href="http://mp.weixin.qq.com/s/8K0jafRZ-VDq8Ef4hLTUuQ">第十二届软件文化节预热</a></li>
+                        
+                            <li><a href="http://img.blog.csdn.net/20170401102237724?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">第十一届软件文化节回顾</a></li>
+                        
+                            <li><a href="http://img.blog.csdn.net/20170401102332287?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">关注iSoftware</a></li>
+                        
                             <li><a href="/about/">关于我</a></li>
                         
                         </ul>
@@ -205,7 +211,7 @@ Hac博客声明！
                             
                                 <a class="fa GitHub" href="https://github.com/" title="GitHub"></a>
                             
-                                <a class="fa CSDN" href="http://www.csdn.net/" title="CSDN"></a>
+                                <a class="fa CSDN" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
                             
                                 <a class="fa StackOverflow" href="http://stackoverflow.com/" title="StackOverflow"></a>
                             
@@ -277,6 +283,12 @@ Hac博客声明！
                 
                     <li><a href="/archives/">所有文章</a></li>
                 
+                    <li><a href="http://mp.weixin.qq.com/s/8K0jafRZ-VDq8Ef4hLTUuQ">第十二届软件文化节预热</a></li>
+                
+                    <li><a href="http://img.blog.csdn.net/20170401102237724?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">第十一届软件文化节回顾</a></li>
+                
+                    <li><a href="http://img.blog.csdn.net/20170401102332287?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">关注iSoftware</a></li>
+                
                     <li><a href="/about/">关于我</a></li>
                 
                 <div class="clearfix"></div>
@@ -287,7 +299,7 @@ Hac博客声明！
                             
                                 <a class="fa GitHub" target="_blank" href="https://github.com/" title="GitHub"></a>
                             
-                                <a class="fa CSDN" target="_blank" href="http://www.csdn.net/" title="CSDN"></a>
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
                             
                                 <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/" title="StackOverflow"></a>
                             
@@ -423,10 +435,13 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
 <p>-<a href="https://wenku.baidu.com/view/cde69b86551810a6f4248650.html" target="_blank" rel="external">点这里看TBB配置教程</a> 然后下面附上我的配置过程（VS2015）:<br>找到c++项目的配置管理器:<br><img src="http://img.blog.csdn.net/20170401013308781?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="一般在 视图-&gt;其它窗口-&gt;属性管理器可以找到"><br><img src="http://img.blog.csdn.net/20170401013444391?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="TBB可执行文件目录添加进去"><br><img src="http://img.blog.csdn.net/20170401013523905?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="TBB包含目录添加进去"><br><img src="http://img.blog.csdn.net/20170401013500656?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="TBB库目录添加进去，点确定后就Ok了"><br>注意，如果debug x86调试程序不行的话，试试debug x64和release x64的模式，可能你没有配置32位的属性<br><img src="http://img.blog.csdn.net/20170401013756299?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="这里是64位调试模式"></p>
 </blockquote>
 <h3 id="TBB配置好了的话，来点干货"><a href="#TBB配置好了的话，来点干货" class="headerlink" title="TBB配置好了的话，来点干货"></a>TBB配置好了的话，来点干货</h3><blockquote>
-<p>TBB的使用的确比OpenMP更复杂一点，但功能略丰富一些，可以查看-<a href="http://www.ibm.com/developerworks/cn/aix/library/au-intelthreadbuilding/" target="_blank" rel="external">IBM的TBB使用文档</a>,开始尝试自己的第一个TBB多线程C++代码，如果示例代码可以运行的话，说明配置成功！</p>
-</blockquote>
-<h2 id="TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率"><a href="#TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率" class="headerlink" title="TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率"></a>TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率</h2><blockquote>
-<p>(普通执行)串行输出结果<br><figure class="highlight plain"><figcaption><span>result of computation is 				followed——————————————</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Get the data using time：0.084 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 3</div><div class="line">Finish the level1 computation using time：24.309 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：10.061 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 6</div><div class="line">Finish the level2 computation using time：46.021 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：5.079 s</div><div class="line">The Final Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 9</div><div class="line">&#123; 1 1232 15 17 4 5 6 9  &#125;               2</div><div class="line">Finish the level3 computation using time：76.491 s</div></pre></td></tr></table></figure></p>
+<p>TBB的使用的确比OpenMP更复杂一点，但功能略丰富一些，可以查看-<a href="http://www.ibm.com/developerworks/cn/aix/library/au-intelthreadbuilding/" target="_blank" rel="external">IBM的TBB使用文档</a>,开始尝试自己的第一个TBB多线程C++代码，如果示例代码可以运行的话，说明配置成功！<br>当然，还有以下推荐的关于tbb使用的博客或文库:</p>
+<ul>
+<li><a href="https://www.cppfans.org/1437.html" target="_blank" rel="external">初识英特尔线程构建模块之内存管理tbb_malloc</a></li>
+<li><a href="http://www.360doc.com/content/14/1111/19/5470123_424361353.shtml" target="_blank" rel="external">C++并行计算库TBB和PPL的基本用法</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog_834b14b201015h4k.html" target="_blank" rel="external">TBB开始学习汇总</a><h2 id="TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率"><a href="#TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率" class="headerlink" title="TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率"></a>TBB大幅提高数据挖掘基础Apriori算法并行处理不同数据集的效率</h2>(普通执行)串行输出结果<figure class="highlight plain"><figcaption><span>result of computation is 				followed——————————————</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Get the data using time：0.084 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 3</div><div class="line">Finish the level1 computation using time：24.309 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：10.061 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 6</div><div class="line">Finish the level2 computation using time：46.021 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：5.079 s</div><div class="line">The Final Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 9</div><div class="line">&#123; 1 1232 15 17 4 5 6 9  &#125;               2</div><div class="line">Finish the level3 computation using time：76.491 s</div></pre></td></tr></table></figure>
+</li>
+</ul>
 <p>(利用TBB并行执行)输出结果:<br><figure class="highlight plain"><figcaption><span>result of computation is followed——————————————</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Get the data using time：0.076 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：5.147 s</div><div class="line">———————————The result of computation is followed——————————————</div><div class="line">Get the data using time：10.097 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 3</div><div class="line">Finish the level1 computation using time：31.086 s</div><div class="line">The I level Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 6</div><div class="line">Finish the level2 computation using time：57.545 s</div><div class="line">The Final Frequence_Item_Set is：</div><div class="line">Item_Set            Frequence</div><div class="line">&#123; 0 1 11 12 13 7 8 9  &#125;                 9</div><div class="line">&#123; 1 1232 15 17 4 5 6 9  &#125;               2</div><div class="line">Finish the level3 computation using time：91.35 s</div></pre></td></tr></table></figure></p>
 </blockquote>
 <ul>
@@ -459,7 +474,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
         <p><span>本文标题:</span><a href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
         <p><span>发布时间:</span>2017-03-31, 16:21:23</p>
-        <p><span>最后更新:</span>2017-04-01, 02:37:43</p>
+        <p><span>最后更新:</span>2017-04-01, 10:28:03</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/03/31/tbb/" title="几行指令让你的C++代码速度提升100%+">http://yikunhaocong.xyz/2017/03/31/tbb/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.xyz/2017/03/31/tbb/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
