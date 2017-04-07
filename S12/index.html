@@ -1,0 +1,877 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>第十二届软件文化节</title>
+
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i%7CPoppins:300,400,500,600,700" rel="stylesheet">
+
+<!-- Bootstrap -->
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font-Awesome -->
+<link href="assets/css/font-awesome.min.css" rel="stylesheet">
+
+<!-- Lightcase -->
+<link href="assets/css/lightcase.css" rel="stylesheet">
+
+<!-- Swiper -->
+<link href="assets/css/swiper.min.css" rel="stylesheet">
+
+<!-- Animate -->
+<link href="assets/css/animate.css" rel="stylesheet">
+
+<!-- Style -->
+<link href="assets/css/style.css" rel="stylesheet">
+
+<!-- Responsive -->
+<link href="assets/css/responsive.css" rel="stylesheet">
+
+<style>
+	td{text-align: center}
+</style>
+
+</head>
+
+<!-- Preloader end here -->
+<body>
+<header>
+  <nav class="main-menu menu-fixed menu-bg1" id='cbg' >
+	<div class="container">
+	  
+	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		
+		<ul class="nav navbar-nav navbar-left">
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#index" style="font-size:18px"><br/>首页</a></li>
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#about" style="font-size:18px"><br/>简介</a></li>
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#A" style="font-size:14px">&nbsp;&nbsp;"金山杯"<br/>ACM程序<br/>&nbsp;设计大赛</a></li>
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#B" style="font-size:14px">“深信服杯”<br/>&nbsp;软件设计<br/>&nbsp;&nbsp;&nbsp;&nbsp;大赛</a></li>
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#C" style="font-size:14px">&nbsp;"黑框框"<br/>程序创意<br/>设计大赛</a></li>
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#D" style="font-size:14px">大数据<br/>&nbsp;&nbsp;比赛</a></li>
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#E" style="font-size:14px">风筝DIY<br/>创意设计<br/>&nbsp;&nbsp;&nbsp;&nbsp;大赛</a></li>
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#F" style="font-size:14px">&nbsp;&nbsp;棋王<br/>争霸赛</a></li>
+		  <li style="width:100px;height: 100px"><a class="page-scroll" href="#G" style="font-size:14px">&nbsp;&nbsp;"千寻"<br/>摄影大赛</a></li>
+          <li style="width:100px;height: 100px"><a class="page-scroll" href="#H" style="font-size:14px">&nbsp;&nbsp;球类<br/>嘉年华</a></li>
+          <li style="width:100px;height: 100px"><a class="page-scroll" href="#I" style="font-size:14px">团支部<br/>风采秀</a></li>
+		  <!--<li style="width:100px"><a class="page-scroll" href="#client">Client</a></li>-->
+		  <!--<li style="width:100px"><a class="page-scroll" href="#contact">Contact</a></li> -->
+		</ul>
+
+	  </div><!-- /.navbar-collapse -->
+	</div><!-- /.container -->
+  </nav>
+</header>
+<section id="index" class="banner">
+  <div class="overlay">
+	<div class="banner-content" id='yc'>
+	  <h3>第十二届软件文化节</h3>
+	  <p>华南理工大学软件学院</p>
+	  <p style="text-align: center;">
+	  <a href="#A" class="default-button page-scroll">“金山杯”ACM程序设计大赛</a>
+	  <br/><br/>
+	  <a href="#B" class="default-button page-scroll">”深信服杯”软件设计大赛</a>
+	  	  <a href="#D" class="default-button page-scroll">大数据大赛</a>
+	  <br/>
+	  <br/>
+	  <a href="#C" class="default-button page-scroll">黑框框创意大赛</a>
+	  <a href="#E" class="default-button page-scroll">风筝DIY设计大赛</a>
+	  <br/>
+	    <br/>
+	  <a href="#G" class="default-button page-scroll">“千寻”摄影大赛</a>
+	  	  <a href="#I" class="default-button page-scroll">团支部风采秀</a>
+	  <br/>
+	   <br/>
+	  	  <a href="#F" class="default-button page-scroll">棋王争霸赛</a>
+	  <a href="#H" class="default-button page-scroll">球类嘉年华</a>
+	  <br/>
+	  <br/>
+	  	  <a href="#PP" class="default-button page-scroll">“P&P的魔力”培训讲座</a>
+	  	  <br/>
+	  <br/>
+	  	  <a href="#J" class="default-button page-scroll">历届软件文化节微回顾</a>
+	  </p>
+	</div><!-- banner content -->
+  </div><!-- overlay -->
+</section>
+<script >
+function mobile_device_detect()
+{
+	var flag=false;
+var thisOS=navigator.platform;
+var os=new Array("iPhone","iPod","iPad","android","Nokia","SymbianOS","Symbian","Windows Phone","Phone","Linux armv71","MAUI","UNTRUSTED/1.0","Windows CE","BlackBerry","IEMobile");
+for(var i=0;i<os.length;i++)
+{
+if(thisOS.match(os[i]))
+{
+flag=ture;
+}
+}
+
+if(navigator.platform.indexOf('iPad') != -1)
+{
+flag=true;
+}
+
+var check = navigator.appVersion;
+if( check.match(/linux/i) )
+{
+
+if(check.match(/mobile/i) || check.match(/X11/i))
+{
+flag=true;
+}
+}
+//类in_array函数
+Array.prototype.in_array = function(e)
+{
+for(i=0;i
+<this.length;i++)
+{
+if(this[i] == e)
+flag=true;
+}
+
+}
+if(flag){
+	var bg= document.getElementById("cbg");
+	bg.style.display='none';
+	var banner=document.getElementById('yc');
+	yc.style.top="5%";
+}
+}
+mobile_device_detect();
+</script>
+<div style="font-weight: bold ;">
+<!-- about section start -->
+      <p style="text-align: center; padding-top: 60px">
+       <img src="http://img.blog.csdn.net/20170406173754007">
+       </p>
+<section id="about" >
+  <div class="container">
+	<div class="section-header text-center">
+	  <h2>简 介</h2>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="images/rw3.png" alt="about image">
+		</div>
+	  </div>
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		  <p> &nbsp; &nbsp; &nbsp; &nbsp;华南理工大学软件学院以“务实创新，追求卓越”为宗旨，以办学模式创新为基础，以人才培养模式创新为核心，以管理模式创新为保障，依托珠三角地区的经济优势和IT行业特点，积极开展工程化人才培养和国际交流与合作。</p>
+		  <p> &nbsp; &nbsp; &nbsp; &nbsp;目前已形成“以培养政府信息化、金融服务业信息化、制造业信息化高级需求人才为龙头，以大型软件开发、软件服务和管理型软件为核心，以国际合作和软件外包为重心”的工程化培养体系，成为华南地区国际化软件“精英”人才培养创新基地。</p>
+		  <p> &nbsp; &nbsp; &nbsp; &nbsp;学院一直十分重视校园文化活动的开展，营造良好的浓厚的科技文化氛围，一方面组织多种具有专业特色的活动，另一方面积极组建具有企业化运行模式的学生俱乐部，将企业文化与校园文化有机结合。</p>
+		  <p> &nbsp; &nbsp; &nbsp; &nbsp;华南理工大学软件学院自2004年迁入华南理工大学南校区（广州大学城）以来，由学院团委、学生会主办或承办了多项具有学院特色的校园活动，包括具有软件特色的晚会、学术性讲座、技术性比赛、数码咨询活动等，并在学院领导的关怀和指导下成立了具有专业特色的学生创新俱乐部，并配有专门的指导老师。</p>
+		  <p> &nbsp; &nbsp; &nbsp; &nbsp;在此基础上，软件学院团委、学生会将各类具有软件特色的活动有机结合起来，举办大型综合性计算机软件技术与文化的盛会，为学院的特色活动的开展开辟了更加广阔的发展道路。</p>
+		  <p> &nbsp; &nbsp; &nbsp; &nbsp;华南理工大学软件文化节于每年4月份在华南理工大学南校区举办，历时近两个月，计划举办大小活动近20项。软件文化节活动面向的对象根据各活动的特点分为本学院学生、华南理工大学学生、广州大学城各高校（如中山大学、广东工业大学、华南农业大学等）学生三个层次，主要有软件学院、计算机学院、电信学院、理学院、自动化学院、新闻与传播学院等学院近2000学生参与。</p>
+		  <p> &nbsp; &nbsp; &nbsp; &nbsp;对于华南理工大学软件学院的莘莘学子，这里是一片崭新的、充满机遇与挑战的天地；对于其他同样对计算机软件抱有兴趣与激情的同路中人，这里也将为你敞开大门，给你带来惊奇与满足！感悟华工精神，领略软件风采，让我们着手创造属于我们自己的梦想！</p>
+	  </div>
+	</div><!-- row -->
+  </div><!-- container -->
+      <p style="text-align: right;">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+</section>
+<!-- about section end -->
+
+
+
+<!-- services section start -->
+<section id="A" class="services padding-120 bg-color">
+  <div class="container">
+	<div class="section-header text-center">
+	  <h2>“金山杯”ACM程序设计大赛</h2>
+	  <p><i> &nbsp; &nbsp; &nbsp; &nbsp;“金山杯”ACM程序设计大赛由华南理工大学软件学院主办，比赛面向的对象为大学城十所高校在校大学生。比赛旨在发掘同学们的程序设计潜能,使同学们能更加积极主动地参与到编程学习当中,学会如何充分运用专业知识，通过计算机来分析和解决实际问题的能力,加强同学们的团队合作精神,同时为软件学院ACM集训队做好人才选拔和储备工作。</i></>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="service-items">
+	  <div class="row">
+		<div class="col-md-4 col-sm-6 col-xs-12">
+		  <div class="service-item">
+			<span><i class="fa fa-desktop" aria-hidden="true"></i></span>
+			<h4>Search Techniques</h4>
+			<p>搜索技术</p>
+		  </div><!-- service-item -->
+		</div>
+		<div class="col-md-4 col-sm-6 col-xs-12">
+		  <div class="service-item">
+			<span><i class="fa fa-code" aria-hidden="true"></i></span>
+			<h4>Combinatorics</h4>
+			<p>组合数学</p>
+		  </div><!-- service-item -->
+		</div>
+		<div class="col-md-4 col-sm-6 col-xs-12">
+		  <div class="service-item">
+			<span><i class="fa fa-camera-retro" aria-hidden="true"></i></span>
+			<h4>Graph Theory</h4>
+			<p>图论</p>
+		  </div><!-- service-item -->
+		</div>
+		<div class="col-md-4 col-sm-6 col-xs-12">
+		  <div class="service-item">
+			<span><i class="fa fa-line-chart" aria-hidden="true"></i></span>
+			<h4>Direct</h4>
+			<p>简单题 </p>
+		  </div><!-- service-item -->
+		</div>
+		<div class="col-md-4 col-sm-6 col-xs-12">
+		  <div class="service-item">
+			<span><i class="fa fa-shopping-bag" aria-hidden="true"></i></span>
+			<h4>Dynamic Programming</h4>
+			<p>动态规划</p>
+		  </div><!-- service-item -->
+		</div>
+		<div class="col-md-4 col-sm-6 col-xs-12">
+		  <div class="service-item">
+			<span><i class="fa fa-cogs" aria-hidden="true"></i></span>
+			<h4>Number Theory</h4>
+			<p>数论</p>
+		  </div><!-- service-item -->
+		</div>
+	  </div><!-- row -->
+	</div><!-- service-items -->
+
+	<div style="margin:0 auto;">
+
+	<p>&nbsp;ACM/ICPC介绍</p></div>
+
+		<div id="divcss" style="position:relative; top:40px;  color:#696969;font-size:18px;font-weight:bold"><p>1. 什么是ACM/ICPC？</p></div>
+		<div id="divcss" style="position:relative; top:35px;  color:#696969">
+			<p> &nbsp; &nbsp; &nbsp; &nbsp;ACM/ICPC（ACM International Collegiate Programming Contest, 国际大学生程序设计竞赛）是由国际计算机界历史悠久、颇具权威性的组织ACM（Association for Computing Machinery，国际计算机协会）主办的，世界上公认的规模最大、水平最高的国际大学生程序设计竞赛。</p>
+			<p> &nbsp; &nbsp; &nbsp; &nbsp;ACM/ICPC从1970年开始，已经举办了30多届，其目的旨在使大学生运用计算机来充分展示自己分析问题和解决问题的能力。该竞赛一直受到国际各知名大学的重视，并受到全世界各著名计算机公司的高度关注。可以说，ACM国际大学生程序设计竞赛已成为世界各国大学生最具影响力的国际级计算机类的赛事。</p>
+		</div>
+
+		<div id="divcss" style="position:relative; top:35px;  color:#696969;font-size:18px;font-weight:bold"><p>3. ACM-ICPC的比赛形式和内容</p></div>
+
+		<div id="divcss" style="position:relative; top:35px;  color:#696969">
+			<p> &nbsp; &nbsp; &nbsp; &nbsp;ACM/ICPC采用组队参赛的形式，由三名队员组成一支队伍参赛。比赛时三名队员只使用一台电脑，整个比赛时间为5个小时。比赛题目为6~10道不等，语言为全英。</p>
+			<p> &nbsp; &nbsp; &nbsp; &nbsp;竞赛涵盖的范围很广，大致划分如下：Direct（简单题），Computational Geometr（计算几何），Number Theory（数论），Combinatorics（组合数学），Search Techniques（搜索技术），Dynamic Programming（动态规划），Graph Theory（图论），Other（其他）。</p>
+		</div>
+
+		<div id="divcss" style="position:relative; top:40px; height:45px;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"><p>&nbsp;参赛资格</p></div>
+		<div id="divcss" style="position:relative; top:40px;  color:#696969">
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;大赛主要面向的对象为广州大学城十所高校全体本科生和研究生一年级学生，采用组队参赛的形式，由三名队员组成一支队伍参赛。每支队伍必须在规定的报名时间内、在大赛指定地网站上提交报名信息后才能拥有参赛资格。</p>
+		</div>
+
+		<div id="divcss" style="position:relative; top:40px; height:45px;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"><p>&nbsp;竞赛规则</p></div>
+		<div id="divcss" style="position:relative; top:40px;  color:#696969">
+			<p>1) 比赛时间</p>
+			<p>&nbsp; &nbsp; 总时间为5个小时,比赛时间为04 月 23日 12:00—17:00</p>
+			<p>2) 比赛内容</p>
+			<p>&nbsp; &nbsp; 共8道英文题目, 各参赛队伍视自己能力完成各题目</p>
+			<p>3) 参赛语言</p>
+			<p>&nbsp; &nbsp; C/C++，java</p>
+			<p>4) 开发环境</p>
+			<p>&nbsp; &nbsp; Turbo C, VC 6.0, Dev-C++, eclipse或netbeans</p>
+			<p>5) 参赛平台</p>
+			<p>&nbsp; &nbsp; 网络在线系统</p>
+			<p>6) 比赛规则</p>
+			<p>&nbsp; &nbsp; 比赛评判结果按以下标准衡量：a) 各参赛队伍完成题目的数量；
+				b) 如果队伍完成题目数量相同，则按照各题目完成时间和罚时的总时间的总和排名，时间越少名次越先前。各题目的完成时间是指比赛开始的时间到该题目第一次AC所用的时间。如果在该题目AC之前提交了任何错误的程序则罚时20分钟，但是当如果重新提交自己队伍AC了的题目，不管结果如何都不用罚时。</p>
+		</div>
+
+		<div id="divcss" style="position:relative; top:40px; height:45px;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"><p>&nbsp;赛场注意事项</p></div>
+		<div id="divcss" style="position:relative; top:40px;  color:#696969">
+			<p>1) 比赛时各团队所有成员需持有效证件(学生证或身份证)提前30分钟到达统一安排的比赛地点报到，凡在签到时间内未签到队员一律视为弃权；</p>
+			<p>2) 各参赛队伍必须按照主办方安排的位置就坐,每个队伍只有一台机器；每支队伍使用一台计算机，所有人使用计算机的规格配置完全相同，机器分配抽签决定，同时分配登入PC平方的账号和密码；</p>
+			<p>3) 参赛选手可以带任何纸质书籍或资料，（可带词典）但不可带任何移动电子产品,笔记本电脑；如有带入的，请提前交给考场监考人员保管；</p>
+			<p>4) 为公平起见,要求选手不能携带手机等通讯设备，一旦发现比赛中使用手机等通讯设备，取消其比赛资格，并公布其名单；</p>
+			<p>5) 比赛时必须按照报名表上所填写的团队成员参加比赛,不得临时更换队员；如有特殊情况不能参加者,可单人退出比赛，不影响团队参赛资格；一旦退出比赛，不可再加入比赛；</p>
+			<p>6) 比赛采用封闭式管理进行，比赛过程中,各团队间不得交头接耳；选手不得擅自离开比赛地点，如需要离开自己的位置，需向赛场负责人说明，获得许可后方可行动；</p>
+			<p>7) 机器的C盘被保护，请各队将文件保存在D盘,以防意外丢失；</p>
+			<p>8) 各队可视各自的情况退场，但离场后不许再回比赛现场；</p>
+			<p>9) 比赛结果经专家委员会讨论决定，并将所有结果公布于大赛官方主页。</p>
+
+			<div id="divcss" style="position:relative; top:20px; height:45px;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"><p>&nbsp;竞赛日程</p></div>
+			<div id="divcss" style="position:relative; top:40px; color:#696969">
+				<table id="table"><tr><td>时间</td><td>内容</td><td>备注</td></tr>
+					<tr><td rowspan="2">4月23日10:30-11：00</td><td>参赛人员签到，领胸卡</td><td>选手进入机房要佩戴胸卡</td></tr>
+					<tr><td>试机</td><td>有问题的机器及时登记调换</td></tr>
+
+					<tr><td>4月23日11:00-12:00</td><td>领导、嘉宾发言</td><td>\</td></tr>
+					<tr><td>4月 23 日12:00-17:00</td><td>正式比赛</td><td>\</td></tr>
+				</table>
+			</div>
+			<section id="about" >
+  <div class="container">
+	<section id="about" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+	 	<h3>奖项设置</h3>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="images/acm.jpg" alt="about image">
+		</div>
+	  </div>
+	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+			<p>一等奖2队，奖金5000元，奖状两份，并提供直通面试资格，符合条件择优录取；</p>
+				<p>二等奖3队，奖金3000，奖状三份；</p>
+				<p>三等奖4队，奖金1000元，奖状四份；</p>
+				<p>最佳女队奖1队，奖金800元，奖状一份；</p>
+				<p>优胜奖若干，派发奖状。</p>
+            </div>
+	  </div>
+	</div><!-- row -->
+  </div><!-- container -->
+</section>
+
+				<!--<div id="divcss" style="position:relative; top:10px; height:45px;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"><p>&nbsp;报名方式</p></div>-->
+				<!--<div id="divcss" style="position:relative; top:10px;  color:#696969">-->
+					<!--<p>报名表发至scutsexsb@sina.com </p>-->
+					<!--<p>报名截止时间4月30日 </p>-->
+					<!--<p>原则上外校队伍不超过30队，请大家尽早报名</p>-->
+
+
+				<!--</div>-->
+
+				<!--<a href="../doc/“从兴杯”ACM程序设计大赛报名表.doc"><button class="button button&#45;&#45;ujarak button&#45;&#45;border-thick button&#45;&#45;text-upper button&#45;&#45;size button&#45;&#45;inverted button&#45;&#45;text">下载报名表</button></a>-->
+
+				<!--<div id="divcss" style="position:relative; top:100px; height:50px;color:#299ccc;font-size:25px;"></div>-->
+
+    <p style="text-align: right;">
+ <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+<!-- services section end -->
+
+
+
+<!-- skills section start -->
+<section id="B" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+	 	<h3>“深信服杯”软件设计大赛</h3>
+<p>&nbsp; &nbsp; &nbsp; &nbsp;本比赛旨在举办高水平软件设计大赛，加强校企合作，选拔优秀作品，优秀团队，优秀人才，不断提升企业在高校的知名度和影响力。</p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="http://img.blog.csdn.net/20170406173046723" alt="about image">
+		</div>
+		<div class="about-image">
+		  <img src="http://img.blog.csdn.net/20170406173113957" alt="about image">
+		</div>
+	  </div>
+	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+
+			  	<div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+			  </div>
+			  <p>&nbsp;&nbsp;&nbsp;&nbsp;大赛日程</p>
+			  <p>&nbsp; &nbsp;1.大赛宣传：4月10日-4月18日</p>
+			  <p>&nbsp; &nbsp;2.启动仪式（技术讲座+HR谈规划）：4月15日（初定）</p>
+			  <p>&nbsp; &nbsp;3.报名:截止到4月18日</p>
+			  <p>&nbsp; &nbsp;4.初赛作品提交:截止到5月15日</p>
+			  <p>&nbsp; &nbsp;5.决赛答辩:5月27日（初定）</p>
+			  <p>&nbsp; &nbsp;6.大赛颁奖:6月上旬（软件文化节闭幕式上对获奖优秀团队进行颁奖）</p>
+	
+
+            <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;大赛奖项</p>
+                <p>&nbsp; &nbsp;1.企业命题组</p>
+                <p>&nbsp; &nbsp;一等奖（1队）：5000元奖金+（深信服科技有限公司）实习offer</p>
+                <p>&nbsp; &nbsp;二等奖（1队）：3000元奖金+（深信服科技有限公司）实习offer</p>
+                <p>&nbsp; &nbsp; 三等奖（1队）：2000元奖金+（深信服科技有限公司）实习offer</p>
+                <p>&nbsp; &nbsp;2.移动端组</p>
+                <p>&nbsp; &nbsp;一等奖（1队）：4000元奖金</p>
+                <p>&nbsp; &nbsp;二等奖（1队）：2000元奖金</p>
+                <p>&nbsp; &nbsp;3.PC端组</p>
+                <p>&nbsp; &nbsp;一等奖（1队）：4000元奖金</p>
+                <p>&nbsp; &nbsp;二等奖（1队）：2000元奖金</p>
+                <p>&nbsp; &nbsp;4.“学风建设”组</p>
+                <p>&nbsp; &nbsp;一等奖（1队）：4000元奖金</p>
+                <p>&nbsp; &nbsp;二等奖（1队）：2000元奖金</p>
+            </div>
+        </div>
+            </div>
+	  </div>
+	</div><!-- row -->
+<!-- container -->
+  </section>
+   <p style="text-align: right;">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+
+      
+<!-- skills section end -->
+
+
+
+<!-- Portfolio section start -->
+<section id="C" class="about-us padding-120 bg-color">
+  <div class="container">
+	<div class="section-header text-center">
+	 	<h3>黑框框程序<br/>创意设计大赛</h3>
+<p><i>&nbsp; &nbsp; &nbsp; &nbsp;经过了一个学期多C++的学习以及自己课余时间的努力，相信大一学生们已经掌握了一些编程技能，对于“黑框框”也不再陌生。我们决定举办一个“黑框框程序创意设计大赛”，让他们一展身手。创意至上，重在参与。</i></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="images/hkk.png" alt="about image">
+		</div>
+	  </div>
+	  	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+			  <p>&nbsp; &nbsp; &nbsp; &nbsp;本比赛旨在举办高水平软件设计大赛，加强校企合作，选拔优秀作品，优秀团队，优秀人才，不断提升企业在高校的知名度和影响力。</p>
+
+		  <div id="divcss" style="position:relative; top:40px;height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+			  <p>&nbsp;&nbsp;&nbsp;&nbsp;活动简介</p>
+            <p>&nbsp; &nbsp;1.面向对象：大一学生</p>
+            <p>&nbsp; &nbsp;2.活动时间：软件文化节期间（4.12-5.9）</p>
+        <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;大赛奖品</p>
+            <p>&nbsp; &nbsp;1.cherry机械键盘（一等奖）</p>
+            <p>&nbsp; &nbsp;2.AKG发烧耳机（二等奖）</p>
+            <p>&nbsp; &nbsp;3.Bong2智能手环（三等奖）</p>
+	  </div>
+	</div><!-- row -->
+<!-- container -->
+</div>
+</div>
+</section>
+        <p style="text-align: right;">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+<!-- Portfolio section end -->
+
+
+
+<!-- Team section end -->
+<section id="D" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+	 	<h3>大数据比赛</h3>
+ <p><i> &nbsp; &nbsp; &nbsp; &nbsp;近几年，“大数据”一词越来越多地被提及，人们用它来描述和定义信息爆炸时代产生的海量数据，并命名与之相关的技术发展与创新。人们已经越来越多的意识到数据对企业的重要性，动辄达到数百TB甚至数十至数百PB规模的行业/企业大数据已远远超出了现有传统的计算技术和信息系统的处理能力，因此，寻求有效的大数据处理技术、方法和手段已经成为现实世界的迫切需求。通过这次比赛，希望参赛者对大数据对大数据的研究和处理有更深的见解和更独到的方法思路，挖掘更多大数据的人才。相信在庞大专家群体、广大参赛队伍和企业的共同努力下，大赛将发掘更多的创新成果、涌现更多的优秀人才、形成更高的企业价值。</i></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="images/rw3.png" alt="about image">
+		</div>
+	  </div>
+	  	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+	   <div style=" margin:0 auto;">
+        <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;参赛细则</p>
+            <p>&nbsp; &nbsp;1.参赛对象：主要面向对大数据管理、分析及挖掘、大数据创意等主题有兴趣的个人或团队。</p>
+            <p>&nbsp; &nbsp;2.组队规则：参赛队伍可以是单人参赛，或者自由组合（可以跨单位），个人或者团队参赛均可视情况邀请指导教师。如果是多人团队，则需指定一名队长，负责沟通事宜，并且根据要求填写报名信息完成报名。</p>
+                   <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+            <p>&nbsp; &nbsp;3.参赛要求</p>
+            <p>&nbsp; &nbsp;参赛者或参赛队伍可以同时参与多个不同的赛题</p>
+            <p>&nbsp; &nbsp;保证参赛队员报名信息准确有效,否则将被取消参赛资格及奖励</p>
+            <p>&nbsp; &nbsp;保证参赛过程中不做任何攻击平台的行为,否则将被取消参赛资格及奖励。同时，主办方保有追究相应责任的权利</p>
+            <p>&nbsp; &nbsp;其他相关规则请参见具体赛题要求</p>
+        </div>
+        <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;奖项设置</p>
+            <p>&nbsp; &nbsp;一等奖：三名，奖金1万元人民币</p>
+            <p>&nbsp; &nbsp;二等奖：六名，奖金5000元人民币</p>
+    </div>
+    </div>
+    </div>
+    </div>
+      </section>
+  <p style="text-align: right">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+<!-- Team section end -->
+
+
+<!-- Pricing section start -->
+<section id="E" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+  <h3>风筝DIY创意设计大赛</h3>
+	  <p><i>&nbsp; &nbsp; &nbsp; &nbsp;为了丰富“五早活动”的活动形式，促进华工学子课余生活的丰富，舒缓华工学子紧张的学习生活，提升青少年学生的自主创新能力，树立华工对外良好形象，软件学院特意举办这次大赛。</i></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="images/rw3.png" alt="about image">
+		</div>
+	  </div>
+	  	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+	 <div style=" margin:0 auto;">
+      <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;报名方式</p>
+          <p>&nbsp; &nbsp;1.填写传单反面报名表</p>
+          <p>&nbsp; &nbsp;2.提交电子版报名表</p>
+          <p>&nbsp; &nbsp;注：纸质版，电子版报名报均于3月28号前提交给本班素拓委员</p>
+      <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;统一比赛</p>
+          <p>&nbsp; &nbsp;所有参赛者于4月22日上午8：30 到达二饭食堂前统一进行比赛。</p>
+          <p>&nbsp; &nbsp;若因天气原因，本次比赛改在a4-205课室进行风筝制作。</p>
+      <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;比赛奖品</p>
+          <p>&nbsp; &nbsp;一等奖定制版羊城通（4张）</p>
+          <p>&nbsp; &nbsp;二等奖定制版羊城通（8张）</p>
+          <p>&nbsp; &nbsp;三等奖定制版羊城通（8张）</p>
+      </div>
+     </div>
+    </div>
+    </div>
+      </section>
+  <p style="text-align: right;">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+
+<!-- Pricing section end -->
+
+
+
+<!-- Testimonial section start -->
+<section id="F" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+  <h2 style="color:black">棋王争霸赛</h2>
+		<p><i style="color:#808080">&nbsp; &nbsp; &nbsp; &nbsp;棋类，是人类智慧的结晶。棋类模拟古时两军对战，排兵布阵，小小棋盘，成为思维对弈的战场，寥寥数子，充满奥妙的玄机。差之毫厘，谬以千里，每一步都至关重要，都是思维的较量。棋手于棋盘上针锋相对，在棋盘下握手言和。本次棋类竞赛活动，旨在提高同学们对棋类兴趣，并锻炼同学们的思维能力，使选手在与对手的较量中获得友谊，在良性的竞争中找到棋友，为大学生活增添一抹色彩。</i></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="http://img.blog.csdn.net/20170406174456481" alt="about image">
+		</div>
+	  </div>
+	  	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+	<div style=" margin:0 auto;"> 
+
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;棋的种类</p>
+            <p>&nbsp; &nbsp;围棋，中国象棋，五子棋，军旗，跳棋</p>
+        <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;1.小组赛初赛规则</p>
+            <p>&nbsp; &nbsp;小组赛采用单循环赛制</p>
+            <p>&nbsp; &nbsp; 采用“逆时针轮转方法”进行编排,先以阿拉伯数字作为代号,代替人名进行编排。把人数按U型走向分成均等两边,如遇单数,最后一位数字补为O成为偶数。第一轮只要在U形相对队员之间划横线,即为第一轮比赛秩序。第二轮开始固定左上角1数字,其余数字均按逆时针方向移动一个位置,即为第二轮比赛秩序,以后各轮比赛秩序以此类推。遇O队数即轮空。</p>
+        <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;2.淘汰赛规则</p>
+            <p>&nbsp; &nbsp;淘汰赛根据人数选择以下赛制</p>
+            <p>&nbsp; &nbsp;赛制一：按照小组赛排名，第一名和最后一名对战，第二名和倒数第二名对战，以此类推。并依次分到两边进行比赛。</p>
+            <p>&nbsp; &nbsp;赛制二：按照小组赛排名，第一名和最后一名对战，第二名和倒数第二名对战，以此类推。</p>
+        <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp; 3.跳棋赛制</p>
+            <p>&nbsp; &nbsp;跳棋采用双败淘汰赛制</p>
+            <p>&nbsp; &nbsp;首先随机分配所有选手，6人为一小组，（剩下未满6人则偶数为一小组）进行跳棋比赛。每小组前3名完成比赛的选手进如下一轮（胜者组），后3名落入败者组。</p>
+            <p>&nbsp; &nbsp;落入败者组的选手重新分配进行比赛，前三名完成的选手晋级败者组下一轮，后三名则被直接淘汰。晋级胜者组第二轮的选手，前3名完成的选手进入下一轮。后三名落入败者组与第一轮败者组前三名选手对决。</p>
+            <p>&nbsp; &nbsp;根据报名人数，直到淘汰到剩下6人为止，决出最后1-6名。</p>
+        </div>		
+      </div>
+
+	</div><!-- container -->
+    </div>
+      </section>
+  <p style="text-align: right;">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+
+
+
+
+<!-- Blog section start -->
+<section id="G" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+ <h2>千寻摄影大赛</h2>
+	  <p><i> &nbsp; &nbsp; &nbsp; &nbsp;随着电脑技术的高速发展，我们可以足不出户的就能完成许多事情，但正如“读万卷书不如行万里路”，只有走出去我们才能看到生活中的美，才能去享受我们的人生，本次摄影大赛希望学生能走出去拍摄风景，去看看我们身边的美丽，展现我们的青春风采，用相片记录我们生活的最美瞬间。</i></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="images/rw3.png" alt="about image">
+		</div>
+	  </div>
+	  	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+	 <div style=" margin:0 auto;">
+      <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;活动内容</p>
+          <p>&nbsp; &nbsp;拍摄美丽校园风景，记录美丽生活瞬间</p>
+      <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;活动中的注意事项及应急方案</p>
+          <p>&nbsp; &nbsp;1.本次比赛为网络征集作品，彩色、黑白数字作品均可参赛，请保留原始正片、负片或数字作品原始文件，以便获奖作品可以发表。</p>
+          <p>&nbsp; &nbsp;2.谢绝提供电脑创意或改变原始影像的作品，即参赛照片仅可做亮度、对比度、色彩饱和度的适度调整，不得做合成、添加、大幅度改变色彩等技术处理。</p>
+          <p>&nbsp; &nbsp;3.上传作品请附上基本的个人信息（班级，姓名），也可在作品上用文字附上自己作品的主题以及50字以内的介绍，凡参赛作品必须具有真实性，不得剽窃他人作品。</p>
+          <p>&nbsp; &nbsp;4.作品内容以华南理工大学校内风景照为主，不可以人为主，作品思想健康，内容积极向上。</p>
+          <p>&nbsp; &nbsp;5.作品可以是单照也可以是组照，组照相片在5张以下，照片要求清晰，手机拍摄照片在200万以上像素，若以组照上传，尽量保持作品的规格等一致。</p>
+      </div>
+      <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;奖品设置</p>
+          <p>&nbsp; &nbsp;一等奖一名（第1名）：价值600元的拍立得相机1个</p>
+          <p>&nbsp; &nbsp;二等奖三名（第2～4名）：价值100元的小米运动手环+价值200元的广州购书中心购书卡</p>
+          <p>&nbsp; &nbsp;三等奖（5～10名）：价值100元的小米运动手环+价值100元的购书卡</p>
+          <p>&nbsp; &nbsp;前50名均可获得价值50元由宣传部特别定制的羊城通1个</p>
+          <p>&nbsp; &nbsp;设一份班级组织奖，报名人数最多的班级将有团体分作为奖励，获得班级优秀奖的班级将获得班费200元</p>
+          <p>&nbsp; &nbsp;所有报名参加比赛的同学均可获得纪念版环保材质笔记本，笔记本有宣传部设计定制</p>
+          <p>&nbsp; &nbsp;设置人气投票环节，微信投票统计票数最多的前三位同学可获得价值50元的镜头马克杯</p>
+          <p>&nbsp; &nbsp;参加的学生均可获得0.5的德育分</p>
+      </div>
+    </div>
+    </div>
+    </div>
+      </section>
+  <p style="text-align: right">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+
+<!-- Blog section end -->
+
+    <!-- Pricing section start -->
+   <section id="H">
+  <div class="container">
+	<div class="section-header text-center">
+	 	<h3>球类嘉年华</h3>
+<p><i>&nbsp; &nbsp; &nbsp; &nbsp;当前，我国大学生的身体素质亟待增强。针对大学生沉迷网络而忽略人际交往以及体育锻炼而导致的“社交恐惧症”和身体素质每况愈下等问题。我院推出新的大型体育活动—球类嘉年华</i></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="http://img.blog.csdn.net/20170406172800497" alt="about image">
+		  <img src="http://img.blog.csdn.net/20170406173000722" alt="about image">
+		</div>
+	  </div>
+	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+			 <div style=" margin:0 auto;">
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;活动内容</p>
+                <p>&nbsp; &nbsp;以班级为单位的院内足球、羽毛球、乒乓球、毽球比赛</p>
+            </div>
+            
+            <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;奖励办法</p>
+                <p>&nbsp; &nbsp;1、足球赛</p>
+                <p>&nbsp; &nbsp;比赛取前三名给予奖励，另设最佳射手、最佳中场、最佳后卫、最佳门将给予奖励</p>
+                <p>&nbsp; &nbsp;团体积分:</p>
+                <p>&nbsp; &nbsp;获得团体第1名的班级积15分</p>
+                <p>&nbsp; &nbsp;获得团体第2名的班级积12分</p>
+                <p>&nbsp; &nbsp;获得团体第3名的班级积9分</p>
+                <p>&nbsp; &nbsp;获得团体第4名的班级积6分</p>
+                <p>&nbsp; &nbsp;获得团体第5-8名的班级积3分</p>
+                <p>&nbsp; &nbsp;获得团体第9-11名的班级积1分</p>
+                <p>&nbsp; &nbsp;2、羽毛球赛</p>
+                <p>&nbsp; &nbsp;比赛取前三名，及男单、女单、男双、混双个人总积分前三名给予奖励</p>
+                <p>&nbsp; &nbsp;团体积分:</p>
+                <p>&nbsp; &nbsp;获得团体第1名的班级积15分</p>
+                <p>&nbsp; &nbsp;获得团体第2名的班级积12分</p>
+                <p>&nbsp; &nbsp;获得团体第3名的班级积9分</p>
+                <p>&nbsp; &nbsp;获得团体第4-6名的班级积6分</p>
+                <p>&nbsp; &nbsp;获得团体第7-9名的班级积3分</p>
+                <p>&nbsp; &nbsp;3、乒乓球赛</p>
+                <p>&nbsp; &nbsp;比赛取前三名，及男单、女单、男双、混双个人总积分前三名给予奖励</p>
+                <p>&nbsp; &nbsp;团体积分:</p>
+                <p>&nbsp; &nbsp;获得团体第1名的班级积15分</p>
+                <p>&nbsp; &nbsp;获得团体第2名的班级积12分</p>
+                <p>&nbsp; &nbsp;获得团体第3名的班级积9分</p>
+                <p>&nbsp; &nbsp;获得团体第4-6名的班级积6分</p>
+                <p>&nbsp; &nbsp;获得团体第7-9名的班级积3分</p>
+                <p>&nbsp; &nbsp;获得团体第10-12名的班级积3分</p>
+                <p>&nbsp; &nbsp;4、毽球比赛</p>
+                <p>&nbsp; &nbsp;比赛取前三名给予奖励</p>
+                <p>&nbsp; &nbsp;团体积分:</p>
+                <p>&nbsp; &nbsp;获得团体第1名的班级积15分</p>
+                <p>&nbsp; &nbsp;获得团体第2名的班级积12分</p>
+                <p>&nbsp; &nbsp;获得团体第3名的班级积9分</p>
+                <p>&nbsp; &nbsp;获得团体第4-8名的班级积6分</p>
+                <p>&nbsp; &nbsp;获得团体第9-14名的班级积3分</p>
+                <p>&nbsp; &nbsp;获得团体第15-28名的班级积1分</p>
+
+            </div>
+        </div>
+            </div>
+	  </div>
+	</div><!-- row -->
+  </div><!-- container -->
+  </section>
+  <p style="text-align: right">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+    <!-- Pricing section end -->
+
+
+    <!-- Pricing section start -->
+<section id="I" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+	  <h3>团支部风采秀</h3>
+ <p><i>&nbsp; &nbsp; &nbsp; &nbsp;四月春意阑珊，花开遍地，在这静好的岁月里自然一吐芳华，有道是“绿杨烟外晓寒轻，红杏枝头春意闹”，华工校园也是遍地春光。在这生机盎然的四月，华工学子也都精神焕发，在不同的场合展现着自己独特的风采。各团支部怀着“上九天揽月，下五洋捉鳖”的豪迈气概，在不同团体比赛中各领风骚。顾往昔，盼来日，让我们以万丈豪情迎接这绚烂的四月，拥抱春天！</i></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="images/rw3.png" alt="about image">
+		</div>
+	  </div>
+	  	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+	<div style=" margin:0 auto;">
+            <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+                            <div style="font-weight: bold">
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;活动介绍</p>
+                <p>&nbsp; &nbsp;本次“活力支部，从心起航”团支部风采秀活动主要包含三个活动：“飞花令”、“建筑大赛”和PPT展示。参加对象为15级和16级的各个团支部。每次活动结束后根据名次对每支参赛队伍进行累计积分。三个活动结束后根据积分高低决出“最具风采团支部”。</p>
+                <p>&nbsp; &nbsp;本次活动之前采取微信投票的宣传方式</p>
+            <div id="divcss" style="position:relative; top:40px; height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1"></div>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;投票要求</p>
+                <p>&nbsp; &nbsp;（1）支部简介：字数为30至50字，要求内容健康、积极向上</p>
+                <p>&nbsp; &nbsp;（2）支部合照：照片清晰，可以是支部活动合照，也可以是日常风采照片展示。</p>
+                <p>&nbsp; &nbsp;（3）支部口号：提供一句简洁大方的口号作为本班的宣传标语。</p>
+                <p>&nbsp; &nbsp;（4）展示方式：在4月12日之前将支部合照及简介发给组织部干事，4月14日会在软件学院公众号的推送中展开投票，届时团支书组织本班同学进行投票。</p>
+                <p>&nbsp; &nbsp;（5）评选方式：投票时间截止后，由工作人员统计各支部所得票数，各支部票数都将计入总分。投票评比将占最终得分的20%，投票结果将在公众号上进行第一时间的公告。</p>
+             </div>
+             </div>
+        </div>
+    </div>
+    </div>
+      </section>
+<p style="text-align: right">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+    <!-- Pricing section end -->
+<section id="PP" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+	  <h3>"P&P的魔力" Photoshop、Premiere培训讲座</h3>
+              想要实现Photoshop的快速入门√<br/>
+而又不知从何学起？<br/>
+想要用Premiere制作创意视频√<br/>
+而又感觉能力有限？<br/>
+4月8号星期六19:00(第一期)<br/>
+我们在A4-201等着你<br/>
+新媒体中心&宣传部强强合作<br/>
+一场面向全校的培训讲座<br/>
+带你领略“P&P”的魔力~<br/>
+还有抽奖环节和讲座票喔~<br/>
+快到碗里来～<br/>
+<a href='http://mp.weixin.qq.com/s/s-QhJMkOYYSBrMcz_gT7tQ' target="_blank" style="color: red">详情请点击最新推送</a><br/>
+<strong style="font-size: 20px">更多精彩敬请关注软院iSoftware官方公众号(网页最后有二维码噢)</strong></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="http://img.blog.csdn.net/20170406173135754" alt="about image">
+		</div>
+	  </div>
+	  	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative; top:40px;height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+	<div style=" margin:0 auto;">
+              <img src="http://img.blog.csdn.net/20170406175924585">
+              </div>
+             </div>
+        </div>
+    </div>
+    </div>
+      </section>
+      <p style="text-align: right">
+  <a href="#index" title="回到顶端">
+  		 <img src="./images/to-top4.png" >
+  		 </a>
+  		  	</p>
+
+
+<section id="J" class="about-us padding-120">
+  <div class="container">
+	<div class="section-header text-center">
+	  <h3>第十届、第十一届软件文化节微回顾</h3>
+	  <a href='https://mp.weixin.qq.com/s/Nr5OwqKwsLokGnp7zPn_fg' target="_blank"style="color: red">【第十届软件文化节】优秀成果展</a><br/>
+	  <a href='https://mp.weixin.qq.com/s/IM9b8Nbj9l5v0LJLAhYQow' target="_blank" style="color: red">【第十届软件文化节】“三星Galaxy”杯手机软件设计大赛</a><br/>
+	   <a href='https://mp.weixin.qq.com/s/WlUFQ28baN-UAMhEMW0XsQ'  target="_blank" style="color: red">【第十届软件文化节】第二届“深信服杯”软件设计大赛</a><br/>
+<a href='https://mp.weixin.qq.com/s/v4LQWOSsd7NyWsECLIaoGQ' target="_blank" style="color: red">【第十届软件文化节】在实践中稳步迈进——记“卓越工程”学风建设创意作品比赛</a><br/>
+<a href='https://mp.weixin.qq.com/s/UxyVIi0rWWjTP5rFVXNBxw'target="_blank"  style="color: red">【第十届软件文化节】“鸣月信步”杯手机网页应用设计大赛</a><br/>
+<a href='https://mp.weixin.qq.com/s/F0CXRU7qSCGBLScaEVsQBQ'target="_blank"  style="color: red">【第十届软件文化节】团支部风采秀，青春永不止步</a><br/>
+<a href='https://mp.weixin.qq.com/s/aHjL7XuYin9xmuuYYCiqzw' target="_blank" style="color: red">【第十一届软件文化节】团支部风采秀，秀出支部风采！</a><br/>
+<a href='https://mp.weixin.qq.com/s/36zNeHQb-ZRb3f35IKTzIA' target="_blank" style="color: red">【第十一届软件文化节】“安信证券杯”ACM程序设计大赛</a><br/>
+<a href='https://mp.weixin.qq.com/s/nNHIy8O7MXuvEGZOtjNJDw' target="_blank" style="color: red">【第十一届软件文化节】第一期学生发展论坛完美落幕</a><br/>
+
+<a href='https://mp.weixin.qq.com/s/pvHSGNXJi6XJd8yaOOuVMA' target="_blank" style="color: red">
+【第十一届软件文化节】优秀成果展</a><br/>
+<strong style="font-size: 20px">更多精彩敬请关注软院iSoftware官方公众号(网页最后有二维码噢)</strong></p>
+		<a id="divcss" style="padding: .2em 0;width: 98%;display: block;border-bottom: 1px solid #696969"></a>
+	</div>
+	<div class="row">
+	  <div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="about-image">
+		  <img src="http://img.blog.csdn.net/20170406174331846" alt="about image">
+		</div>
+	  </div>
+	  	  <div class="col-md-6 col-sm-12 col-xs-12"><div id="divcss" style="position:relative;height:auto;color:#299ccc;font-size:25px;display: block;border-bottom: 1px solid #e1e1e1">
+	<div style=" margin:0 auto;">
+              <img src="http://img.blog.csdn.net/20170406174353549">
+              </div>
+             </div>
+        </div>
+    </div>
+    </div>
+      </section>
+      <p style="text-align: center;">
+       <img src="http://img.blog.csdn.net/20170406173754007">
+       <br/>
+       <img src="http://img.blog.csdn.net/20170406174409324">
+       </p>
+       </div>
+<footer>
+  <div class="container">
+	<div class="row">
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<p>2017 © 华南理工大学软件学院团委学生会 </p>
+			<p><span style="color: #FFFFFF;line-height:10px">[版权所有] 软件学院新媒体中心 </span><br>
+		</div>
+		<a class="page-scroll scroll-top" href="#index"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+	</div><!-- row -->
+  </div><!-- container -->
+</footer>
+
+
+
+<!-- jQuery -->
+<script src="assets/js/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="assets/js/bootstrap.min.js"></script>
+
+<!-- Easing -->
+<script src="assets/js/jquery.easing.min.js"></script>
+
+<!-- Isotop -->
+<script src="assets/js/isotope.pkgd.min.js"></script>
+
+<!-- Lightcase -->
+<script src="assets/js/lightcase.js"></script>
+
+<!-- Swiper -->
+<script src="assets/js/swiper.jquery.min.js"></script>
+
+<!-- WOW js -->
+<script src="assets/js/wow.min.js"></script>
+
+
+<!-- Custom -->
+<script src="assets/js/custom.js"></script>
+</body>
+</html>
