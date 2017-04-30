@@ -4,8 +4,170 @@
   
     
     <entry>
+      <title><![CDATA[基于Node.js框架和Express/socket.io的动态即时聊天系统(下)]]></title>
+      <url>http://yikunhaocong.com/2017/04/30/node-js-chat2/</url>
+      <content type="html"><![CDATA[<h2 id="总结一下开发中的问题-amp-解决方法-接上一篇博文"><a href="#总结一下开发中的问题-amp-解决方法-接上一篇博文" class="headerlink" title="总结一下开发中的问题&amp;解决方法(接上一篇博文)"></a>总结一下开发中的问题&amp;解决方法(接上一篇博文)</h2><h3 id="第一个是多个界面的切换"><a href="#第一个是多个界面的切换" class="headerlink" title="第一个是多个界面的切换"></a>第一个是多个界面的切换</h3><blockquote>
+<p>解决方法很粗暴，直接用display:”none”和display:”block”实现动态切换与隐藏，不过多个界面的切换逻辑要先理清楚，由于我的这个页面比较简单，通过这种方式实现是最简单的切换(无需费时)，建议是把各类界面的切换函数封装起来，以便于减少代码量和方便使用。比如我4个界面只需要用下面简短的四个函数就可以实现<br><a href="http://op72m4y17.bkt.clouddn.com/44.png" target="_blank" rel="external"></a></p>
+</blockquote>
+<h3 id="第二个是加密-解密的实现"><a href="#第二个是加密-解密的实现" class="headerlink" title="第二个是加密/解密的实现"></a>第二个是加密/解密的实现</h3><blockquote>
+<p>通常node.js里面可以直接require(‘crypto’)模块来直接使用加密api,但如果要嵌入网页的话，采取”script”标签方式是无法使用require方法的，除非你先导入require.js(先去搜索再下载)，再进行一下各种配置，但我不建议采用这种方法。我的解决方法是找到crypto对应的网页js包–CryptoJS，然后把需要用到的js文件导入(可能有不同依赖，需要先确认好再完整导入)，然后就可以在chat.js里面调用函数或重载一下使加密/解密过程得以在通讯中实现。<br>特别要记得按顺序导入如下图，否则加密过程中会出现Parse、Cipher创建等一系列未知的错误。<br><img src="http://op72m4y17.bkt.clouddn.com/22.png" alt="按这个顺序导入"></p>
+<ul>
+<li>这里友情提供CrytoJS包下载链接<a href="https://code.google.com/archive/p/crypto-js/downloads" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/downloads</a>，具体怎么用请看谷歌教程<a href="https://code.google.com/archive/p/crypto-js/" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/</a></li>
+</ul>
+</blockquote>
+<h3 id="第三个是音乐库的导入"><a href="#第三个是音乐库的导入" class="headerlink" title="第三个是音乐库的导入"></a>第三个是音乐库的导入</h3><blockquote>
+<p>我在前面说了我是直接找到网易云音乐的外链播放器的id嵌入到网页的，这种方法很麻烦(需要自己去找对应的歌曲id再放进去)，刚开始我是写了一个python爬虫爬取id但失败了(可能是cookie认证或者网站的反爬虫机制绕不过，但我没有过多尝试，但我觉得真正要实现应该不难(需要研究一下，就比如之前模拟登录爬取数据一样，一定会有方法可以实现)，所以我会考虑在下一个版本中实现这种方法，我最想做的事就是跨语言开发，利用自己比较熟悉python的优势以及python在数据方面处理的优秀能力与node.js结合，一定会有很强大的威力。<br>至于python如何嵌入到node.js,很简单，用node.js开个新进程，运行py文件，然后以控制台输入输出的形式来获取python文件运行后的数据，实现两种语言的交互。<br><img src="http://op72m4y17.bkt.clouddn.com/4.png" alt="暂时导入网易云音乐的静态接口，下一个迭代版本将采用python爬虫+node.js搜索导入url接口"></p>
+</blockquote>
+<h3 id="第四个是管理员广播音乐的轮换"><a href="#第四个是管理员广播音乐的轮换" class="headerlink" title="第四个是管理员广播音乐的轮换"></a>第四个是管理员广播音乐的轮换</h3><blockquote>
+<p>最终想了个差强人意的解决方法，利用socket.emit(‘text’,from,msg)发送信息的过程来顺便进行音乐广播，当前管理员点歌之后，再发一条信息就能将这首歌广播出去(其他用户将同时在这个时刻播放与管理员相同的曲目)。在新用户连接进来时，会直接播放当前已点的歌曲(但手机浏览器是切换到了这首歌，但要不要播放取决于用户)。当管理员断开连接后，新加入的用户会变成新的音乐管理员(dj)，然后可以进行歌曲的广播(点歌动作发生后)。在这整个过程中，如果管理员没有点歌的话，用户是可以随时选择听自己喜欢的歌曲。<br><img src="http://op72m4y17.bkt.clouddn.com/2.png" alt=""></p>
+<h3 id="还有清屏、解密转换等小问题就不赘言了"><a href="#还有清屏、解密转换等小问题就不赘言了" class="headerlink" title="还有清屏、解密转换等小问题就不赘言了"></a>还有清屏、解密转换等小问题就不赘言了</h3></blockquote>
+<h2 id="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"><a href="#最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口" class="headerlink" title="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"></a>最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口</h2><p><img src="http://op72m4y17.bkt.clouddn.com/tcp.png" alt="代码目录"></p>
+<blockquote>
+<p>不需要导入任何模块，聊天效果图如下<br>通过telnet连接到服务器<br><img src="http://op72m4y17.bkt.clouddn.com/tcp1.png" alt=""><br>以冒号隔开用户名和加密秘钥(这里采取括号形式结束输入)由于telnet传输是立刻传输的，所以这里需要有个结束符号’)’<br><img src="http://op72m4y17.bkt.clouddn.com/tcp2.png" alt=""><br>可以看到输入的三句英文都以Aes-128-cbc加密后的字符串输出，其它用户用(*密码)的形式可以对具有这个密码的所有用户所发的信息进行解密！<br><img src="http://op72m4y17.bkt.clouddn.com/tcp3.png" alt=""><br>自定义服务器后台监控&amp;输出<br><img src="http://op72m4y17.bkt.clouddn.com/tcp4.png" alt="后台监控&amp;输出"></p>
+</blockquote>
+<h3 id="加密模块"><a href="#加密模块" class="headerlink" title="加密模块"></a>加密模块</h3><blockquote>
+<p>分享一下加密模块代码,总共16行，很简短，加密向量默认为iv=’5683022032017422’<br><img src="http://op72m4y17.bkt.clouddn.com/jm.png" alt="Aes-128-cbc加密代码"></p>
+</blockquote>
+<ul>
+<li>Tcp_chat服务器代码就不分享了，比较简单，主要用了net模块(比http模块更底层的网络模块)，代码里大部分是自定义的服务器后端监控&amp;输出(代码量超过基于socket.io的聊天网页)，可见socket.io模块的强大。</li>
+</ul>
+<blockquote>
+<p>《基于Node.js框架和Express/socket.io的动态即时聊天系统》这两篇博文仅用于分享开发经验和整理node.js笔记，该项目已开源至<a href="https://github.com/Kali-Hac/node_js_chat" target="_blank" rel="external">我的github/node_js_chat项目</a>，有需要可以查阅代码。另：有任何问题的小伙伴可以在评论区留言，我会尽量解答或订正。<br><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> 作者:Hac </category>
+            
+            <category> Node.js实战笔记 </category>
+            
+            <category> Node.js网络通讯后台的搭建 </category>
+            
+            <category> Telnet网络通讯后台的搭建 </category>
+            
+            <category> JavaScript聊天动态界面的构建 </category>
+            
+            <category> crypto加密模块的网页嵌入(CryptoJS) </category>
+            
+            <category> 1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播的后台实现 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> socket.io </tag>
+            
+            <tag> express </tag>
+            
+            <tag> CryptoJS </tag>
+            
+            <tag> HTTP/WebSocket </tag>
+            
+            <tag> Aes-128-cbc对称加密 </tag>
+            
+            <tag> 在线聊天/点歌系统 </tag>
+            
+            <tag> 通讯加密的应用 </tag>
+            
+            <tag> 底层TCP即时通讯 </tag>
+            
+            <tag> Telnet </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[基于Node.js框架和Express/socket.io的动态即时聊天系统(上)]]></title>
+      <url>http://yikunhaocong.com/2017/04/30/node-js-chat/</url>
+      <content type="html"><![CDATA[<h2 id="我的Node-js后台实战笔记，前言-amp-分享"><a href="#我的Node-js后台实战笔记，前言-amp-分享" class="headerlink" title="我的Node.js后台实战笔记，前言&amp;分享"></a>我的Node.js后台实战笔记，前言&amp;分享</h2><blockquote>
+<p>这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播，在这里先强力推荐Guillermo Rauch写的一本书《了不起的Node.js -将JavaScript进行到底》，适合后台新手，抵得过《Node.js for PHP developer》+ 《JavaScript for PHP developer》(这两本书其中一本是一天看完的，可能比较基础，收获较少)。<br>    本次开发是在Guillermo Rauch实战教程的基础上写的，但更多的是自己的探索与实践，例如作者推荐的音乐API Grooveshark无法使用，所以自己导入曲库，之后会继续尝试python爬虫+node.js搜索导入音乐url接口(python和js的优势互补是我最想实现的)；还有聊天加密功能，原实例并没有使用crypto加密模块，为了将加密进行到底，我尝试将CryptoJS嵌入网页并结合后台实现了随时加密解密的传输；对于前端，原实例采用非常简单的空白页面，而我自己构建了一个动态页面(结合bootstrap),并实现了所有前后接口的对接。</p>
+<ul>
+<li>本博文只简要讲解实现过程，但会对一些比较坑的bug进行具体解释，本项目相应源码将会开源分享到我的github上<a href="https://github.com/Kali-Hac/node_js_chat" target="_blank" rel="external">https://github.com/Kali-Hac/node_js_chat</a>，移动端代码会有所不同，有任何问题或建议可以在后面留言，我会尽量解答和订正。</li>
+</ul>
+</blockquote>
+<h2 id="聊天页面效果图"><a href="#聊天页面效果图" class="headerlink" title="聊天页面效果图"></a>聊天页面效果图</h2><h3 id="基本功能：多人同时聊天"><a href="#基本功能：多人同时聊天" class="headerlink" title="基本功能：多人同时聊天"></a>基本功能：多人同时聊天</h3><p><img src="http://op72m4y17.bkt.clouddn.com/1.png" alt="基本功能：多人同时聊天"><br><img src="http://op72m4y17.bkt.clouddn.com/2.png" alt=""></p>
+<h3 id="密文-点歌-返回-清屏-简约的菜单"><a href="#密文-点歌-返回-清屏-简约的菜单" class="headerlink" title="密文/点歌/返回/清屏 简约的菜单"></a>密文/点歌/返回/清屏 简约的菜单</h3><p><img src="http://op72m4y17.bkt.clouddn.com/3.png" alt="密文/点歌/返回/清屏 简约的菜单"></p>
+<h3 id="暂时导入网易云音乐的静态接口"><a href="#暂时导入网易云音乐的静态接口" class="headerlink" title="暂时导入网易云音乐的静态接口"></a>暂时导入网易云音乐的静态接口</h3><blockquote>
+<p>暂时导入网易云音乐的静态接口，下一个迭代版本将采用python爬虫+node.js搜索导入url接口<br><img src="http://op72m4y17.bkt.clouddn.com/4.png" alt="暂时导入网易云音乐的静态接口，下一个迭代版本将采用python爬虫+node.js搜索导入url接口"></p>
+<h3 id="加密页面-Aes-128-cbc"><a href="#加密页面-Aes-128-cbc" class="headerlink" title="加密页面,Aes-128-cbc"></a>加密页面,Aes-128-cbc</h3><p>加密页面，设置16位以内的key，而Aes-128-cbc的iv向量值已给定，为5683022032017430(自己指定)<br><img src="http://op72m4y17.bkt.clouddn.com/5.png" alt="加密页面，设置16位以内的key，而Aes-128-cbc的iv向量值已给定，为5683022032017430(自己指定)"><br><img src="http://op72m4y17.bkt.clouddn.com/6.png" alt=""></p>
+<h3 id="设置加密效果"><a href="#设置加密效果" class="headerlink" title="设置加密效果"></a>设置加密效果</h3><p>其它聊天者看到的将会是加密后的密文字符串<br><img src="http://op72m4y17.bkt.clouddn.com/7.png" alt="设置加密后，其它聊天者看到的将会是加密后的密文字符串"><br><img src="http://op72m4y17.bkt.clouddn.com/7.5.png" alt=""></p>
+<h3 id="需要加密方告知秘钥才能对内容进行解密，如图："><a href="#需要加密方告知秘钥才能对内容进行解密，如图：" class="headerlink" title="需要加密方告知秘钥才能对内容进行解密，如图："></a>需要加密方告知秘钥才能对内容进行解密，如图：</h3><p><img src="http://op72m4y17.bkt.clouddn.com/8.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/9.png" alt=""></p>
+<h3 id="广播音乐功能"><a href="#广播音乐功能" class="headerlink" title="广播音乐功能"></a>广播音乐功能</h3><p>广播点歌采取dj轮流制，当前dj退出后则选举下一个新进的客户作为新dj，点歌后其他所有用户将会听同一首歌(也可以个人在收到广播后另选歌)<br><img src="http://op72m4y17.bkt.clouddn.com/10.png" alt="广播点歌采取dj轮流制，当前dj退出后则选举下一个新进的客户作为新dj，点歌后其他所有用户将会听同一首歌(也可以个人在收到广播后另选歌)"></p>
+</blockquote>
+<h2 id="我是如何在数天内写出这个聊天系统的？"><a href="#我是如何在数天内写出这个聊天系统的？" class="headerlink" title="我是如何在数天内写出这个聊天系统的？"></a>我是如何在数天内写出这个聊天系统的？</h2><h3 id="前端-后端代码文件一览"><a href="#前端-后端代码文件一览" class="headerlink" title="前端/后端代码文件一览"></a>前端/后端代码文件一览</h3><p><img src="http://op72m4y17.bkt.clouddn.com/11.png" alt="VScode文件目录"></p>
+<blockquote>
+<p>其中，aes.js/cipher-core.js/core.js/enc-base64.js/lib-typedarrays.js这几个js文件是为了实现页面的aes加密的CrytoJS包，相当于Node.js里面的crypto模块。<br>特别要记得按顺序导入如下图，否则加密过程中会出现Parse、Cipher创建等一系列未知的错误。<br><img src="http://op72m4y17.bkt.clouddn.com/22.png" alt="按这个顺序导入"></p>
+<ul>
+<li>这里友情提供CrytoJS包下载链接<a href="https://code.google.com/archive/p/crypto-js/downloads" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/downloads</a>，具体怎么用请看谷歌教程<a href="https://code.google.com/archive/p/crypto-js/" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/</a></li>
+</ul>
+<p>add_songs.js/inner.js用于动态加载页面(我的index.html代码量很少，都封装在js里面了，这有利于代码维护)。<br>chat.js就是很重要的客户端文件啦，用于与服务器server.js进行交互的页面js，基本很多功能都在里面实现。</p>
+</blockquote>
+<ul>
+<li>还有package.json中需要安装的npm包(node_modules)，就两个<br><img src="http://op72m4y17.bkt.clouddn.com/33.png" alt="express和socket.io"><br>socket.io是Guillermo Rauch自己写的一个WebSocket重构接口包，非常方便，在这里要膜一下，感觉这个模块很棒</li>
+</ul>
+<h3 id="后台服务器Server-js代码一览"><a href="#后台服务器Server-js代码一览" class="headerlink" title="后台服务器Server.js代码一览"></a>后台服务器Server.js代码一览</h3><blockquote>
+<p>代码非常简单，node.js50-60行已经足以构建一个稳健的服务器了，虽然是单线程的，但有很高效的异步轮询制，对比于传统的php文件+Apache/ngix服务器软件，个人更喜欢node.js<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">var express = require(&apos;express&apos;);</div><div class="line">var sio = require(&apos;socket.io&apos;);</div><div class="line">app = express.createServer(</div><div class="line">    express.static(&apos;public&apos;),</div><div class="line">    express.bodyParser()</div><div class="line">);</div><div class="line">app.listen(3000);</div><div class="line">//把socket.io绑定app服务端，使用封装接口</div><div class="line">var io = sio.listen(app);</div><div class="line">//歌曲用id号识别，现在这首歌是陈奕迅的“你给我听好”</div><div class="line">var cnt = 0,</div><div class="line">    dj, currentsong = &apos;28481103&apos;;</div><div class="line">//选举dj的函数，当前可以广播歌曲的用户离开后，权限交给下一个连接进来的用户</div><div class="line">function elect(socket) &#123;</div><div class="line">    dj = socket;</div><div class="line">    io.sockets.emit(&apos;annoucement&apos;, socket.nickname + &apos; is the new dj&apos;);</div><div class="line">    socket.emit(&apos;elected&apos;);</div><div class="line">    socket.dj = true;</div><div class="line">    socket.on(&apos;disconnect&apos;, function () &#123;</div><div class="line">        dj = null;</div><div class="line">        io.sockets.emit(&apos;annoucement&apos;, &apos;the dj left - next one to join becomes dj&apos;);</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line">io.sockets.on(&apos;connection&apos;, function (socket) &#123;</div><div class="line">    console.log(&apos;someone connected&apos;);</div><div class="line">    //用flag判断第一次系统提示</div><div class="line">    if (!socket.flag) &#123;</div><div class="line">        socket.emit(&apos;text&apos;, &apos;系统&apos;, &apos;欢迎进入Hac聊天室v2.0~ \n目前支持的功能有：1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播&apos;);</div><div class="line">        // 目前支持的功能有：1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播</div><div class="line">        socket.emit(&apos;text&apos;, &apos;系统&apos;, &apos;当前在线聊天的人数为：&apos; + cnt);</div><div class="line">        if (dj) &#123;</div><div class="line">            socket.emit(&apos;text&apos;, &apos;系统&apos;, &apos;可以广播音乐的是：&apos; + dj.nickname);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    socket.flag = true;</div><div class="line">    //监听新用户的连接，并自动点歌</div><div class="line">    socket.on(&apos;join&apos;, function (name) &#123;</div><div class="line">        socket.nickname = name;</div><div class="line">        cnt++;</div><div class="line">        if (!dj) &#123;</div><div class="line">            elect(socket);</div><div class="line">        &#125; else &#123;</div><div class="line">            socket.emit(&apos;song&apos;, currentsong);</div><div class="line">        &#125;</div><div class="line">        socket.broadcast.emit(&apos;announcement&apos;, name + &apos; joined the chat.&apos;);</div><div class="line">    &#125;);</div><div class="line">    //接听其他用户发的消息</div><div class="line">    socket.on(&apos;text&apos;, function (msg) &#123;</div><div class="line">        socket.broadcast.emit(&apos;text&apos;, socket.nickname, msg);</div><div class="line">    &#125;);</div><div class="line">    socket.on(&apos;disconnect&apos;, function () &#123;</div><div class="line">        cnt--;</div><div class="line">        socket.dj = false;</div><div class="line">        dj = null;</div><div class="line">    &#125;);</div><div class="line">    //接听管理员广播的音乐</div><div class="line">    socket.on(&apos;song&apos;, function (id) &#123;</div><div class="line">        if (socket.dj) &#123;</div><div class="line">            currentsong = id;</div><div class="line">            socket.broadcast.emit(&apos;song&apos;, id);</div><div class="line">        &#125; else &#123;</div><div class="line">            socket.emit(&apos;text&apos;, &apos;系统&apos;, &apos;当前管理电台的用户是：&apos; + dj.nickname + &apos;\n您暂时只能本地点歌播放&apos;);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>可以看一下我的服务器后台输出<br><img src="http://op72m4y17.bkt.clouddn.com/66666.png" alt="后台测试输出"><br><img src="http://op72m4y17.bkt.clouddn.com/666.png" alt="后台测试输出"></p>
+<h3 id="客户端chat-js代码一览"><a href="#客户端chat-js代码一览" class="headerlink" title="客户端chat.js代码一览"></a>客户端chat.js代码一览</h3><p>Guillermo Rauch写的socket.io具有非常强大的特性：</p>
+<ul>
+<li>1.消息传递是基于传输的，而非全部依靠WebSocket,从IE6到IOS都支持，而且会自动使用像long polling这样复杂的技术，但api保持了与websoket一样的简洁，即使浏览器支持的WebSocket被代理或防火墙禁止了，Socket.io依然能够通过采用别的技术来处理这类问题</li>
+<li>2.对超时的支持，无需过多担心网络的各种不确定情况，当连接丢失时，socket.io默认会自动重连</li>
+<li>3.允许在单个连接中利用命名空间来将消息彼此区分开来，利用多路传输使得socket不必非得是自己分配的真正的TCP socket<br>以上几点就是我为什么膜Guillermo Rauch的原因了，以后的博文里可能还会介绍Guillermo Rauch写的更多的优秀的项目，在未来我也立志写出这样的可以给大家共享的好模块！<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div></pre></td><td class="code"><pre><div class="line">   var sig_flag = 0;</div><div class="line">   var current_song, key, default_key = &apos;751f621ea5c8f930&apos;;</div><div class="line">   var me;</div><div class="line">   var dj_flag = false;</div><div class="line">   var jm_flag = false;</div><div class="line"></div><div class="line"> //这里是自己根据曲库id号来编写的一个播放函数，网易云音乐有外链音乐url，但id号规则不明，后期我将尝试用python爬虫+node.js导入音乐api接口</div><div class="line">   function play(id) &#123;</div><div class="line">       var music = document.getElementById(&apos;music&apos;);</div><div class="line">       music.innerHTML = &quot;&lt;iframe frameborder=&apos;no&apos; border=&apos;0&apos; marginwidth=&apos;0&apos; marginheight=&apos;0&apos; width=&apos;330&apos; height=&apos;86&apos; src=&apos;//music.163.com/outchain/player?type=2&amp;amp;id=&quot; + id + &quot;&amp;amp;auto=1&amp;amp;height=66&apos;&gt;&lt;/iframe&gt;&quot;;</div><div class="line">       if (dj_flag) &#123;</div><div class="line">           current_song = id;</div><div class="line">           if (sig_flag === 0) &#123;</div><div class="line">               sig_flag = 1;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">//是否要加密</div><div class="line">   function jm_or_not(jm) &#123;</div><div class="line">       if (jm) &#123;</div><div class="line">           jm_flag = true;</div><div class="line">           var yourkey = document.getElementById(&apos;password&apos;).value;</div><div class="line">           key = yourkey;</div><div class="line">       &#125; else &#123;</div><div class="line">           key = null;</div><div class="line">           jm_flag = false;</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line"> //aes-128-cbc加密函数</div><div class="line">   function encrypt(mykey, word) &#123;</div><div class="line">       mykey = mykey + default_key.substring(mykey.length);</div><div class="line">       var key = CryptoJS.enc.Utf8.parse(mykey); //16位</div><div class="line">       var iv = CryptoJS.enc.Utf8.parse(&quot;5683022032017429&quot;);</div><div class="line">       var encrypted = &apos;&apos;;</div><div class="line">       if (typeof (word) == &apos;string&apos;) &#123;</div><div class="line">           var srcs = CryptoJS.enc.Utf8.parse(word);</div><div class="line">           encrypted = CryptoJS.AES.encrypt(srcs, key, &#123;</div><div class="line">               iv: iv,</div><div class="line">               mode: CryptoJS.mode.CBC,</div><div class="line">               padding: CryptoJS.pad.Pkcs7</div><div class="line">           &#125;);</div><div class="line">       &#125; else if (typeof (word) == &apos;object&apos;) &#123; //对象格式的转成json字符串</div><div class="line">           data = JSON.stringify(word);</div><div class="line">           var srcs = CryptoJS.enc.Utf8.parse(data);</div><div class="line">           encrypted = CryptoJS.AES.encrypt(srcs, key, &#123;</div><div class="line">               iv: iv,</div><div class="line">               mode: CryptoJS.mode.CBC,</div><div class="line">               padding: CryptoJS.pad.Pkcs7</div><div class="line">           &#125;)</div><div class="line">       &#125;</div><div class="line">       return encrypted.ciphertext.toString();</div><div class="line">   &#125;</div><div class="line">   // aes-128-cbc解密函数</div><div class="line">   function decrypt(other_key, word) &#123;</div><div class="line">       other_key = other_key + default_key.substring(other_key.length);</div><div class="line">       var key = CryptoJS.enc.Utf8.parse(other_key);</div><div class="line">       var iv = CryptoJS.enc.Utf8.parse(&quot;5683022032017429&quot;);</div><div class="line">       var encryptedHexStr = CryptoJS.enc.Hex.parse(word);</div><div class="line">       var srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);</div><div class="line">       var decrypt = CryptoJS.AES.decrypt(srcs, key, &#123;</div><div class="line">           iv: iv,</div><div class="line">           mode: CryptoJS.mode.CBC,</div><div class="line">           padding: CryptoJS.pad.Pkcs7</div><div class="line">       &#125;);</div><div class="line">       var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);</div><div class="line">       return decryptedStr.toString();</div><div class="line">   &#125;</div><div class="line">//加密按钮点击后响应的函数，保存用户key</div><div class="line">   function decode() &#123;</div><div class="line">       var deco_content = document.getElementById(&apos;2decode&apos;).value;</div><div class="line">       var other_key = document.getElementById(&apos;other_key&apos;).value;</div><div class="line">       var encoded = document.getElementById(&apos;encoded&apos;);</div><div class="line">       console.log(deco_content);</div><div class="line">       var test = decrypt(other_key, deco_content);</div><div class="line">       console.log(test);</div><div class="line">       encoded.innerHTML = decrypt(other_key, deco_content);</div><div class="line"></div><div class="line">   &#125;</div><div class="line">   //一开始就要加载的网络连接函数</div><div class="line">   window.onload = function () &#123;</div><div class="line">       var socket = io.connect();</div><div class="line">       me = socket;</div><div class="line">       socket.on(&apos;elected&apos;, function () &#123;</div><div class="line">           dj_flag = true;</div><div class="line">       &#125;);</div><div class="line">       socket.on(&apos;connect&apos;, function () &#123;</div><div class="line">           var name = prompt(&apos;What is your nickname?&apos;);</div><div class="line">           var currentnum = 0;</div><div class="line">           socket.emit(&apos;join&apos;, name);</div><div class="line">           document.getElementById(&apos;me&apos;).innerHTML = &quot;Your Name:&amp;nbsp;&quot; + name;</div><div class="line">           console.log(&apos;jinle&apos;);</div><div class="line">           document.getElementById(&apos;chat&apos;).style.display = &apos;block&apos;;</div><div class="line">           console.log(&apos;?&apos;);</div><div class="line">           var songs = document.getElementById(&apos;songs&apos;);</div><div class="line">           var music = document.getElementById(&apos;music&apos;);</div><div class="line">           //把歌曲添加进去，下一次版本迭代将不会采取这样的方法，因为比较麻烦(！都是陈奕迅的歌)</div><div class="line">           songs.innerHTML = &quot;&lt;li&gt;你给我听好   -陈奕迅&lt;a href=&apos;#&apos;&apos; onclick=&apos;play(28481103)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;陪你度过漫长岁月   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(35403523)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;　&lt;/li&gt;&lt;li&gt;红玫瑰   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(65126)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;好久不见   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(65538)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;苦瓜   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(64293)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;可以了   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(28481818)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;富士山下   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(65766)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;不要说话   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(25906124)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;淘汰   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(65528)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;阴天快乐   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(28563317)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;夕阳无限好   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(66272)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;因为爱情   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(64317)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;孤独患者   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(64093)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;稳稳的幸福   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(25730757)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;最佳损友   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(65800)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&lt;li&gt;约定   -陈奕迅&lt;a href=&apos;#&apos; onclick=&apos;play(64443)&apos;&gt;&amp;nbsp;select √&lt;/a&gt;&lt;/li&gt;&quot;;</div><div class="line">           if (socket.dj) &#123;</div><div class="line">               dj_flag = true;</div><div class="line">           &#125;</div><div class="line">           socket.on(&apos;announcement&apos;, function (msg) &#123;</div><div class="line">               var li = document.createElement(&apos;li&apos;);</div><div class="line">               li.className = &apos;announcement&apos;;</div><div class="line">               li.innerHTML = msg;</div><div class="line">               document.getElementById(&apos;messages&apos;).appendChild(li);</div><div class="line">           &#125;);</div><div class="line">           socket.on(&apos;song&apos;, play);</div><div class="line">       &#125;);</div><div class="line">       //往网页加入信息的函数，简单的js动态实现</div><div class="line">       function addMessage(from, text) &#123;</div><div class="line">           var lis = document.getElementById(&apos;messages&apos;);</div><div class="line">           if (lis.children.length &lt; 12) &#123;</div><div class="line">               var li = document.createElement(&apos;li&apos;);</div><div class="line">               li.className = &apos;message&apos;;</div><div class="line">               li.innerHTML = &apos;&lt;b&gt;&apos; + from + &apos;&lt;/b&gt;: &apos; + text;</div><div class="line">               document.getElementById(&apos;messages&apos;).appendChild(li);</div><div class="line">           &#125; else &#123;</div><div class="line">               for (var i = 0; i &lt; 11; i++) &#123;</div><div class="line">                   lis.children[i].innerHTML = lis.children[i + 1].innerHTML;</div><div class="line">               &#125;</div><div class="line">               lis.children[11].innerHTML = &apos;&lt;b&gt;&apos; + from + &apos;&lt;/b&gt;: &apos; + text;</div><div class="line">           &#125;</div><div class="line">           if (sig_flag === 1 &amp;&amp; current_song) &#123;</div><div class="line">               sig_flag = 0;</div><div class="line">               socket.emit(&apos;song&apos;, current_song);</div><div class="line">           &#125;</div><div class="line">           console.log(text);</div><div class="line">       &#125;</div><div class="line">       var input = document.getElementById(&apos;input&apos;);</div><div class="line">       document.getElementById(&apos;form&apos;).onsubmit = function () &#123;</div><div class="line">           addMessage(&apos;me&apos;, input.value);</div><div class="line">           if (jm_flag) &#123;</div><div class="line">               socket.emit(&apos;text&apos;, encrypt(key, input.value));</div><div class="line">           &#125; else &#123;</div><div class="line">           //向服务器发送信息</div><div class="line">               socket.emit(&apos;text&apos;, input.value);</div><div class="line">           &#125;</div><div class="line">           input.value = &apos;&apos;;</div><div class="line">           input.focus();</div><div class="line">           return false;</div><div class="line">       &#125;</div><div class="line">       //接听服务器发来的信息</div><div class="line">       socket.on(&apos;text&apos;, addMessage);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<h3 id="主页index-html代码一览"><a href="#主页index-html代码一览" class="headerlink" title="主页index.html代码一览"></a>主页index.html代码一览</h3><blockquote>
+<p>要时刻记住代码越规范，可精简的空间就越大，你会发现我的index.html代码不多，因为很多封装到js里便于维护<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html lang=&quot;zh&quot;&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;script src=&quot;/socket.io/socket.io.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&quot;js/core.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&quot;js/enc-base64.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&quot;js/x64-core.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&quot;js/lib-typedarrays.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&quot;js/cipher-core.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&quot;js/aes.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&apos;js/chat.js&apos;&gt;&lt;/script&gt;</div><div class="line">	&lt;meta charset=&quot;UTF-8&quot;&gt;</div><div class="line">	&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;&gt;</div><div class="line">	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</div><div class="line">	&lt;title&gt;基于node.js的聊天页面&lt;/title&gt;</div><div class="line">	&lt;link rel=&quot;stylesheet&quot; href=&quot;css/style.css&quot;&gt;</div><div class="line">	&lt;link rel=&quot;stylesheet&quot; href=&quot;css/buttons.css&quot;&gt;</div><div class="line">	&lt;!--[if IE]&gt;</div><div class="line">		&lt;script src=&quot;http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;![endif]--&gt;</div><div class="line">&lt;/head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;div class=&quot;bg&quot;&gt;&lt;/div&gt;</div><div class="line">	&lt;div id=&apos;chat&apos; style=&quot;display: none&quot; class=&quot;phone&quot;&gt;</div><div class="line">		&lt;div class=&quot;screen&quot;&gt;</div><div class="line">			&lt;h1 id=&apos;ks&apos; class=&quot;hello&quot;&gt;Welcome!</div><div class="line">			&lt;/h1&gt;</div><div class="line">			&lt;h1 id=&apos;a&apos; class=&apos;user&apos;&gt;</div><div class="line">				密文</div><div class="line">				&lt;p style=&quot;margin-top:20px&quot;&gt;点歌&lt;/p&gt;</div><div class="line">			&lt;/h1&gt;</div><div class="line">			&lt;h1 id=&apos;b&apos; class=&apos;chat&apos;&gt;</div><div class="line">				返回</div><div class="line">			&lt;/h1&gt;</div><div class="line">			&lt;h1 id=&apos;c&apos; class=&apos;clean&apos;&gt;</div><div class="line">				清屏</div><div class="line">			&lt;/h1&gt;</div><div class="line">			&lt;div class=&quot;nav&quot;&gt;</div><div class="line">				&lt;a class=&quot;home&quot; href=&quot;#&quot;&gt;</div><div class="line">					&lt;img class=&quot;open&quot; src=&quot;img/menu.svg&quot; title=&quot;Menu&quot; width=&quot;30&quot;&gt;</div><div class="line">					&lt;img class=&quot;close&quot; src=&quot;img/close.svg&quot; title=&quot;Close&quot; width=&quot;30&quot;&gt;</div><div class="line">				&lt;/a&gt;</div><div class="line">				&lt;a class=&quot;item profile&quot; href=&quot;#&quot; onclick=&quot;gr()&quot;&gt;&lt;img src=&quot;img/user.svg&quot; alt=&quot;User&quot; width=&quot;25&quot;&gt;&lt;/a&gt;</div><div class="line">				&lt;a class=&quot;item like&quot; href=&quot;#&quot; onclick=&quot;mc()&quot;&gt;&lt;img src=&quot;img/heart.svg&quot; alt=&quot;Like&quot; width=&quot;25&quot;&gt;&lt;/a&gt;</div><div class="line">				&lt;a class=&quot;item message&quot; href=&quot;#&quot; onclick=&quot;hf()&quot;&gt;&lt;img src=&quot;img/message.svg&quot; alt=&quot;Message&quot; width=&quot;25&quot;&gt;&lt;/a&gt;</div><div class="line">				&lt;a class=&quot;item tools&quot; href=&quot;#&quot; onclick=&quot;clean()&quot;&gt;&lt;img src=&quot;img/tools.svg&quot; title=&quot;Tools&quot; width=&quot;25&quot;&gt;&lt;/a&gt;</div><div class="line">			&lt;/div&gt;</div><div class="line">			&lt;br/&gt;</div><div class="line">			&lt;br/&gt;</div><div class="line">			&lt;br/&gt;</div><div class="line">			&lt;h3 id=&apos;js&apos;&gt;&lt;/h3&gt;</div><div class="line">			&lt;div id=&apos;jm&apos;&gt;&lt;/div&gt;</div><div class="line">			&lt;form id=&quot;form&quot;&gt;</div><div class="line">				&lt;p id=&apos;me&apos; style=&quot;color: red&quot;&gt;用户名: 当前在线人数：</div><div class="line">					&lt;p&gt;</div><div class="line">						&lt;input type=&quot;text&quot; maxlength=&quot;16&quot; id=&quot;input&quot; /&gt;</div><div class="line">						&lt;button class=&quot;button button-glow button-border button-rounded button-primary&quot;&gt;Send&lt;/button&gt;</div><div class="line">			&lt;/form&gt;</div><div class="line">			&lt;ul id=&apos;messages&apos;&gt;</div><div class="line">			&lt;/ul&gt;</div><div class="line">			&lt;div id=&apos;music&apos; class=&apos;footer&apos;&gt;</div><div class="line">			&lt;/div&gt;</div><div class="line">			&lt;ul style=&apos;display:none&apos; id=&apos;songs&apos;&gt;</div><div class="line">			&lt;/ul&gt;</div><div class="line">		&lt;/div&gt;</div><div class="line">	&lt;/div&gt;</div><div class="line">	&lt;script src=&quot;http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&apos;js/TweenMax.min.js&apos;&gt;&lt;/script&gt;</div><div class="line">	&lt;script src=&apos;js/inner.js&apos;&gt;&lt;/script&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
+<p>add_songs.js/inner.js代码就不展示了，比较简单，add_songs.js已经不需要了(我封装到chat.js里面了),inner.js主要就是页面的加载以及动态效果的实现，如果想看代码的话请移步<a href="https://github.com/Kali-Hac/node_js_chat" target="_blank" rel="external">我的github本项目开源代码</a>PS：移动端代码会有所不同。</p>
+</blockquote>
+<h2 id="将会在下一篇博文总结一下开发中的问题-amp-解决方法"><a href="#将会在下一篇博文总结一下开发中的问题-amp-解决方法" class="headerlink" title="将会在下一篇博文总结一下开发中的问题&amp;解决方法"></a>将会在下一篇博文总结一下开发中的问题&amp;解决方法</h2><blockquote>
+<p>本聊天项目已经嵌入到博客中(仅面向手机端开放，pc端已禁)，可以点进去测试一下(暂时仅供内部测试，可能会有一些bug还未发现，下一个版本会更完善)，另，各位小伙伴有任何问题可以在下方留言，我会及时解答或订正<br><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> 作者:Hac </category>
+            
+            <category> Node.js实战笔记 </category>
+            
+            <category> Node.js网络通讯后台的搭建 </category>
+            
+            <category> JavaScript聊天动态界面的构建 </category>
+            
+            <category> crypto加密模块的网页嵌入(CryptoJS) </category>
+            
+            <category> 1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播的后台实现 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> socket.io </tag>
+            
+            <tag> express </tag>
+            
+            <tag> CryptoJS </tag>
+            
+            <tag> HTTP/WebSocket </tag>
+            
+            <tag> Aes-128-cbc对称加密 </tag>
+            
+            <tag> 在线聊天/点歌系统 </tag>
+            
+            <tag> 通讯加密的应用 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[几行指令让你的C++代码速度提升100%+]]></title>
-      <url>http://yikunhaocong.xyz/2017/03/31/tbb/</url>
+      <url>http://yikunhaocong.com/2017/03/31/tbb/</url>
       <content type="html"><![CDATA[<p>主要讲解VS内置OpenMP库的使用和Intel_TBB开源库的配置，与普通C++代码串行运行的速度进行对比，教会你如何快速使用OpenMP和Intel_TBB内置的并行算法使你的C++代码运行速度大幅度提升(充分调用CPU开启多线程)。</p>
 <h2 id="Hac博客声明！"><a href="#Hac博客声明！" class="headerlink" title="Hac博客声明！"></a>Hac博客声明！</h2><ul>
 <li>本博客中带有<a href="http://blog.csdn.net/CSDN568302203" target="_blank" rel="external">http://blog.csdn.net/CSDN568302203</a>博客水印的图片都是本人Hac所有，一年前开的博客，现用于方便地存储文章图片。<h2 id="直接上相同代码速度对比图-记录C-运行速度，python绘图"><a href="#直接上相同代码速度对比图-记录C-运行速度，python绘图" class="headerlink" title="直接上相同代码速度对比图(记录C++运行速度，python绘图)"></a>直接上相同代码速度对比图(记录C++运行速度，python绘图)</h2></li>
@@ -137,7 +299,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[安全渗透测试①:Kali-Linux 几行指令制作最简单的木马]]></title>
-      <url>http://yikunhaocong.xyz/2017/03/25/kali-linux/</url>
+      <url>http://yikunhaocong.com/2017/03/25/kali-linux/</url>
       <content type="html"><![CDATA[<pre><code>记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。
 </code></pre><h2 id="开始安装和配置Kali-Linux"><a href="#开始安装和配置Kali-Linux" class="headerlink" title="开始安装和配置Kali-Linux"></a>开始安装和配置Kali-Linux</h2><h3 id="1-虚拟机VMware下载与安装"><a href="#1-虚拟机VMware下载与安装" class="headerlink" title="(1)虚拟机VMware下载与安装"></a>(1)虚拟机VMware下载与安装</h3><p>VMware 12 Pro 12.1 发行说明<br><a href="http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.html" target="_blank" rel="external">http://pubs.vmware.com/Release_Notes/cn/workstation/12pro/workstation-121-release-notes.html</a><br>VMware 12 官方功能特性介绍：<br><a href="http://vmware.com/cn/products/workstation" target="_blank" rel="external">http://vmware.com/cn/products/workstation</a><br>VMware 12 专业版永久许可证密钥<br>5A02H-AU243-TZJ49-GTC7K-3C61N<br>VMware Workstation 12 官方简体中文专业版 + 注册机<br>VMware v11.x / v10.x  官方简体中文版经典版 + 注册机<br>v12.1.1 Build 3770994  官方本地下载  大小，293.67M<br><a href="http://pan.baidu.com/s/1cdWqF8" target="_blank" rel="external">http://pan.baidu.com/s/1cdWqF8</a>  访问密码: 28b4<br>注：新版不支持32位系统，系统是32位的请用VM10</p>
 <h3 id="2-Kali-liunx-镜像下载与安装"><a href="#2-Kali-liunx-镜像下载与安装" class="headerlink" title="(2)Kali-liunx 镜像下载与安装"></a>(2)Kali-liunx 镜像下载与安装</h3><p>第一类，是最常规的32和64位版本：<br>kali-linux-2016.2-amd64.iso<br>kali-linux-2016.2-i386.iso<br>第二类是简化版：<br>kali-linux-light-2016.2-amd64.iso<br>kali-linux-light-2016.2-armel.img.xz<br>kali-linux-light-2016.2-armhf.img.xz<br>kali-linux-light-2016.2-i386.iso<br>第三类，是新增的四种桌面版，如e17、lxde、mate和xfce。<br>kali-linux-e17-2016.2-amd64.iso<br>kali-linux-lxde-2016.2-amd64.iso<br>kali-linux-mate-2016.2-amd64.iso<br>kali-linux-xfce-2016.2-amd64.iso<br><img src="http://img.blog.csdn.net/20170325161736981?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="Gnome桌面"><br><img src="http://img.blog.csdn.net/20170325161801806?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="Xfce桌面"></p>
@@ -245,7 +407,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[几个国内专用的公共 DNS]]></title>
-      <url>http://yikunhaocong.xyz/2016/05/11/public-dns/</url>
+      <url>http://yikunhaocong.com/2016/05/11/public-dns/</url>
       <content type="html"><![CDATA[<p>　　之前 <a href="http://www.bootcdn.cn/" target="_blank" rel="external">有个网站</a> 自己经常上不去，查了挺久才发现是 DNS 的问题，更换为公共 DNS 后访问恢复正常。由此可见，挑选一个合适自己网络的 DNS 还是挺有必要的。</p>
 <a id="more"></a>
 <h2 id="DNS-简介"><a href="#DNS-简介" class="headerlink" title="DNS 简介"></a>DNS 简介</h2><p>DNS 全称 <code>Domain Name System</code>，中文译为 <code>域名系统</code>，是因特网的一项服务，其域名服务器的分布式数据库中存储着因特网上域名和 IP 地址相互映射的关系，经解析器解析，使用户能够通过域名来访问互联网。</p>
@@ -296,7 +458,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[Markdown 表格样式调整与自适应优化]]></title>
-      <url>http://yikunhaocong.xyz/2016/03/04/markdown-table-style/</url>
+      <url>http://yikunhaocong.com/2016/03/04/markdown-table-style/</url>
       <content type="html"><![CDATA[<p>　　Markdown 写的表格最终会被解析成 HTML 代码，如果使用的编辑器支持自定义 CSS，就能方便的调整样式。如果可以引入 JavaScript，样式自适应也能较好地实现。</p>
 <a id="more"></a>
 <p></p><p data-height="300" data-theme-id="0" data-slug-hash="ONyKqb" data-default-tab="css" data-user="MOxFIVE" class="codepen">See the Pen <a href="http://codepen.io/MOxFIVE/pen/ONyKqb/" target="_blank" rel="external">Table style</a> by MOxFIVE (<a href="http://codepen.io/MOxFIVE" target="_blank" rel="external">@MOxFIVE</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p><p></p>
@@ -369,7 +531,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[前端工程化工具初选]]></title>
-      <url>http://yikunhaocong.xyz/2016/02/16/front-end-tools/</url>
+      <url>http://yikunhaocong.com/2016/02/16/front-end-tools/</url>
       <content type="html"><![CDATA[<p>　　面对日益纷杂的前端工具，作为新人常感无从下手。经过一番检索和简单对比，再结合自己的喜好，筛选了将要学习和使用的工具，以适应日益工程化、专业化的 Web 前端开发工作。</p>
 <a id="more"></a>
 <h2 id="Library-amp-Framework-库与框架"><a href="#Library-amp-Framework-库与框架" class="headerlink" title="Library &amp; Framework | 库与框架"></a>Library &amp; Framework | 库与框架</h2><blockquote>
@@ -454,7 +616,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[为 Hexo 主题添加评论模块 — Disqus, 多说, 友言]]></title>
-      <url>http://yikunhaocong.xyz/2016/01/02/hexo-comments/</url>
+      <url>http://yikunhaocong.com/2016/01/02/hexo-comments/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>目前自己的主题 <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" rel="external">Yelee</a> 已支持使用 Disqus, 多说和友言评论，代码逻辑和配置也做了些优化，应该是比较完善了。简单分离整理一下，分享于此，方便大家添加到自己制作或使用的主题中。<p></p>
 <a id="more"></a>
 <h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p>参考以下文件结构把复制的代码和下载的文件放到合适的位置，必要时自行修改文件引用位置。</p>
@@ -501,7 +663,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[CSS font-family 网页字体使用小结]]></title>
-      <url>http://yikunhaocong.xyz/2015/12/09/css-font-family/</url>
+      <url>http://yikunhaocong.com/2015/12/09/css-font-family/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>一直到最近才开始调整博客的字体，之前都是全站微软雅黑了事。慢慢调整后发现 font-family 这个属性相关的知识还是不少的，整理一下常用的部分，分享于此。<p></p>
 <a id="more"></a>
 <h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><h3 id="使用语法"><a href="#使用语法" class="headerlink" title="使用语法"></a>使用语法</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">font-family</span>: 字体名1, 字体名2, 字体名<span class="selector-tag">n</span>, 字体系列名;</div><div class="line"><span class="selector-tag">font-family</span>: <span class="selector-tag">Verdana</span>, <span class="selector-tag">Helvetica</span>, "<span class="selector-tag">Microsoft</span> <span class="selector-tag">YaHei</span>", <span class="selector-tag">Arial</span>;</div></pre></td></tr></table></figure>
@@ -811,7 +973,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[Sublime Text 3 使用配置与插件安装]]></title>
-      <url>http://yikunhaocong.xyz/2015/11/30/sublime-config/</url>
+      <url>http://yikunhaocong.com/2015/11/30/sublime-config/</url>
       <content type="html"><![CDATA[<p>　　记录安装配置 Sublime 的过程，同时列出所用到的插件，方便自己在新系统新电脑上快速用上熟悉的 Sublime。 </p>
 <a id="more"></a>
 <h2 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h2><h3 id="软件下载"><a href="#软件下载" class="headerlink" title="软件下载"></a>软件下载</h3><ul>
@@ -919,7 +1081,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[Git 基础命令与相关术语]]></title>
-      <url>http://yikunhaocong.xyz/2015/11/23/git-command/</url>
+      <url>http://yikunhaocong.com/2015/11/23/git-command/</url>
       <content type="html"><![CDATA[<p>　　作者MOxFIVE的笔记基本上整理自网站 <a href="https://try.github.io" target="_blank" rel="external">Try Git</a>，一套很不错的 Git 在线入门教程。</p>
 <a id="more"></a>
 <h2 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h2><p>To initialize a Git repository here</p>
@@ -1028,7 +1190,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     
     <entry>
       <title><![CDATA[自用 Windows 和 Mac 软件推荐]]></title>
-      <url>http://yikunhaocong.xyz/2015/09/20/windows-mac-software/</url>
+      <url>http://yikunhaocong.com/2015/09/20/windows-mac-software/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>罗列自己正在使用的 Windows 和 Mac OS 软件，基本上都是同类中能较好满足个人需求的软件，作表记录，方便自己检索，也顺便推荐给大家。<p></p>
 <h3 id="软件分类说明"><a href="#软件分类说明" class="headerlink" title="软件分类说明"></a>软件分类说明</h3><ul>
 <li><strong>编程开发:</strong> 目前写代码用到的一些软件；</li>
