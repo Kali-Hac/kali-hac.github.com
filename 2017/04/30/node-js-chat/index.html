@@ -15,14 +15,12 @@
 
 
 
-<meta name="description" content="我的Node.js后台实战笔记，前言&amp;amp;分享
-这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播，在这里先强力推荐Guillermo Rauch写的一本书《了不起的Node.">
+<meta name="description" content="前言这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于Node.js框架和Express/socket.io的动态即时聊天系统(上)">
 <meta property="og:url" content="http://yikunhaocong.com/2017/04/30/node-js-chat/index.html">
 <meta property="og:site_name" content="Ykhc">
-<meta property="og:description" content="我的Node.js后台实战笔记，前言&amp;amp;分享
-这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播，在这里先强力推荐Guillermo Rauch写的一本书《了不起的Node.">
+<meta property="og:description" content="前言这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播。">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/2.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/3.png">
@@ -40,11 +38,10 @@
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/66666.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/666.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
-<meta property="og:updated_time" content="2017-04-30T03:17:54.475Z">
+<meta property="og:updated_time" content="2017-05-07T12:12:36.046Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Node.js框架和Express/socket.io的动态即时聊天系统(上)">
-<meta name="twitter:description" content="我的Node.js后台实战笔记，前言&amp;amp;分享
-这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播，在这里先强力推荐Guillermo Rauch写的一本书《了不起的Node.">
+<meta name="twitter:description" content="前言这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播。">
 <meta name="twitter:image" content="http://op72m4y17.bkt.clouddn.com/1.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -352,8 +349,10 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="我的Node-js后台实战笔记，前言-amp-分享"><a href="#我的Node-js后台实战笔记，前言-amp-分享" class="headerlink" title="我的Node.js后台实战笔记，前言&amp;分享"></a>我的Node.js后台实战笔记，前言&amp;分享</h2><blockquote>
-<p>这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播，在这里先强力推荐Guillermo Rauch写的一本书《了不起的Node.js -将JavaScript进行到底》，适合后台新手，抵得过《Node.js for PHP developer》+ 《JavaScript for PHP developer》(这两本书其中一本是一天看完的，可能比较基础，收获较少)。<br>    本次开发是在Guillermo Rauch实战教程的基础上写的，但更多的是自己的探索与实践，例如作者推荐的音乐API Grooveshark无法使用，所以自己导入曲库，之后会继续尝试python爬虫+node.js搜索导入音乐url接口(python和js的优势互补是我最想实现的)；还有聊天加密功能，原实例并没有使用crypto加密模块，为了将加密进行到底，我尝试将CryptoJS嵌入网页并结合后台实现了随时加密解密的传输；对于前端，原实例采用非常简单的空白页面，而我自己构建了一个动态页面(结合bootstrap),并实现了所有前后接口的对接。</p>
+        <p></p><h2 id="intro">前言</h2>这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播。<p></p>
+<a id="more"></a>
+<h2 id="我的Node-js后台实战笔记，前言-amp-分享"><a href="#我的Node-js后台实战笔记，前言-amp-分享" class="headerlink" title="我的Node.js后台实战笔记，前言&amp;分享"></a>我的Node.js后台实战笔记，前言&amp;分享</h2><blockquote>
+<p>在这里先强力推荐Guillermo Rauch写的一本书《了不起的Node.js -将JavaScript进行到底》，适合后台新手，抵得过《Node.js for PHP developer》+ 《JavaScript for PHP developer》(这两本书其中一本是一天看完的，可能比较基础，收获较少)。<br>    本次开发是在Guillermo Rauch实战教程的基础上写的，但更多的是自己的探索与实践，例如作者推荐的音乐API Grooveshark无法使用，所以自己导入曲库，之后会继续尝试python爬虫+node.js搜索导入音乐url接口(python和js的优势互补是我最想实现的)；还有聊天加密功能，原实例并没有使用crypto加密模块，为了将加密进行到底，我尝试将CryptoJS嵌入网页并结合后台实现了随时加密解密的传输；对于前端，原实例采用非常简单的空白页面，而我自己构建了一个动态页面(结合bootstrap),并实现了所有前后接口的对接。</p>
 <ul>
 <li>本博文只简要讲解实现过程，但会对一些比较坑的bug进行具体解释，本项目相应源码将会开源分享到我的github上<a href="https://github.com/Kali-Hac/node_js_chat" target="_blank" rel="external">https://github.com/Kali-Hac/node_js_chat</a>，移动端代码会有所不同，有任何问题或建议可以在后面留言，我会尽量解答和订正。</li>
 </ul>
@@ -407,7 +406,7 @@
         <p><span>本文标题:</span><a href="/2017/04/30/node-js-chat/">基于Node.js框架和Express/socket.io的动态即时聊天系统(上)</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
         <p><span>发布时间:</span>2017-04-30, 07:24:07</p>
-        <p><span>最后更新:</span>2017-04-30, 11:17:54</p>
+        <p><span>最后更新:</span>2017-05-07, 20:12:36</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/04/30/node-js-chat/" title="基于Node.js框架和Express/socket.io的动态即时聊天系统(上)">http://yikunhaocong.com/2017/04/30/node-js-chat/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2017/04/30/node-js-chat/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -422,16 +421,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/04/30/node-js-chat2/">
-                    基于Node.js框架和Express/socket.io的动态即时聊天系统(下)
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/03/31/tbb/">
-                    几行指令让你的C++代码速度提升100%+
+                <a href="/2017/04/30/node-js-chat2/">
+                    基于Node.js框架和Express/socket.io的动态即时聊天系统(下)
                 </a>
             </div>
         
@@ -443,7 +436,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#我的Node-js后台实战笔记，前言-amp-分享"><span class="toc-number">1.</span> <span class="toc-text">我的Node.js后台实战笔记，前言&分享</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#聊天页面效果图"><span class="toc-number">2.</span> <span class="toc-text">聊天页面效果图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本功能：多人同时聊天"><span class="toc-number">2.1.</span> <span class="toc-text">基本功能：多人同时聊天</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密文-点歌-返回-清屏-简约的菜单"><span class="toc-number">2.2.</span> <span class="toc-text">密文/点歌/返回/清屏 简约的菜单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#暂时导入网易云音乐的静态接口"><span class="toc-number">2.3.</span> <span class="toc-text">暂时导入网易云音乐的静态接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密页面-Aes-128-cbc"><span class="toc-number">2.4.</span> <span class="toc-text">加密页面,Aes-128-cbc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置加密效果"><span class="toc-number">2.5.</span> <span class="toc-text">设置加密效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#需要加密方告知秘钥才能对内容进行解密，如图："><span class="toc-number">2.6.</span> <span class="toc-text">需要加密方告知秘钥才能对内容进行解密，如图：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#广播音乐功能"><span class="toc-number">2.7.</span> <span class="toc-text">广播音乐功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我是如何在数天内写出这个聊天系统的？"><span class="toc-number">3.</span> <span class="toc-text">我是如何在数天内写出这个聊天系统的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前端-后端代码文件一览"><span class="toc-number">3.1.</span> <span class="toc-text">前端/后端代码文件一览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#后台服务器Server-js代码一览"><span class="toc-number">3.2.</span> <span class="toc-text">后台服务器Server.js代码一览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端chat-js代码一览"><span class="toc-number">3.3.</span> <span class="toc-text">客户端chat.js代码一览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主页index-html代码一览"><span class="toc-number">3.4.</span> <span class="toc-text">主页index.html代码一览</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将会在下一篇博文总结一下开发中的问题-amp-解决方法"><span class="toc-number">4.</span> <span class="toc-text">将会在下一篇博文总结一下开发中的问题&解决方法</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#intro"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我的Node-js后台实战笔记，前言-amp-分享"><span class="toc-number">2.</span> <span class="toc-text">我的Node.js后台实战笔记，前言&分享</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#聊天页面效果图"><span class="toc-number">3.</span> <span class="toc-text">聊天页面效果图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本功能：多人同时聊天"><span class="toc-number">3.1.</span> <span class="toc-text">基本功能：多人同时聊天</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#密文-点歌-返回-清屏-简约的菜单"><span class="toc-number">3.2.</span> <span class="toc-text">密文/点歌/返回/清屏 简约的菜单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#暂时导入网易云音乐的静态接口"><span class="toc-number">3.3.</span> <span class="toc-text">暂时导入网易云音乐的静态接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密页面-Aes-128-cbc"><span class="toc-number">3.4.</span> <span class="toc-text">加密页面,Aes-128-cbc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置加密效果"><span class="toc-number">3.5.</span> <span class="toc-text">设置加密效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#需要加密方告知秘钥才能对内容进行解密，如图："><span class="toc-number">3.6.</span> <span class="toc-text">需要加密方告知秘钥才能对内容进行解密，如图：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#广播音乐功能"><span class="toc-number">3.7.</span> <span class="toc-text">广播音乐功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我是如何在数天内写出这个聊天系统的？"><span class="toc-number">4.</span> <span class="toc-text">我是如何在数天内写出这个聊天系统的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前端-后端代码文件一览"><span class="toc-number">4.1.</span> <span class="toc-text">前端/后端代码文件一览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#后台服务器Server-js代码一览"><span class="toc-number">4.2.</span> <span class="toc-text">后台服务器Server.js代码一览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端chat-js代码一览"><span class="toc-number">4.3.</span> <span class="toc-text">客户端chat.js代码一览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主页index-html代码一览"><span class="toc-number">4.4.</span> <span class="toc-text">主页index.html代码一览</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将会在下一篇博文总结一下开发中的问题-amp-解决方法"><span class="toc-number">5.</span> <span class="toc-text">将会在下一篇博文总结一下开发中的问题&解决方法</span></a></li></ol>
         
     </div>
     <style>
@@ -513,21 +506,19 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/04/30/node-js-chat2/" title="上一篇: 基于Node.js框架和Express/socket.io的动态即时聊天系统(下)">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/03/31/tbb/" title="下一篇: 几行指令让你的C++代码速度提升100%+">
+            <a href="/2017/04/30/node-js-chat2/" title="下一篇: 基于Node.js框架和Express/socket.io的动态即时聊天系统(下)">
                 <i class="fa fa-angle-right"></i>
             </a>
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">基于Node.js框架和Express/socket.io的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">基于Node.js框架和Express/socket.io的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">基于Node.js框架和Express/socket.io的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">基于Node.js框架和Express/socket.io的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
 
 
 
