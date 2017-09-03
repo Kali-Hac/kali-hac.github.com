@@ -4,6 +4,109 @@
   
     
     <entry>
+      <title><![CDATA[多级页表虚拟内存管理器C++、python和node.js的实现]]></title>
+      <url>http://yikunhaocong.com/2017/08/17/p-table/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    操作系统大作业的三种语言实现，代码已开源至<a href="https://github.com/Kali-Hac/-C-python-node.js-" target="_blank" rel="external">ttps://github.com/Kali-Hac/-C-python-node.js-</a><br>    本博文只针对于C++版本的代码进行解析<br><a id="more"></a><p></p>
+<h2 id="程序目标"><a href="#程序目标" class="headerlink" title="程序目标"></a>程序目标</h2><ul>
+<li>实现虚拟内存的分页系统，模拟进程调度过程中的内存管理。<h3 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h3></li>
+<li><p>a)假设系统中有 5 个进程同时运行。每个进程的虚拟地址为 32-bit virtual address，虚拟页面大小为 8KB。每个进程的大小分别为 1MB，32MB，64MB，128MB，和 256MB，并且每个进程一半数据占据低位的虚拟地址空间，一半占据高位的虚拟地址空间。如进程 1 数据分布 的 虚 拟 地 址 范 围 为 0x00000000~0x0007FFFF 以 及0xFFFF8000~0xFFFFFFFF。</p>
+</li>
+<li><p>b)物理内存大小为 64MB，并同样划分成大小为 8KB 的页框。</p>
+</li>
+<li><p>c)利用带旁路缓冲 TLB 的分页系统实现虚拟页面到物理页的映射，如下图 1 所示。TLB 包含 16 个 entry，用来保存当前进程在运行过程中最近被访问的 16 个虚拟页面到物理页面的映射。每一个进程的 page table 大小由其虚拟地址空间对应的页面数量决定。</p>
+</li>
+</ul>
+<h3 id="系统实现"><a href="#系统实现" class="headerlink" title="系统实现"></a>系统实现</h3><ul>
+<li>a)五个进程轮流执行，总共执行三轮。</li>
+</ul>
+<p>每个进程在第一次执行时，页表内容为空，每次执行完毕出现进程切换时，将其页表内容保存到外部文件。在该程序之后执行时，首先从外部文件导入页表内容。</p>
+<p>TLB 用来保存当前运行进程最近的页访问信息，因此在进程切换时，需要清空 TLB 为新进程的运行做准备。</p>
+<ul>
+<li>b)每个进程在一次执行过程中，利用随机函数生成 500 次虚拟地址的访问序列。例如，进程 1 在执行过程中，生成 500 个随机虚拟地址访问序列，每个虚拟地址均需落在 0x00000000~0x0007FFFF 或者 0xFFFF8000~0xFFFFFFFF 范围内。</li>
+</ul>
+<p>生成随机虚拟地址序列的方式为：首先随机生成一个地址，然后以该</p>
+<p>地址为起始点生成九个连续的地址。按此方法循环 50 次，总共生成 500 次随机虚拟地址访问。</p>
+<ul>
+<li>c)若访问某个虚拟地址，首先生成对应的虚拟页号（ virtual page number），再查找该虚拟页对应的物理页框号（page frame number）</li>
+</ul>
+<p>是否在 TLB；若不在 TLB，进一步查找是否在 page table；若也不在，则分配一个物理页框给该页面，并将虚拟页到物理页的映射信息保</p>
+<p>存在 page table 和 TLB 中。</p>
+<p>若 TLB 已满，按照 LRU 的置换策略置换掉最早被访问的 entry。</p>
+<ul>
+<li>d)物理页面在分配的过程中，若仍然有可用的页框，按照页框编号从小到大依次分配。若没有可用页框，则利用 LRU 置换策略，将最早分配的页框收回重新分配给当前的虚拟页。被收回的页框若是已经分配给其他进程，则需要更新该进程的 page table。</li>
+</ul>
+<h3 id="系统输出"><a href="#系统输出" class="headerlink" title="系统输出"></a>系统输出</h3><ul>
+<li><p>a)将每个进程 i 的 1500 次随机虚拟地址访问序列输出保存在文件 addr_seq_i.txt 中;</p>
+</li>
+<li><p>b)将每个进程 i 的 1500 次访问信息输出保存在 visit_seq_i.txt 中；</p>
+</li>
+</ul>
+<p>一次访问对应信息如下：</p>
+<p>VP number  PF number    TLB hit/no hit    PT hit/no hit；</p>
+<p>并计算该进程在这三轮执行过程中的页缺失率（page fault rate），输出。</p>
+<ul>
+<li>c)将每个进程 i 最后一次运行结束后 的 page table 保存在 page_table_i.txt 文件中；<br><img src="http://op72m4y17.bkt.clouddn.com/OS1.png" alt="虚拟内存的分页系统图"><h2 id="数据结构以及符号说明"><a href="#数据结构以及符号说明" class="headerlink" title="数据结构以及符号说明"></a>数据结构以及符号说明</h2><blockquote>
+<p>一共由三个类头文件和一个主运行文件组成<br>分别是process.h、TLB.h、page_table.h、源.cpp<br>顾名思义，process.h封装了进程寻址和运行过程(包括载入TLB、对比并更新page_table、搜寻并载入系统页框、输出访问结果、保存系统TLB)<br>TLB.h封装了TLB表及其寻页功能<br>page_table.h封装了页表及其寻页功能<br>源.cpp追求简洁，包括申请不同内存的进程对象，进行赋数量值寻址和打印不同进程的页表。</p>
+<h3 id="符号说明："><a href="#符号说明：" class="headerlink" title="符号说明："></a>符号说明：</h3><figure class="highlight plain"><figcaption><span>int MB;//构造函数中使用MB，带入更易理解</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">typedef long long ll;//代码中用ll简化long long</div><div class="line">#define TLB_miss -1 //return TLB_miss代表miss</div><div class="line">#define p_table_miss -1//同上，为方便代码理解</div><div class="line">#define mb (ll)pow(2,20) </div><div class="line">//在代码中可直接使用mb代表2^20</div><div class="line">//内联函数移位，可以用于地址的快速切分(页地址+偏移量)</div><div class="line">inline ll move_bits(ll ori,int bits) &#123;</div><div class="line">	while (ori &gt; 0&amp;&amp;bits&gt;0) &#123;</div><div class="line">		ori /= 2;</div><div class="line">		bits--;</div><div class="line">	&#125;</div><div class="line">	return ori;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<p>各类的成员变量如下：</p>
+<blockquote>
+<p>1.process：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">private:</div><div class="line">	int run_time;//进程运行的次数</div><div class="line">	int process_No;//进程编号</div><div class="line">	MB size;//记录进程所占内存大小</div><div class="line">	ll high_addr[2];</div><div class="line">	//addr[0]为起始地址，addr[1]为末端地址</div><div class="line">	ll low_addr[2];</div><div class="line">	ll access_addrs[5001];//每次随机访问的5000地址数组</div><div class="line">	static int process_id;//随进程数增加而增加</div><div class="line">	int owned_p_page[8192];</div><div class="line">	//独自储存的本进程页框使用情况，用于对比、更新被回收的页框及自身的页表</div><div class="line">	int page_fault;//缺页记录</div><div class="line">	int access_times;//地址访问总次数记录</div><div class="line">	int tlb_miss;//TLB的miss记录</div><div class="line">&#125;;</div><div class="line">//静态全局变量记录已开的进程数</div><div class="line">int process::process_id = 0;</div><div class="line">TLB process::tlb = TLB(16);</div><div class="line">//共用TLB并初始化</div></pre></td></tr></table></figure></p>
+<p>2.page_table:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public:</div><div class="line">static int physical_pframes[8192];//用于记录物理内存页框是否存入页表，且进行进程占用标记</div><div class="line">	static int LRU_flag;//用于标记最先分配出去的页框</div><div class="line">	int first_page[64];//判断一级页面是否已载入</div><div class="line">	//此处二级页表不考虑页面权限位的占用,若要考虑则可减少设定为4096</div><div class="line">	ll **p_table = new ll*[64];//对应二级页表结构，页目录(外层页号)有64个，每个页表项(外层页内地址)有8192个(对应8k的偏移量)</div><div class="line">private:</div><div class="line">	//ll p_table[524288];//对应一级页表结构</div><div class="line">	//此处二级页表不考虑页面权限位的占用,若要考虑则可减少设定为4096</div><div class="line">	int v_page_seek;//搜寻使用页框标记</div><div class="line">	ll v_p_reflect[2];//每次寻页的记录</div></pre></td></tr></table></figure></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">3.TLB:</div><div class="line">private:</div><div class="line">	ll TLB_v_pages[16];//16个虚页</div><div class="line">	ll TLB_p_pages[16];//对应16个实页框</div><div class="line">	ll LRU_order[16];//记录存放顺序，可不用</div><div class="line">	int size;</div></pre></td></tr></table></figure>
+<h3 id="各类成员函数："><a href="#各类成员函数：" class="headerlink" title="各类成员函数："></a>各类成员函数：</h3><p>(详细用途请看代码里注释)<br><img src="http://op72m4y17.bkt.clouddn.com/OS2.png" alt="类的函数"></p>
+<h2 id="程序流程图及流程分析"><a href="#程序流程图及流程分析" class="headerlink" title="程序流程图及流程分析"></a>程序流程图及流程分析</h2><p>(以下取main函数进行流程分析)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">int main(int argc,char *argv[]) &#123;</div><div class="line">//开进程，以MB为单位，可见process</div><div class="line">//构造函数</div><div class="line">	process p1(1);</div><div class="line">	process p2(32);</div><div class="line">	process p3(64);</div><div class="line">	process p4(128);</div><div class="line">	process p5(256);</div><div class="line">//再开9个内存为256M的进程用于测试</div><div class="line">	process pp[9] = &#123; 256,256,256,256,256,256,256,256,256&#125;;</div><div class="line">//.......中间有地址范围的输出，详看源代码</div><div class="line">	int cnt = 20;//运行20个回合</div><div class="line">	while (cnt--) &#123;</div><div class="line">		p1.get_access_addrs(5000);//获取//5000个随机访问地址</div><div class="line">		p1.run();//运行</div><div class="line">		//run的过程包括载入TLB、对比并更新page_table、搜寻并载入系统页框、输出访问结果、保存系统TLB</div><div class="line">		//所有过程封装至类process里</div><div class="line">		p2.get_access_addrs(5000);</div><div class="line">		p2.run();</div><div class="line">		p3.get_access_addrs(5000);</div><div class="line">		p3.run();</div><div class="line">		p4.get_access_addrs(5000);</div><div class="line">		p4.run();</div><div class="line">		p5.get_access_addrs(5000);</div><div class="line">		p5.run();</div><div class="line">	for (int i = 0; i &lt; 9; i++) &#123;</div><div class="line">			pp[i].get_access_addrs(5000);</div><div class="line">			pp[i].run();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	//输出每个进程对应的页表</div><div class="line">	p1.print_page_table();</div><div class="line">	p2.print_page_table();</div><div class="line">	p3.print_page_table();</div><div class="line">	p4.print_page_table();</div><div class="line">	p5.print_page_table();</div><div class="line">	for (int i = 0; i &lt; 9; i++) &#123;</div><div class="line">		pp[i].print_page_table();</div><div class="line">	&#125;</div><div class="line">system(&quot;pause&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="程序逻辑运行流程"><a href="#程序逻辑运行流程" class="headerlink" title="程序逻辑运行流程"></a>程序逻辑运行流程</h2><blockquote>
+<p>1.开进程<br>2.计算得到数据所在地址范围<br>3.获取一定数量的随机地址<br>4.切分得到页地址和页內偏移量<br>5.页地址再切分得到一级地址和二级地址(也就是一级外页的偏移量)<br>6.首先在TLB表中寻找<br>6-a若存在则按照LRU策略把最新用到的页表项放到第一位，其他往后移。成功返回寻到的地址，寻址结束。<br>6-b若不存在，则进行下一步的寻页<br>7.在寻页前首先更新该进程的页表<br>(与自身存储的页框使用表进行对比，看是否原先的页框已被其他进程占用，若是这样则把对应的虚页设为-1初始化)<br>8.开始寻页，判断一级页表是否已载入:<br>PS（程序中首先开<br>ll <em>*p_table = new ll</em>[64];<br>//对应二级页表结构，页目录(外层页号)有64个，每个页表项(外层页内地址)有8192个(对应8k的偏移量)）<br>然后再根据程序需要开二级页表，这样可以离散化利用页表而不需要过早申请过多的无用的页表空间)<br>8-a载入的话在一级页面的页面数组中看二级页面是否已存该虚拟地址的实页地址，若有则成功返回，若没有则分配可用页框给它<br>8-b若一级页表还未载入的话，<br>p_table[first_p] = new ll[8192];<br>        for (int i = 0; i &lt; 8192; i++)<br>            p_table[first_p][i] = -1;<br>为一级页表申请内存空间(即构造二级页表)，并出初始化为-1(还未分配页框)<br>然后分配可用页框给这个页表项<br>(8-a)∩(8-b)这两个过程<br>若可用页框已分配完，则分配最早分配的页框给该进程并输出具体进程和页框(在输出文件visit_seq_i.txt里)，然后更新那个进程的页表<br>（具体实现过程请看过程7和代码）<br>9成功分配一个可用页框给该虚拟地址，并存入页表和TLB（按照LRU策略放在最前面），返回TLB_miss或page_fault或两者，将分配的页框存于公共可访问变量v_p_reflect[1]，而v_p_reflect[0]存放对应的虚拟地址。<br>10.记录TLB_miss和page_fault,进行缺页率的计算并输出文件，寻页过程结束。</p>
+</blockquote>
+<h2 id="程序运行时的参数置以及运行结果说明"><a href="#程序运行时的参数置以及运行结果说明" class="headerlink" title="程序运行时的参数置以及运行结果说明"></a>程序运行时的参数置以及运行结果说明</h2><blockquote>
+<p>(本代码不采用命令行参数(配合gcc编译生成exe文件使用)，所有参数直接在源.cpp代码文件里面进行设置，原因是代码文件由注释和参数非常直观，可以直接设置，具体请看上面四、程序流程分析)<br>(下面截图)运行参数：<br>1.进程数:14(1M 32M 64M 128M 256M 256M<em>9)<br>2.可用页框page_frames数：8192(设置为2500可以让页表LRU回收效果更显著，<br>具体可看2500可用页框 15进程数的输出结果！<br>3.运行轮回：20轮(15进程轮流<br>4.每次随机地址访问数:5000(有设置不同内存的进程的special因子，增强随机效果，但原规则依旧是大作业要求里面的规则<br>详细注释请看源代码<br>process.h<br>page_table.h<br>源.cpp<br>TLB.h<br>注意事项：<br>进程数再加1(1M 32M 64M 128M 256M 256M</em>10)就会发生系统栈溢出，具体错误说明如下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">; Find next lower page and probe</div><div class="line">cs20:</div><div class="line">        sub     eax, _PAGESIZE_         ; decrease by PAGESIZE</div><div class="line">        test    dword ptr [eax],eax     ; probe page.</div><div class="line">        jmp     short cs10</div><div class="line"></div><div class="line">overflow出现中断在test这一行，显示参数错误</div><div class="line">前一行sub应该是为变量开辟栈空间，我们知道函数参数是从逆序入栈的，而函数变量申请空间也是从高地址减去相应空间地址开始存储的，例如开char[100]则esp会从函数基址减去100个地址开始存放数据。</div><div class="line">经过测试，开1M 32M 64M 128M 256M 256M*9 这14个进程不会报错不会溢出，而开1M 32M 64M 128M 256M 256M*10则发送溢出错误，可初步说明这是由于栈内存空间不足而引发的溢出。</div><div class="line">系统的错误说明----函数参数发生错误，这一点从缓冲区溢出漏洞也可以得到启示，当栈空间不足时，申请的溢出地址会覆盖函数基址，即参数(的地址)，所以综上所述，的确是由于内存空间不足发生的错误，而并非是代码逻辑错误。</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>附截图(控制台只显示各进程的地址访问范围，实际内容请看输出文件</p>
+<h3 id="控制台输出截图如下："><a href="#控制台输出截图如下：" class="headerlink" title="控制台输出截图如下："></a>控制台输出截图如下：</h3><p><img src="http://op72m4y17.bkt.clouddn.com/OS3.png" alt="C++运行截图(前)"><br><img src="http://op72m4y17.bkt.clouddn.com/OS4.png" alt="C++运行截图(后)"></p>
+<h3 id="输出结果截图如下："><a href="#输出结果截图如下：" class="headerlink" title="输出结果截图如下："></a>输出结果截图如下：</h3><blockquote>
+<p>(十六进制的虚页地址将页內偏移地址切分出来再转换为十进制，页框也是用十进制表示)<br>(截取至page_table_14.txt)<br><img src="http://op72m4y17.bkt.clouddn.com/OS5.png" alt="页表输出"><br>(截取至visit_seq_14.txt)<br><img src="http://op72m4y17.bkt.clouddn.com/OS6.png" alt="访问地址输出"><br>(这里由于页框数比较多，所以回收基本是在进程1回收，如果要看比较明显的回收效果，请看2500页框15进程的那个输出文件</p>
+<h2 id="程序设计重的重点分析"><a href="#程序设计重的重点分析" class="headerlink" title="程序设计重的重点分析"></a>程序设计重的重点分析</h2><p><img src="http://op72m4y17.bkt.clouddn.com/OS11.png" alt="设计重难点"><br><img src="http://op72m4y17.bkt.clouddn.com/OS12.png" alt="1-2-3"><br><img src="http://op72m4y17.bkt.clouddn.com/OS13.png" alt="4-5"><br><img src="http://op72m4y17.bkt.clouddn.com/OS14.png" alt="6"><br><img src="http://op72m4y17.bkt.clouddn.com/OS15.png" alt="7-8"><br><img src="http://op72m4y17.bkt.clouddn.com/OS16.png" alt="9"></p>
+<h3 id="python"><a href="#python" class="headerlink" title="python"></a>python</h3><p><img src="http://op72m4y17.bkt.clouddn.com/OS17.png" alt="python主代码截图"></p>
+<h3 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h3><p><img src="http://op72m4y17.bkt.clouddn.com/OS18.png" alt="node.js随机访问地址输出"></p>
+</blockquote>
+<h2 id="python-js运行说明"><a href="#python-js运行说明" class="headerlink" title="python/js运行说明"></a>python/js运行说明</h2><p><img src="http://op72m4y17.bkt.clouddn.com/OS19.png" alt="python运行环境说明"><br><img src="http://op72m4y17.bkt.clouddn.com/OS20.png" alt="Node.js运行环境说明"></p>
+<h3 id="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"><a href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正" class="headerlink" title="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"></a>各位小伙伴有任何问题可以在下方留言，我会及时解答或订正</h3><p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 作者:Hac </category>
+            
+            <category> C++、python和node.js代码的重构与实现 </category>
+            
+            <category> 面向对象编程设计 </category>
+            
+            <category> 虚拟内存存储器 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 脚本语言的面向对象设计 </tag>
+            
+            <tag> 多级页表 </tag>
+            
+            <tag> 旁带缓冲TLB表 </tag>
+            
+            <tag> 页框LRU回收机制 </tag>
+            
+            <tag> 多进程模拟 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[(V3.0最新版+开源地址)基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app]]></title>
       <url>http://yikunhaocong.com/2017/06/27/appV3-0/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>app项目地址</strong>：<a href="https://github.com/Kali-Hac/Hac_app" target="_blank" rel="external">https://github.com/Kali-Hac/Hac_app</a><br>    本篇博文是AppV3.0版本更新后的用户手册，新增加了不少实用的功能&amp;更友好的界面，更方便用户的使用，往后还会继续更新。<br><a id="more"></a><p></p>
