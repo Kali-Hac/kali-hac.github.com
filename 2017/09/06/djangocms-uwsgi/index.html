@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kali-Hac" />
+
+
+
+<meta name="description" content="前言    CentOS服务器配置Djangocms应用，刚开始在windows下用Apache+mod_wsgi.so配置属实是坑多到令人发指，python-web应用建议在linux下用uwsgi+Nginx配置(windows不支持uwsgi),进一步实现负载均衡。    本博文只针对自己搭建+部署的djangocms应用进行解析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用uWSGI最快地将Django(CMS)部署到Nginx上">
+<meta property="og:url" content="http://yikunhaocong.com/2017/09/06/djangocms-uwsgi/index.html">
+<meta property="og:site_name" content="Ykhc">
+<meta property="og:description" content="前言    CentOS服务器配置Djangocms应用，刚开始在windows下用Apache+mod_wsgi.so配置属实是坑多到令人发指，python-web应用建议在linux下用uwsgi+Nginx配置(windows不支持uwsgi),进一步实现负载均衡。    本博文只针对自己搭建+部署的djangocms应用进行解析">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/x1.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/x2.png">
+<meta property="og:image" content="http://7xpt1q.com1.z0.glb.clouddn.com/img%2Fdoc%2FWSGI%E5%8E%9F%E7%90%86.png">
+<meta property="og:image" content="http://lazynight.me/wp-content/uploads/2012/09/uwsgi.jpg">
+<meta property="og:image" content="http://7xpt1q.com1.z0.glb.clouddn.com/img%2Fdoc%2F%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%8E%9F%E7%90%86.png">
+<meta property="og:image" content="http://7xpt1q.com1.z0.glb.clouddn.com/img%2Fdoc%2FNginx%2BuWSGI%E5%8E%9F%E7%90%86.png">
+<meta property="og:image" content="http://img.blog.csdn.net/20170315104337260?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZW53ZWl0ZWNo/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
+<meta property="og:updated_time" content="2017-09-07T01:22:01.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何用uWSGI最快地将Django(CMS)部署到Nginx上">
+<meta name="twitter:description" content="前言    CentOS服务器配置Djangocms应用，刚开始在windows下用Apache+mod_wsgi.so配置属实是坑多到令人发指，python-web应用建议在linux下用uwsgi+Nginx配置(windows不支持uwsgi),进一步实现负载均衡。    本博文只针对自己搭建+部署的djangocms应用进行解析">
+<meta name="twitter:image" content="http://op72m4y17.bkt.clouddn.com/x1.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Ykhc" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>如何用uWSGI最快地将Django(CMS)部署到Nginx上 | Ykhc</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Kali-Hac</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">心存敬畏，不忘初心。</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="http://120.24.43.156:3000">Hac在线聊天系统</a></li>
+                        
+                            <li><a href="http://120.24.43.156">第十二届软件文化节</a></li>
+                        
+                            <li><a href="/about/">关于我/关注iSoftware</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com/" title="StackOverflow"></a>
+                            
+                                <a class="fa 微信" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
+                            
+                                <a class="fa 豆瓣" href="https://movie.douban.com/" title="豆瓣"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aes-128-cbc对称加密/">Aes-128-cbc对称加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidSQLite简单应用/">AndroidSQLite简单应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CryptoJS/">CryptoJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPS定位/">GPS定位</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP-WebSocket/">HTTP/WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx的socket转发/">Nginx的socket转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payloads/">Payloads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SMS功能/">SMS功能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Software/">Software</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Table/">Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telnet/">Telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/font-family/">font-family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket-io/">socket.io</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uWSGI与Nginx的通信/">uWSGI与Nginx的通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制uwsgi协议/">二进制uwsgi协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反向代理服务器/">反向代理服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/在线聊天-点歌系统/">在线聊天/点歌系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多级页表/">多级页表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多进程模拟/">多进程模拟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安卓传感器的运用/">安卓传感器的运用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层TCP即时通讯/">底层TCP即时通讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旁带缓冲TLB表/">旁带缓冲TLB表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性加速度传感器/">线性加速度传感器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本语言的面向对象设计/">脚本语言的面向对象设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通讯加密的应用/">通讯加密的应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页框LRU回收机制/">页框LRU回收机制</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.csdn.net/csdn568302203">My CSDN</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://github.com/Kali-Hac/node_js_chat">My GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">把好运留给别人，把实力留给自己。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Kali-Hac</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Kali-Hac</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">心存敬畏，不忘初心。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="http://120.24.43.156:3000">Hac在线聊天系统</a></li>
+                
+                    <li><a href="http://120.24.43.156">第十二届软件文化节</a></li>
+                
+                    <li><a href="/about/">关于我/关注iSoftware</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/" title="StackOverflow"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
+                            
+                                <a class="fa 豆瓣" target="_blank" href="https://movie.douban.com/" title="豆瓣"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-djangocms-uwsgi" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/06/djangocms-uwsgi/" class="article-date">
+      <time datetime="2017-09-06T14:07:53.000Z" itemprop="datePublished">2017-09-06</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何用uWSGI最快地将Django(CMS)部署到Nginx上
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/作者：Hac/">作者：Hac</a><a class="article-category-link" href="/categories/作者：Hac/Python网络应用/">Python网络应用</a><a class="article-category-link" href="/categories/作者：Hac/Python网络应用/Django实战笔记/">Django实战笔记</a><a class="article-category-link" href="/categories/作者：Hac/Python网络应用/Django实战笔记/DjangoCMS应用部署/">DjangoCMS应用部署</a><a class="article-category-link" href="/categories/作者：Hac/Python网络应用/Django实战笔记/DjangoCMS应用部署/uWSGI与Nginx的配置/">uWSGI与Nginx的配置</a><a class="article-category-link" href="/categories/作者：Hac/Python网络应用/Django实战笔记/DjangoCMS应用部署/uWSGI与Nginx的配置/附-Apache-mod-wsgi-so/">(附)Apache+mod_wsgi.so</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx的socket转发/">Nginx的socket转发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/uWSGI与Nginx的通信/">uWSGI与Nginx的通信</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/二进制uwsgi协议/">二进制uwsgi协议</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反向代理服务器/">反向代理服务器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/负载均衡/">负载均衡</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p></p><h2 id="intro">前言</h2><br>    CentOS服务器配置Djangocms应用，刚开始在windows下用Apache+mod_wsgi.so配置属实是坑多到令人发指，python-web应用建议在linux下用uwsgi+Nginx配置(windows不支持uwsgi),进一步实现负载均衡。<br>    本博文只针对自己搭建+部署的djangocms应用进行解析<br><a id="more"></a><p></p>
+<h2 id="Apache-mod-wsgi-so配置django应用"><a href="#Apache-mod-wsgi-so配置django应用" class="headerlink" title="Apache+mod_wsgi.so配置django应用"></a>Apache+mod_wsgi.so配置django应用</h2><ul>
+<li><p>给各位想要这样配置的小伙伴提供一些友情资源：</p>
+<blockquote>
+<p>下面是适应windows下Apache和python各版本的mod_wsgi.so模块压缩包：<br><a href="http://pan.baidu.com/s/1i4AwRiP" target="_blank" rel="external">链接: http://pan.baidu.com/s/1i4AwRiP 密码：osqw</a><br><img src="http://op72m4y17.bkt.clouddn.com/x1.png" alt="适应不同版本的mod_wsgi.so"><br><a href="http://pan.baidu.com/s/1bplMONl" target="_blank" rel="external">链接：http://pan.baidu.com/s/1bplMONl 密码：57l8</a><br><img src="http://op72m4y17.bkt.clouddn.com/x2.png" alt="适应不同编译版本的mod_wsgi.so"></p>
+</blockquote>
+</li>
+<li><p>具体部署到服务器的教程可以参照这篇<br><a href="http://agong.org/2013/windows64-python3-apache-wsgi-django.html" target="_blank" rel="external">windows64位下python3配合apache与wsgi部署django项目</a><br>本篇博文主要讲Nginx+uwsgi的配置，接下来进入正题</p>
+<h2 id="uwsgi-Nginx部署的原理"><a href="#uwsgi-Nginx部署的原理" class="headerlink" title="uwsgi+Nginx部署的原理"></a>uwsgi+Nginx部署的原理</h2><h3 id="Nginx-uWSGI-APP官方简介"><a href="#Nginx-uWSGI-APP官方简介" class="headerlink" title="Nginx+uWSGI+APP官方简介"></a>Nginx+uWSGI+APP官方简介</h3><blockquote>
+<p>APP（应用程序），就是开发者写的应用程序，例如django，bottle这些。记录怎么处理客户端发来的请求的逻辑部分。<br>WSGI，是一个协议，Python用于Web开发的协议<br>uWSGI，是一个程序，充当Web服务器或中间件。<br>如果架构是Nginx+uWSGI+APP，uWSGI是一个中间件<br>如果架构是uWSGI+APP，uWSGI是一个服务器<br>uwsgi，是uWSGI程序实现的一个自有的协议。<br>Web协议出现顺序：<br>CGI -&gt; FCGI -&gt; WSGI -&gt; uwsgi<br>CGI，最早的协议<br>FCGI，比CGI快<br>WSGI，全称 Web Server Gateway Interface。是Python专用的协议，其他语言没有。用于处理Web服务器和应用程序（APP）的交互信息。很多Web框架（如：django）都会自带WSGI服务器，但是性能不好，只作测试用途。工作原理如下：<br><img src="http://7xpt1q.com1.z0.glb.clouddn.com/img%2Fdoc%2FWSGI%E5%8E%9F%E7%90%86.png" alt="WSGI"><br>uwsgi，比FCGI和WSGI都快，是uWSGI项目自有的协议，主要特征是采用二进制来存储数据，之前的协议都是使用字符串，所以在存储空间和解析速度上，都优于字符串型协议<br>附上一张性能对比图：<br><img src="http://lazynight.me/wp-content/uploads/2012/09/uwsgi.jpg" alt="uwsgi性能最优"><br>上面说的都是协议，而作为反向代理服务器(软件)的Nginx，它的工作原理如下：<br><img src="http://7xpt1q.com1.z0.glb.clouddn.com/img%2Fdoc%2F%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%8E%9F%E7%90%86.png" alt="Nginx工作原理"><br>什么是反向代理？<br>正向代理，例如FQ用的代理服务器就是正向代理，浏览器主动请求代理服务器，代理服务器转发请求到对应的目标服务器<br>反向代理，部署在Web服务器上，代理所有外部网络对内部网络的访问。浏览器访问服务器，必须经过这个代理，是被动的。<br>正向代理的主动方是客户端，反向代理的主动方是Web服务器。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">反向代理的作用：</div><div class="line">1.安全，客户端对Web服务器的访问需要先经过反向代理服务器。这样可以防止外部程序对Web服务器的直接攻击。</div><div class="line">2.负载均衡，反向代理服务器可以根据Web服务器的负载情况，动态地把HTTP请求交给不同的Web服务器来处理，前提是要有多个Web服务器。</div><div class="line">3.提升Web服务器的IO性能。一个HTTP请求的数据，从客户端传输给服务器，是需要时间的，例如N秒，如果直接传给Web服务器，Web服务器就需要让一个进程阻塞N秒，来接收IO，这样会降低Web服务器的性能。如果使用反向代理服务器，先让反向代理服务器接收完整个HTTP请求，再把请求发给Web服务器，就能提升Web服务器的性能。还有一些静态文件的请求，可以直接交给反向代理来处理，不需要经过Web服务器。</div><div class="line">Nginx是一个高性能的HTTP和反向代理服务器。</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+<p>Nginx+uWSGI+应用程序的架构：<br><img src="http://7xpt1q.com1.z0.glb.clouddn.com/img%2Fdoc%2FNginx%2BuWSGI%E5%8E%9F%E7%90%86.png" alt="Nginx+uWSGI+应用程序"></p>
+<h2 id="安装好Nginx和uwsgi"><a href="#安装好Nginx和uwsgi" class="headerlink" title="安装好Nginx和uwsgi"></a>安装好Nginx和uwsgi</h2><blockquote>
+<p>Linux环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$sudo apt-get install python-dev</div><div class="line">$sudo apt-get install python-pip</div><div class="line">$sudo pip install pip --upgrade</div><div class="line">$sudo apt-get install libpcre3 libpcre3-dev</div><div class="line">$sudo apt-get install zlib1g-dev</div><div class="line">$sudo apt-get install nginx-full</div></pre></td></tr></table></figure></p>
+<p>CentOS环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">yum install pcre</div><div class="line">yum install libxml2</div><div class="line">yum install python-devel</div><div class="line">//安装uwsgi需要libxml2和python-devel</div><div class="line">//然后uWSGI可以从官网wget最新版本再解压，此处采用pip安装</div><div class="line">pip install uwsgi</div><div class="line">//Nginx编译需要pcre和openssl的支持，先下载安装：</div><div class="line">yum install pcre-devel openssl openssl-devel</div><div class="line">wget http://download.nginx.org/nginx-1.3.6.tar.gz</div><div class="line">//可以下载更新版，此处将以1.3.6作为示例</div><div class="line">cd nginx-1.3.6</div><div class="line">./configure</div><div class="line">make</div><div class="line">make install</div><div class="line">//至此安装完成</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="接下来分三步完成django项目的部署"><a href="#接下来分三步完成django项目的部署" class="headerlink" title="接下来分三步完成django项目的部署"></a>接下来分三步完成django项目的部署</h2><h3 id="1-在工程项目下新建一个Nginx配置文件-此处命名为mysite-conf"><a href="#1-在工程项目下新建一个Nginx配置文件-此处命名为mysite-conf" class="headerlink" title="1.在工程项目下新建一个Nginx配置文件(此处命名为mysite.conf)"></a>1.在工程项目下新建一个Nginx配置文件(此处命名为mysite.conf)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line"># 监听的端口</div><div class="line">listen      8000;</div><div class="line">server_name localhost; # 如果是服务器的话，换上IP地址</div><div class="line">charset     utf-8;</div><div class="line">access_log /haocong/s_sites/access_log; #输出访问记录</div><div class="line">error_log  /haocong/s_sites/error_log; # 将/haocong/s_sites换成你项目所在地址</div><div class="line"># max upload size</div><div class="line">client_max_body_size 75M; </div><div class="line">location /static &#123;</div><div class="line">alias  /haocong/s_sites/static; # 将/haocong/s_sites换成你项目所在地址</div><div class="line">&#125;</div><div class="line"># Finally, send all non-media requests to the Django server.</div><div class="line">location / &#123;</div><div class="line">    uwsgi_pass 127.0.0.1:3400; //用于与uWSGI的socket通信</div><div class="line">    include    /etc/nginx/uwsgi_params; # 包含uwsgi_params(uwsgi参数设置)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这个是Nginx的配置文件，除了常见的目录和参数设置之外，还包含了一个与uWSGI相关的参数uwsgi_pass，而且后面接的是一个端口，Nginx和uWSGI是如何合作的？<br>先用几张图说明一下它们各自的工作流程：</p>
+</blockquote>
+<ul>
+<li>nginx+uwsgi+django部署原理图<br><img src="http://img.blog.csdn.net/20170315104337260?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZW53ZWl0ZWNo/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="nginx+uwsgi+django部署原理图"></li>
+</ul>
+<h3 id="2-通过软连接将配置文件转移到Nginx所属的目录下"><a href="#2-通过软连接将配置文件转移到Nginx所属的目录下" class="headerlink" title="2.通过软连接将配置文件转移到Nginx所属的目录下"></a>2.通过软连接将配置文件转移到Nginx所属的目录下</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$sudo ln -s /haocong/s_sites/mysite.conf /etc/nginx/conf.d/mysite.conf</div><div class="line">#注意要将/haocong/s_sites改为自己项目所在地址</div><div class="line">#重启nginx</div><div class="line">$sudo service nginx restart</div></pre></td></tr></table></figure>
+<blockquote>
+<p>为什么是放在conf.d目录下而不是直接修改nignx/nginx.conf呢？<br>这是因为nginx.conf里有一句include /etc/nginx/conf.d/*.conf,就是Nginx主配置会自动加载conf.d里的所有配置文件，不修改主文件nginx.conf可以实现一定程度的低耦合，防止配置混乱。</p>
+</blockquote>
+<h3 id="3-在项目目录下新建ok-ini文件配置uwsgi"><a href="#3-在项目目录下新建ok-ini文件配置uwsgi" class="headerlink" title="3.在项目目录下新建ok.ini文件配置uwsgi"></a>3.在项目目录下新建ok.ini文件配置uwsgi</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[uwsgi]</div><div class="line">socket = 127.0.0.1:3400</div><div class="line"># chdir修改为你的django项目地址</div><div class="line">chdir           = /haocong/s_sites</div><div class="line"># module修改为你的django中wsgi.py相对于chdir的地址,&apos;.&apos;代表下一层目录</div><div class="line">module          = s_sites.wsgi</div><div class="line"># 例如我的wsgi.py是放在/haocong/s_sites/s_sites/wsgi.py</div><div class="line"># 主进程设置</div><div class="line">master          = true</div><div class="line"># 最大进程设置</div><div class="line">processes       = 2</div><div class="line">threads = 2</div><div class="line">max-requests = 6000</div><div class="line"># 权限设置，可能需要</div><div class="line">chmod-socket    = 664</div><div class="line"># 在结束时清理环境</div><div class="line">vacuum          = true</div></pre></td></tr></table></figure>
+<blockquote>
+<p>启动uwsgi，键入uwsgi –ini /所放位置/ok.ini </p>
+<ul>
+<li>如果看到如下输出，表明运行正常：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"> [uWSGI] getting INI configuration from hello_uwsgi.ini</div><div class="line">*** .........</div><div class="line">machine: x86_64</div><div class="line">clock source: unix</div><div class="line">pcre jit disabled</div><div class="line">detected number of CPU cores: 2</div><div class="line">current working directory: .....</div><div class="line">detected binary path: /usr/local/bin/uwsgi</div><div class="line">uWSGI running as root, you can use --uid/--gid/--chroot options</div><div class="line">*** WARNING: you are running uWSGI as root !!! (use the --uid flag) ***</div><div class="line">chdir() to /......</div><div class="line">your processes number limit is 175957</div><div class="line">your memory page size is 4096 bytes</div><div class="line">detected max file descriptor number: 4096</div><div class="line">lock engine: pthread robust mutexes</div><div class="line">thunder lock: disabled (you can enable it with --thunder-lock)</div><div class="line">uwsgi socket 0 bound to TCP address 127.0.0.1:3400 fd 3</div><div class="line">Python version: 2.7.6 (default, ......)  [GCC 4.8.2]</div><div class="line">*** Python threads support is disabled. You can enable it with --enable-threads ***</div><div class="line">Python main interpreter initialized at 0x1dc6ef0</div><div class="line">your server socket listen backlog is limited to 100 connections</div><div class="line">your mercy for graceful operations on workers is 60 seconds</div><div class="line">mapped 218280 bytes (213 KB) for 2 cores</div><div class="line">*** Operational MODE: preforking ***</div><div class="line">WSGI app 0 (mountpoint=&apos;&apos;) ready in 1 seconds on interpreter 0x1dc6ef0 pid: 21844 (default app)</div><div class="line">*** uWSGI is running in multiple interpreter mode ***</div><div class="line">spawned uWSGI master process (pid: 21844)</div><div class="line">spawned uWSGI worker 1 (pid: 21845, cores: 1)</div><div class="line">spawned uWSGI worker 2 (pid: 21846, cores: 1)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>如何设置uwsgi后台运行？在ok.ini配置文件中添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">daemonize = /haocong/s_sites/uwsgi.log # /haocong/s_sites改为你的项目目录</div><div class="line"># 这样就会把wsgi后台运行的日志打印到uwsgi.log中</div></pre></td></tr></table></figure></p>
+<h2 id="设置完毕，在浏览器输入你设置的服务器IP-端口即可访问-输入http-xxx-xxx-xxx-xxx-8000访问你的django应用"><a href="#设置完毕，在浏览器输入你设置的服务器IP-端口即可访问-输入http-xxx-xxx-xxx-xxx-8000访问你的django应用" class="headerlink" title="设置完毕，在浏览器输入你设置的服务器IP+端口即可访问,输入http://xxx.xxx.xxx.xxx:8000访问你的django应用"></a>设置完毕，在浏览器输入你设置的服务器IP+端口即可访问,输入<a href="http://xxx.xxx.xxx.xxx:8000访问你的django应用" target="_blank" rel="external">http://xxx.xxx.xxx.xxx:8000访问你的django应用</a></h2><blockquote>
+<p>解释：在nginx设置文件中一共出现了两个端口，一个是8000，用于对客户端的监听，一个是3400，用于与uWSGI进行socket通信，也就是说当用户访问8000端口时，nginx服务器软件会将对应动态网页请求通过3400转发给uWSGI，然后获取相应资源再反馈给客户端，但是对于一般的静态资源访问，nginx可以自行处理(所以需要在配置文件里设置静态文件目录)而不需要转发给uWSGI。</p>
+</blockquote>
+<h2 id="上述配置是笔者自己整理-编写，测试通过，若配置失败，可以参考如下教程："><a href="#上述配置是笔者自己整理-编写，测试通过，若配置失败，可以参考如下教程：" class="headerlink" title="上述配置是笔者自己整理+编写，测试通过，若配置失败，可以参考如下教程："></a>上述配置是笔者自己整理+编写，测试通过，若配置失败，可以参考如下教程：</h2><p>(网上很多教程都是不全的，这里只提供比较可信的教程)</p>
+<blockquote>
+<p><a href="https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/WSGIquickstart.html" target="_blank" rel="external">官方uWSGI配置教程以及更多优化特性</a><br><a href="http://www.jianshu.com/p/f83f8cca9a0a" target="_blank" rel="external">nginx+centos+uwsgi部署django过程全记录</a><br><a href="https://my.oschina.net/junn/blog/147923" target="_blank" rel="external">nginx问题解决：502 bad gateway</a><br>个人推荐有什么问题直接谷歌overflow，上面的回答一般比较全面</p>
+</blockquote>
+<h3 id="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"><a href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正" class="headerlink" title="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"></a>各位小伙伴有任何问题可以在下方留言，我会及时解答或订正</h3><p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/09/06/djangocms-uwsgi/">如何用uWSGI最快地将Django(CMS)部署到Nginx上</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
+        <p><span>发布时间:</span>2017-09-06, 22:07:53</p>
+        <p><span>最后更新:</span>2017-09-07, 09:22:01</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/09/06/djangocms-uwsgi/" title="如何用uWSGI最快地将Django(CMS)部署到Nginx上">http://yikunhaocong.com/2017/09/06/djangocms-uwsgi/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2017/09/06/djangocms-uwsgi/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/08/17/p-table/">
+                    多级页表虚拟内存管理器C++、python和node.js的实现
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#intro"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Apache-mod-wsgi-so配置django应用"><span class="toc-number">2.</span> <span class="toc-text">Apache+mod_wsgi.so配置django应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#uwsgi-Nginx部署的原理"><span class="toc-number">3.</span> <span class="toc-text">uwsgi+Nginx部署的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx-uWSGI-APP官方简介"><span class="toc-number">3.1.</span> <span class="toc-text">Nginx+uWSGI+APP官方简介</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装好Nginx和uwsgi"><span class="toc-number">4.</span> <span class="toc-text">安装好Nginx和uwsgi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接下来分三步完成django项目的部署"><span class="toc-number">5.</span> <span class="toc-text">接下来分三步完成django项目的部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-在工程项目下新建一个Nginx配置文件-此处命名为mysite-conf"><span class="toc-number">5.1.</span> <span class="toc-text">1.在工程项目下新建一个Nginx配置文件(此处命名为mysite.conf)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-通过软连接将配置文件转移到Nginx所属的目录下"><span class="toc-number">5.2.</span> <span class="toc-text">2.通过软连接将配置文件转移到Nginx所属的目录下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-在项目目录下新建ok-ini文件配置uwsgi"><span class="toc-number">5.3.</span> <span class="toc-text">3.在项目目录下新建ok.ini文件配置uwsgi</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置完毕，在浏览器输入你设置的服务器IP-端口即可访问-输入http-xxx-xxx-xxx-xxx-8000访问你的django应用"><span class="toc-number">6.</span> <span class="toc-text">设置完毕，在浏览器输入你设置的服务器IP+端口即可访问,输入http://xxx.xxx.xxx.xxx:8000访问你的django应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上述配置是笔者自己整理-编写，测试通过，若配置失败，可以参考如下教程："><span class="toc-number">7.</span> <span class="toc-text">上述配置是笔者自己整理+编写，测试通过，若配置失败，可以参考如下教程：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"><span class="toc-number">7.1.</span> <span class="toc-text">各位小伙伴有任何问题可以在下方留言，我会及时解答或订正</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"如何用uWSGI最快地将Django(CMS)部署到Nginx上　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+	<div id="uyan_frame"></div>
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2128463';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/08/17/p-table/" title="下一篇: 多级页表虚拟内存管理器C++、python和node.js的实现">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/09/06/djangocms-uwsgi/">如何用uWSGI最快地将Django(CMS)部署到Nginx上</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/p-table/">多级页表虚拟内存管理器C++、python和node.js的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/appV3-0/">(V3.0最新版+开源地址)基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/19/app/">基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">基于Node.js框架和Express/socket.io的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">基于Node.js框架和Express/socket.io的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 Kali-Hac
+            </div>
+            <div class="footer-right">
+                <a href="yikunhaocong.xyz" target="_blank" title="Contact with me">Hac's</a>  Blog Powered</a> by <a href="http://hexo.io/" target="_blank" >Hexo <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+             tags: ".article-tag a", 
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
