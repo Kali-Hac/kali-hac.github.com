@@ -15,12 +15,12 @@
 
 
 
-<meta name="description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。">
+<meta name="description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。    php脚本代码已开源至：https://github.com/Kali-Hac/php_spider">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本">
 <meta property="og:url" content="http://yikunhaocong.com/2017/09/18/php-spider1/index.html">
 <meta property="og:site_name" content="Ykhc">
-<meta property="og:description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。">
+<meta property="og:description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。    php脚本代码已开源至：https://github.com/Kali-Hac/php_spider">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1p.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/2p.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/3p.png">
@@ -43,10 +43,10 @@
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/18p.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/20p.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
-<meta property="og:updated_time" content="2017-09-19T14:09:29.151Z">
+<meta property="og:updated_time" content="2017-09-19T14:30:26.379Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本">
-<meta name="twitter:description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。">
+<meta name="twitter:description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。    php脚本代码已开源至：https://github.com/Kali-Hac/php_spider">
 <meta name="twitter:image" content="http://op72m4y17.bkt.clouddn.com/1p.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -354,7 +354,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p></p><h2 id="intro">前言</h2><br>    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。<br><a id="more"></a><p></p>
+        <p></p><h2 id="intro">前言</h2><br>    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。<br>    php脚本代码已开源至：<a href="https://github.com/Kali-Hac/php_spider" target="_blank" rel="external">https://github.com/Kali-Hac/php_spider</a><br><a id="more"></a><p></p>
 <h2 id="基础：先把php语法学熟，并初步掌握php-curl库的用法-个人用时1-2天"><a href="#基础：先把php语法学熟，并初步掌握php-curl库的用法-个人用时1-2天" class="headerlink" title="基础：先把php语法学熟，并初步掌握php_curl库的用法(个人用时1-2天)"></a>基础：先把php语法学熟，并初步掌握php_curl库的用法(个人用时1-2天)</h2><p>想快速制作一个好的爬虫，关键在于对浏览器请求页面及所获数据的分析，分析得越彻底越仔细，你的代码模拟的效果就越可靠越高效。</p>
 <h2 id="1-学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”"><a href="#1-学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”" class="headerlink" title="1.学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”"></a>1.学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”</h2><blockquote>
 <p>打开谷歌浏览器，先按F12打开开发者工具，并将功能切换至Network，然后再打开教务网(注意先后顺序，若开发者窗口里无数据显示，则请刷新教务网的网页再等一会)，如下所示<br><img src="http://op72m4y17.bkt.clouddn.com/1p.png" alt="开发者工具Network详情"></p>
@@ -438,7 +438,7 @@
         <p><span>本文标题:</span><a href="/2017/09/18/php-spider1/">PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
         <p><span>发布时间:</span>2017-09-18, 23:59:58</p>
-        <p><span>最后更新:</span>2017-09-19, 22:09:29</p>
+        <p><span>最后更新:</span>2017-09-19, 22:30:26</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/09/18/php-spider1/" title="PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本">http://yikunhaocong.com/2017/09/18/php-spider1/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2017/09/18/php-spider1/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
