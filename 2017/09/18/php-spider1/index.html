@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kali-Hac" />
+
+
+
+<meta name="description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本">
+<meta property="og:url" content="http://yikunhaocong.com/2017/09/18/php-spider1/index.html">
+<meta property="og:site_name" content="Ykhc">
+<meta property="og:description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/2p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/3p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/4p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/7p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/8p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/5p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/6p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/9p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/10p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/12p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/11p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/13p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/9p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/15p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/14p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/16p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/19p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/17p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/18p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/20p.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
+<meta property="og:updated_time" content="2017-09-19T14:09:29.151Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本">
+<meta name="twitter:description" content="前言    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。">
+<meta name="twitter:image" content="http://op72m4y17.bkt.clouddn.com/1p.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Ykhc" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本 | Ykhc</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Kali-Hac</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">心存敬畏，不忘初心。</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="http://120.24.43.156:3000">Hac在线聊天系统</a></li>
+                        
+                            <li><a href="http://120.24.43.156">第十二届软件文化节</a></li>
+                        
+                            <li><a href="/about/">关于我/关注iSoftware</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com/" title="StackOverflow"></a>
+                            
+                                <a class="fa 微信" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
+                            
+                                <a class="fa 豆瓣" href="https://movie.douban.com/" title="豆瓣"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aes-128-cbc对称加密/">Aes-128-cbc对称加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidSQLite简单应用/">AndroidSQLite简单应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CryptoJS/">CryptoJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPS定位/">GPS定位</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP-WebSocket/">HTTP/WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx的socket转发/">Nginx的socket转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payloads/">Payloads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SMS功能/">SMS功能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Software/">Software</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Table/">Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telnet/">Telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie验证/">cookie验证</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/font-family/">font-family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl/">php_curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl快速开发/">php_curl快速开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php学习-实战笔记/">php学习/实战笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php应用脚本/">php应用脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket-io/">socket.io</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uWSGI与Nginx的通信/">uWSGI与Nginx的通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制uwsgi协议/">二进制uwsgi协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作者：Hac原创/">作者：Hac原创</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反向代理服务器/">反向代理服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/在线聊天-点歌系统/">在线聊天/点歌系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多级页表/">多级页表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多进程模拟/">多进程模拟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安卓传感器的运用/">安卓传感器的运用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层TCP即时通讯/">底层TCP即时通讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旁带缓冲TLB表/">旁带缓冲TLB表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性加速度传感器/">线性加速度传感器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/综测系统数据爬取、自动排名/">综测系统数据爬取、自动排名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络爬虫/">网络爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本语言的面向对象设计/">脚本语言的面向对象设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化脚本/">自动化脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/谷歌抓包分析隐藏数据/">谷歌抓包分析隐藏数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通讯加密的应用/">通讯加密的应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页框LRU回收机制/">页框LRU回收机制</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.csdn.net/csdn568302203">My CSDN</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://github.com/Kali-Hac/node_js_chat">My GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">把好运留给别人，把实力留给自己。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Kali-Hac</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Kali-Hac</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">心存敬畏，不忘初心。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="http://120.24.43.156:3000">Hac在线聊天系统</a></li>
+                
+                    <li><a href="http://120.24.43.156">第十二届软件文化节</a></li>
+                
+                    <li><a href="/about/">关于我/关注iSoftware</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/" title="StackOverflow"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
+                            
+                                <a class="fa 豆瓣" target="_blank" href="https://movie.douban.com/" title="豆瓣"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-php-spider1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/18/php-spider1/" class="article-date">
+      <time datetime="2017-09-18T15:59:58.000Z" itemprop="datePublished">2017-09-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/作者：Hac/">作者：Hac</a><a class="article-category-link" href="/categories/作者：Hac/教务系统数据爬取/">教务系统数据爬取</a><a class="article-category-link" href="/categories/作者：Hac/教务系统数据爬取/php学习-实战笔记/">php学习/实战笔记</a><a class="article-category-link" href="/categories/作者：Hac/教务系统数据爬取/php学习-实战笔记/代码模拟登录-按键/">代码模拟登录/按键</a><a class="article-category-link" href="/categories/作者：Hac/教务系统数据爬取/php学习-实战笔记/代码模拟登录-按键/php-curl快速开发/">php_curl快速开发</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cookie验证/">cookie验证</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php-curl/">php_curl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php应用脚本/">php应用脚本</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络爬虫/">网络爬虫</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化脚本/">自动化脚本</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/谷歌抓包分析隐藏数据/">谷歌抓包分析隐藏数据</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p></p><h2 id="intro">前言</h2><br>    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。<br><a id="more"></a><p></p>
+<h2 id="基础：先把php语法学熟，并初步掌握php-curl库的用法-个人用时1-2天"><a href="#基础：先把php语法学熟，并初步掌握php-curl库的用法-个人用时1-2天" class="headerlink" title="基础：先把php语法学熟，并初步掌握php_curl库的用法(个人用时1-2天)"></a>基础：先把php语法学熟，并初步掌握php_curl库的用法(个人用时1-2天)</h2><p>想快速制作一个好的爬虫，关键在于对浏览器请求页面及所获数据的分析，分析得越彻底越仔细，你的代码模拟的效果就越可靠越高效。</p>
+<h2 id="1-学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”"><a href="#1-学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”" class="headerlink" title="1.学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”"></a>1.学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”</h2><blockquote>
+<p>打开谷歌浏览器，先按F12打开开发者工具，并将功能切换至Network，然后再打开教务网(注意先后顺序，若开发者窗口里无数据显示，则请刷新教务网的网页再等一会)，如下所示<br><img src="http://op72m4y17.bkt.clouddn.com/1p.png" alt="开发者工具Network详情"></p>
+<h3 id="开始分析网页数据与页面构造"><a href="#开始分析网页数据与页面构造" class="headerlink" title="开始分析网页数据与页面构造"></a>开始分析网页数据与页面构造</h3><p>“Network”窗口里显示了进入教务网后的所有对外请求Request以及对内Response，包括各类document文件(.htm,.aspx,.jsp,.php,.com等,当然教务网里只有aspx和htm和com)，还有各类资源文件(.css,.png,.gif,.js等),一般而言最有用的是type为document和text/html类型的文件，因为关于该网页最详细的数据一般就是在某个该类型的文件中，这个需要你去搜寻。你需要找到显示教务网界面的那个”html”文件(可能是.aspx或.jsp或.php,目前只接触过此类)。</p>
+<ul>
+<li>很快，通过点击”Name”下面的地址，我们找到了显示教务网界面的那个文件(即”preview”里面的html代码刚好对应网站上面显示的内容),是default2.aspx(一共有两个default2.aspx,其中一个的preview显示为空，不是我们要找的)，如下图所示(“Preview”详情)：<br><img src="http://op72m4y17.bkt.clouddn.com/2p.png" alt="教务网页面数据请求/回复详情"><br>我们可以看一下default2.aspx的“Header”详情:<br><img src="http://op72m4y17.bkt.clouddn.com/3p.png" alt="default2.aspx详情上"><br><img src="http://op72m4y17.bkt.clouddn.com/4p.png" alt="default2.aspx详情下"><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">General ↓</div><div class="line">Request URL:http://xsweb.scuteo.com/(jfp5h155ru2dqbzoniibsg45)/default2.aspx</div><div class="line">Request Method:GET</div><div class="line">Status Code:200 OK</div><div class="line">Remote Address:127.0.0.1:4832</div><div class="line">Response Headers</div><div class="line">view source</div><div class="line">Response Headers ↓</div><div class="line">Cache-Control:no-cache, no-store</div><div class="line">Content-Length:5708</div><div class="line">Content-Type:text/html; charset=gb2312</div><div class="line">Date:Mon, 18 Sep 2017 22:59:05 GMT</div><div class="line">Expires:-1</div><div class="line">Keep-Alive:timeout=38</div><div class="line">P3p:CP=CAO PSA OUR</div><div class="line">Pragma:no-cache</div><div class="line">Pragma:no-cache</div><div class="line">Server:Microsoft-IIS/6.0</div><div class="line">X-Aspnet-Version:1.1.4322</div><div class="line">X-Powered-By:ASP.NET</div><div class="line">Request Headers</div><div class="line">view source</div><div class="line">Request Headers ↓</div><div class="line">Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div><div class="line">Accept-Encoding:gzip, deflate, sdch</div><div class="line">Accept-Language:zh-CN,zh;q=0.8</div><div class="line">Host:xsweb.scuteo.com</div><div class="line">Proxy-Connection:keep-alive</div><div class="line">Referer:http://www.scut.edu.cn/jw2005/</div><div class="line">Upgrade-Insecure-Requests:1</div><div class="line">User-Agent:Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<h3 id="浏览器Headers参数的简单解释"><a href="#浏览器Headers参数的简单解释" class="headerlink" title="浏览器Headers参数的简单解释"></a>浏览器Headers参数的简单解释</h3><ul>
+<li>上面显示的内容中有一个General - Request URL，这个网址就是我们要发送请求的网址，也就是要把账号和密码以post形式传送过去的网址，为什么是post形式呢？接下来我会进一步讲解。然后其他的Request Headers是我们浏览器发送请求的各类参数，php代码之所以能够模拟浏览，就是因为它能够向某个网络地址发送这些参数(从而模拟浏览器的行为)，当然php_curl库已经为我们封装好了各类参数，我们只需要设置好url,跳转连接，post参数，以及返回形式就可以了。<h3 id="校园网内网环境下的登录"><a href="#校园网内网环境下的登录" class="headerlink" title="校园网内网环境下的登录"></a>校园网内网环境下的登录</h3><ul>
+<li>一般情况下Remote Address是一个有效的IP地址，而这里你会发现Remote Address是127.0.0.1:4832，127.0.0.1表示是本地(局域网)，表示我们是通过内网的4832端口进入的，学校关闭了几个外网入口，其实也是利大于弊，一方面可以确保是校内校园网用户师生登录(第一层身份验证)，另外可以防止大规模的DDos攻击(无法通过外网发起无限制访问)。目前博主还没找到教务网一个可用的外网IP，虽然在大一时写python爬虫的时候找了好几个可用的外网地址，下图是我大一时用python写教务网爬虫发送的请求数据:<br><img src="http://op72m4y17.bkt.clouddn.com/7p.png" alt="大一时python代码"><blockquote>
+<p>提交数据很多，但后来发现有一些是不需要的，当年写代码时写得比较粗糙(虽然现在也差不多)，几个外网地址如下：110.65.10.235 110.65.10.239 你会发现界面少了个学生入口，所以已经不可用了，如下图所示：</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://op72m4y17.bkt.clouddn.com/8p.png" alt="外网学生不可用的教务网页面"></p>
+<h2 id="2-将登录流程完完全全走一遍-浏览器中进行-，然后根据network进行分析"><a href="#2-将登录流程完完全全走一遍-浏览器中进行-，然后根据network进行分析" class="headerlink" title="2.将登录流程完完全全走一遍(浏览器中进行)，然后根据network进行分析"></a>2.将登录流程完完全全走一遍(浏览器中进行)，然后根据network进行分析</h2><h3 id="开始输入账号密码验证码进行登录"><a href="#开始输入账号密码验证码进行登录" class="headerlink" title="开始输入账号密码验证码进行登录"></a>开始输入账号密码验证码进行登录</h3><p><img src="http://op72m4y17.bkt.clouddn.com/5p.png" alt="输入账号密码登录"></p>
+<blockquote>
+<p>登录进去后同样要做的工作是在开发者工具中的“Network”找到我们登进去的页面的名称，如下所示:<br><img src="http://op72m4y17.bkt.clouddn.com/6p.png" alt="找到登录的链接"></p>
+<ul>
+<li>你会发现有一个规则，登进去的页面总是<a href="http://xsweb.scuteo.com/(jfp5h155ru2dqbzoniibsg45)/xs_main.aspx?xh=(你的学号),但是我们要找的应该是我们发送请求的那个页面，也就是我们要看default2.aspx,而且把Headers往下移动，你会惊奇的发现，你的账号密码信息完整无遗地显示了出来，如下图所示：" target="_blank" rel="external">http://xsweb.scuteo.com/(jfp5h155ru2dqbzoniibsg45)/xs_main.aspx?xh=(你的学号),但是我们要找的应该是我们发送请求的那个页面，也就是我们要看default2.aspx,而且把Headers往下移动，你会惊奇的发现，你的账号密码信息完整无遗地显示了出来，如下图所示：</a><br><img src="http://op72m4y17.bkt.clouddn.com/9p.png" alt="提交的表单数据"><h3 id="根据Form-Data确定我们要通过php提交的数据"><a href="#根据Form-Data确定我们要通过php提交的数据" class="headerlink" title="根据Form Data确定我们要通过php提交的数据"></a>根据Form Data确定我们要通过php提交的数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">__VIEWSTATE:dDwyMDczNjQ0MDAyOzs+PnRyFsXNh0MDNa7svzv+XK/PTLg=</div><div class="line">txtUserName:(你的学号)</div><div class="line">TextBox2:(你的密码)</div><div class="line">txtSecretCode:(验证码)</div><div class="line">RadioButtonList1:(unable to decode value)</div><div class="line">Button1:</div><div class="line">lbLanguage:</div><div class="line">hidPdrs:</div><div class="line">hidsc:</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<h3 id="根据页面信息搜寻隐藏的需要提交的数据"><a href="#根据页面信息搜寻隐藏的需要提交的数据" class="headerlink" title="根据页面信息搜寻隐藏的需要提交的数据"></a>根据页面信息搜寻隐藏的需要提交的数据</h3><blockquote>
+<p>进入default2.aspx的Preview,你会找到一个“__VIEWSTATE”,如下图所示：<br><img src="http://op72m4y17.bkt.clouddn.com/10p.png" alt="隐藏的表单数据"><br>而且你会惊奇的发现，它的属性被设置为”hidden”，但是时input类型，在模拟登录的时候也要进行提交(在浏览器登录时是自动提交的)，而且一般这类提交值是固定的，不过你得先自己摸索一下找得到。这个不像cookies每一次访问都有新值需要提交，所以第一次你找到之后就可以一直用下去。</p>
+</blockquote>
+<h2 id="3-用找到的url-找到的请求数据进行php模拟登录"><a href="#3-用找到的url-找到的请求数据进行php模拟登录" class="headerlink" title="3.用找到的url+找到的请求数据进行php模拟登录"></a>3.用找到的url+找到的请求数据进行php模拟登录</h2><h3 id="不对，还有一个验证码呢？"><a href="#不对，还有一个验证码呢？" class="headerlink" title="不对，还有一个验证码呢？"></a>不对，还有一个验证码呢？</h3><blockquote>
+<p>此处验证码我们为了简化教程，还是采取手动输入的形式(通过php保存至本地的txt文件并进行读写)，但只需要输入一次，因为第一次登录进去之后的cookie我们可以多次利用，比如多次查询成绩、多次选课等操作都不再需要验证码了。同样，我们找一下验证码对应的网址，如下：<br><img src="http://op72m4y17.bkt.clouddn.com/12p.png" alt="验证码对应网址"><br><img src="http://op72m4y17.bkt.clouddn.com/11p.png" alt="验证码对应网址"></p>
+<ul>
+<li>每次打开教务系统登录界面都会自动生成一个cookie和它对应的验证码，这个很重要！这个是网页运行的基本原理，在你登录的时候除了提交账号密码等数据时，还要有与cookie匹配的验证码，所以我们模拟登录的一个要点就是要保存你的cookie，以后每次访问登录进去的其它页面时都要使用登录后生成的cookie，这样才能正常访问，否则教务系统会认为你还没登录，自动返回到登录界面。模拟登录和进行其它操作一共涉及到两个cookie.<h3 id="php登录的代码-一-先自定义一个curl发起连接的函数"><a href="#php登录的代码-一-先自定义一个curl发起连接的函数" class="headerlink" title="php登录的代码(一) 先自定义一个curl发起连接的函数"></a>php登录的代码(一) 先自定义一个curl发起连接的函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//自定义一个发起curl链接的函数，传入url,cookie和post数据</div><div class="line">function login_post($url,$cookie,$post)&#123;</div><div class="line">        $ch = curl_init();//初始化curl</div><div class="line">        curl_setopt($ch, CURLOPT_URL, $url);//设置url</div><div class="line">        curl_setopt($ch, CURLOPT_HEADER, 0);//把一个头包含在输出中，设置这个选项为一个非零值</div><div class="line">        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);  //不自动输出数据，要echo才行</div><div class="line">        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  //重要，抓取跳转后数据</div><div class="line">        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie); </div><div class="line">        curl_setopt($ch, CURLOPT_REFERER, &apos;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/default2.aspx&apos;);  //重要，302跳转需要referer，可以在Request Headers找到 </div><div class="line">        curl_setopt($ch, CURLOPT_POSTFIELDS,$post);  //post提交数据</div><div class="line">        $result=curl_exec($ch);//执行curl发起的连接</div><div class="line">        curl_close($ch);//关闭连接</div><div class="line">        return $result;//输出结果(会直接以网页形式输出)</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<h3 id="php登录的代码-二-首先获取验证码并手动输入"><a href="#php登录的代码-二-首先获取验证码并手动输入" class="headerlink" title="php登录的代码(二) 首先获取验证码并手动输入"></a>php登录的代码(二) 首先获取验证码并手动输入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    ini_set(&apos;max_execution_time&apos;, 3000);//设置连接最大可持续时间为3000s</div><div class="line">    session_start();</div><div class="line">    $id=session_id();</div><div class="line">    $_SESSION[&apos;id&apos;]=$id;</div><div class="line">    $cookie = tempnam(&apos;./cookie&apos;, &apos;cookie&apos;); //用一个随机的不重复的文件名保存cookie,$cookie即为cookie文件名  </div><div class="line">    $verify_code_url = &quot;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/CheckCode.aspx&quot;; //验证码地址</div><div class="line">    $curl = curl_init();//初始化一个curl</div><div class="line">    curl_setopt($curl, CURLOPT_URL, $verify_code_url);//设置URL</div><div class="line">    curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);  //保存cookie</div><div class="line">    curl_setopt($curl, CURLOPT_HEADER, 0);//设置浏览器头</div><div class="line">    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//设置返回方式，不自动输出，只能通过echo输出</div><div class="line">    $img = curl_exec($curl);  //执行curl，获得验证码图片</div><div class="line">    curl_close($curl);//关闭curl</div><div class="line">    $fp = fopen(&quot;verifyCode.jpg&quot;,&quot;w&quot;);  //打开一个jpg格式文件保存验证码,连接成功后可以查看图片</div><div class="line">    fwrite($fp,$img);   </div><div class="line">    fclose($fp);</div><div class="line">    header(&quot;Content-type: text/html; charset=gb2312&quot;); </div><div class="line">    //设置charset,这个在原网页html头部可以看到,避免输出编码错误 </div><div class="line"></div><div class="line">    sleep(10);//给你10s输入验证码</div><div class="line">    $_POST[&apos;code&apos;]= file_get_contents(&apos;code.txt&apos;);</div><div class="line">    //读取手动输入的验证码code.txt里面的数字</div></pre></td></tr></table></figure>
+<blockquote>
+<p>执行$img = curl_exec($curl);后会爬取一个验证码图片并保存在你的php所在目录下，如图所示，手动输入验证码(后面会介绍自动识别验证码)：<br><img src="http://op72m4y17.bkt.clouddn.com/13p.png" alt="手动输入验证码"></p>
+</blockquote>
+<h3 id="php登录的代码-三-集齐所需数据开始登陆进去"><a href="#php登录的代码-三-集齐所需数据开始登陆进去" class="headerlink" title="php登录的代码(三) 集齐所需数据开始登陆进去"></a>php登录的代码(三) 集齐所需数据开始登陆进去</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">$_POST[&apos;xh&apos;]=&apos;你的学号&apos;;</div><div class="line">$_POST[&apos;pw&apos;]=&apos;你的密码&apos;;</div><div class="line">$_SESSION[&apos;xh&apos;]=$_POST[&apos;xh&apos;];</div><div class="line">$xh=$_POST[&apos;xh&apos;];</div><div class="line">$pw=$_POST[&apos;pw&apos;];</div><div class="line">$code= $_POST[&apos;code&apos;];</div><div class="line">$url=&quot;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/default2.aspx&quot;;  //教务处地址</div><div class="line">$con1=login_post($url,$cookie,&apos;&apos;);</div><div class="line">preg_match_all(&apos;/&lt;input type=&quot;hidden&quot; name=&quot;__VIEWSTATE&quot; value=&quot;([^&lt;&gt;]+)&quot; \/&gt;/&apos;, $con1, $view); //正则匹配获取隐藏键值__VIEWSTATE字段并存到$view数组中</div><div class="line">$post=array(</div><div class="line">    &apos;__VIEWSTATE&apos;=&gt;$view[1][0],</div><div class="line">    &apos;txtUserName&apos;=&gt;$xh,</div><div class="line">    &apos;TextBox2&apos;=&gt;$pw,</div><div class="line">    &apos;txtSecretCode&apos;=&gt;$code,</div><div class="line">    &apos;RadioButtonList1&apos;=&gt;iconv(&apos;utf-8&apos;, &apos;gb2312&apos;, &apos;学生&apos;),</div><div class="line">    //这个要先转码一下，由于教务系统会把你的中文转换为utf-8编码</div><div class="line">    &apos;Button1&apos;=&gt;iconv(&apos;utf-8&apos;, &apos;gb2312&apos;, &apos;登录&apos;),</div><div class="line">    &apos;lbLanguage&apos;=&gt;&apos;&apos;,</div><div class="line">    &apos;hidPdrs&apos;=&gt;&apos;&apos;,</div><div class="line">    &apos;hidsc&apos;=&gt;&apos;&apos;</div><div class="line">);</div><div class="line">$con2=login_post($url,$cookie,http_build_query($post));</div><div class="line">echo $con2;//$con2即为返回的页面并输出</div></pre></td></tr></table></figure>
+<blockquote>
+<p>查看一下有没有遗漏的需要post的数据<br> <img src="http://op72m4y17.bkt.clouddn.com/9p.png" alt="post数据查看"><br> 核查无误，而且__VIEWSTATE隐藏的数据也有了</p>
+<h3 id="php登录的代码-1-2-3-总-运行此php代码输入验证码可以成功登录"><a href="#php登录的代码-1-2-3-总-运行此php代码输入验证码可以成功登录" class="headerlink" title="php登录的代码(1+2+3=总) 运行此php代码输入验证码可以成功登录"></a>php登录的代码(1+2+3=总) 运行此php代码输入验证码可以成功登录</h3> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"> &lt;?php</div><div class="line">    ini_set(&apos;max_execution_time&apos;, 3000);</div><div class="line">    session_start();</div><div class="line">    $id=session_id();</div><div class="line">    $_SESSION[&apos;id&apos;]=$id;</div><div class="line">    $cookie = tempnam(&apos;./cookie&apos;, &apos;cookie&apos;); //用一个随机的不重复的文件名保存cookie,$cookie即为cookie文件名  </div><div class="line">    $verify_code_url = &quot;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/CheckCode.aspx&quot;; //验证码地址</div><div class="line">    $curl = curl_init();//初始化一个curl</div><div class="line">    curl_setopt($curl, CURLOPT_URL, $verify_code_url);//设置URL</div><div class="line">    curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);  //保存cookie</div><div class="line">    curl_setopt($curl, CURLOPT_HEADER, 0);//设置浏览器头</div><div class="line">    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//设置返回方式，不自动输出，只能通过echo输出</div><div class="line">    $img = curl_exec($curl);  //执行curl，获得验证码图片</div><div class="line">    curl_close($curl);//关闭curl</div><div class="line">    $fp = fopen(&quot;verifyCode.jpg&quot;,&quot;w&quot;);  //打开一个jpg格式文件保存验证码</div><div class="line">    fwrite($fp,$img);   </div><div class="line">    fclose($fp);</div><div class="line">    header(&quot;Content-type: text/html; charset=gb2312&quot;); </div><div class="line">    //设置charset,这个在原网页html头部可以看到,避免输出编码错误 </div><div class="line">    sleep(10);//给你10s输入验证码</div><div class="line">    $_POST[&apos;code&apos;]= file_get_contents(&apos;code.txt&apos;);</div><div class="line">    $_POST[&apos;xh&apos;]=&apos;你的学号&apos;;</div><div class="line">    $_POST[&apos;pw&apos;]=&apos;你的密码&apos;;</div><div class="line">    $_SESSION[&apos;xh&apos;]=$_POST[&apos;xh&apos;];</div><div class="line">    $xh=$_POST[&apos;xh&apos;];</div><div class="line">    $pw=$_POST[&apos;pw&apos;];</div><div class="line">    $code= $_POST[&apos;code&apos;];</div><div class="line">    $url=&quot;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/default2.aspx&quot;;  //教务处地址</div><div class="line">    $con1=login_post($url,$cookie,&apos;&apos;);</div><div class="line">    preg_match_all(&apos;/&lt;input type=&quot;hidden&quot; name=&quot;__VIEWSTATE&quot; value=&quot;([^&lt;&gt;]+)&quot; \/&gt;/&apos;, $con1, $view); //获取__VIEWSTATE字段并存到$view数组中</div><div class="line">    $post=array(</div><div class="line">        &apos;__VIEWSTATE&apos;=&gt;$view[1][0],</div><div class="line">        &apos;txtUserName&apos;=&gt;$xh,</div><div class="line">        &apos;TextBox2&apos;=&gt;$pw,</div><div class="line">        &apos;txtSecretCode&apos;=&gt;$code,</div><div class="line">        &apos;RadioButtonList1&apos;=&gt;iconv(&apos;utf-8&apos;, &apos;gb2312&apos;, &apos;学生&apos;),</div><div class="line">        &apos;Button1&apos;=&gt;iconv(&apos;utf-8&apos;, &apos;gb2312&apos;, &apos;登录&apos;),</div><div class="line">        &apos;lbLanguage&apos;=&gt;&apos;&apos;,</div><div class="line">        &apos;hidPdrs&apos;=&gt;&apos;&apos;,</div><div class="line">        &apos;hidsc&apos;=&gt;&apos;&apos;</div><div class="line">    );</div><div class="line">    $con2=login_post($url,$cookie,http_build_query($post));</div><div class="line">    echo $con2;</div><div class="line">//自定义一个发起curl链接的函数，传入url,cookie和post数据</div><div class="line">    function login_post($url,$cookie,$post)&#123;</div><div class="line">        $ch = curl_init();</div><div class="line">        curl_setopt($ch, CURLOPT_URL, $url);</div><div class="line">        curl_setopt($ch, CURLOPT_HEADER, 0);</div><div class="line">        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);  //不自动输出数据，要echo才行</div><div class="line">        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  //重要，抓取跳转后数据</div><div class="line">        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie); </div><div class="line">        curl_setopt($ch, CURLOPT_REFERER, &apos;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/default2.aspx&apos;);  //重要，302跳转需要referer，可以在Request Headers找到 </div><div class="line">        curl_setopt($ch, CURLOPT_POSTFIELDS,$post);  //post提交数据</div><div class="line">        $result=curl_exec($ch);</div><div class="line">        curl_close($ch);</div><div class="line">        return $result;</div><div class="line">    &#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+</blockquote>
+<p> <img src="http://op72m4y17.bkt.clouddn.com/15p.png" alt="成功登录后显示的结果"></p>
+<blockquote>
+<p>当你看到上面的输出页面时，说明模拟登录已经成功了!(但有一点需要注意，上面的按钮是无法进入的，因为是php获取的静态页面，如果想要进入类似于”成绩查询”或其他界面时，需要继续像上述流程一样，正常浏览器登录走流程，然后通过developtool-network分析需要post的数据或get的页面，然后用php_curl代码模拟登录)</p>
+<h2 id="4-进入成绩查询页面并爬取个人成绩"><a href="#4-进入成绩查询页面并爬取个人成绩" class="headerlink" title="4.进入成绩查询页面并爬取个人成绩"></a>4.进入成绩查询页面并爬取个人成绩</h2><h3 id="首先上述的过程要保证成功执行"><a href="#首先上述的过程要保证成功执行" class="headerlink" title="首先上述的过程要保证成功执行"></a>首先上述的过程要保证成功执行</h3><p>有些小白可能会疑惑，查询成绩不就只是一个页面吗？不能通过直接进入这个页面查询成绩吗？为什么一定要先登录才能进入查询成绩的页面？<br>不得不说，这个问题是整个爬虫的关键。要先把原理搞清楚，先从浏览器正常登录入手，我们登录成功后浏览器会自动保存cookie值，然后每点击一个页面(比如说成绩查询)，浏览器就会把这个cookie发送到服务器，服务器验证通过后才能进行下一步访问。cookie就是你成功登录进去的最重要的凭证，也就是通行证。打个简单的比喻，你进入一个会场(教务网)，当你身份验证通过后会给你一个通行证，然后你在里面就可以畅行无阻了。<br>所以，整个php代码模拟登录的目的就是要获得这个用于验证的cookie值并保存下来用于下次登录，如下代码就是使用保存的cookie值选项: curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie); </p>
+<h3 id="成绩查询页面Request的分析"><a href="#成绩查询页面Request的分析" class="headerlink" title="成绩查询页面Request的分析"></a>成绩查询页面Request的分析</h3><p>进入成绩查询页面，数据如下：<br><img src="http://op72m4y17.bkt.clouddn.com/14p.png" alt="成绩查询页面的url"></p>
+<ul>
+<li>成绩查询的url组成是$url2=”<a href="http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/xscjcx.aspx?xh=学号&amp;xm=(姓名的utf-8编码)%C8%C4%BA...&amp;gnmkdm=N121605" target="_blank" rel="external">http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/xscjcx.aspx?xh=学号&amp;xm=(姓名的utf-8编码)%C8%C4%BA...&amp;gnmkdm=N121605</a>“;<br>gnmkdm是个固定值，不过查询的时候可以不带这个参数<br>点击进入2016-2017 第二学期的成绩查询，需要post的数据很快就得到了，如下图所示：<br><img src="http://op72m4y17.bkt.clouddn.com/16p.png" alt="需要post的数据"><br>这些数据看起来是不是就清晰多了？除了一个很长很长的__viewstate之外(这个我们之前用正则匹配得到了)，还有<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">hidLanguage:</div><div class="line">ddlXN:2016-2017</div><div class="line">ddlXQ:2</div><div class="line">ddl_kcxz:</div><div class="line">btn_xq:%D1%A7%C6%DA%B3%C9%BC%A8</div><div class="line">////“学期成绩”的gbk编码</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<h3 id="post所需要的数据进行成绩的爬取！"><a href="#post所需要的数据进行成绩的爬取！" class="headerlink" title="post所需要的数据进行成绩的爬取！"></a>post所需要的数据进行成绩的爬取！</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">//正则匹配你的姓名，下面会讲解</div><div class="line">preg_match_all(&apos;/&lt;span id=&quot;xhxm&quot;&gt;([^&lt;&gt;]+)&lt;\/span&gt;/&apos;, $con2, $xm);</div><div class="line">$xm[1][0]=substr($xm[1][0],0,-4);  //字符串截取，获得姓名</div><div class="line">$url2=&quot;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/xf_xsqxxxk.aspx?xh=&quot;.$xh.&quot;&amp;xm=&quot;.$xm[1][0];</div><div class="line">$viewstate=login_post($url2,$cookie,&apos;&apos;);</div><div class="line">preg_match_all(&apos;/&lt;input type=&quot;hidden&quot; name=&quot;__VIEWSTATE&quot; value=&quot;([^&lt;&gt;]+)&quot; \/&gt;/&apos;, $viewstate, $vs);</div><div class="line">$state=$vs[1][0];  //$state存放一会post的__VIEWSTATE</div><div class="line">$post=array(</div><div class="line">   &apos;__EVENTTARGET&apos;=&gt;&apos;&apos;,</div><div class="line">   &apos;__EVENTARGUMENT&apos;=&gt;&apos;&apos;,</div><div class="line">   &apos;__VIEWSTATE&apos;=&gt;$state,</div><div class="line">  &apos;hidLanguage&apos;=&gt;&apos;&apos;,</div><div class="line">&apos;ddlXN&apos;=&gt;&apos;2016-2017&apos;,//若改为2015-2016则为2015-2016年度成绩</div><div class="line">&apos;ddlXQ&apos;=&gt;&apos;2&apos;,//若改为1则为第一学期成绩</div><div class="line">&apos;ddl_kcxz&apos;=&gt;&apos;&apos;,</div><div class="line">&apos;btn_xq&apos;=&gt;&apos;%D1%A7%C6%DA%B3%C9%BC%A8&apos;</div><div class="line">);</div><div class="line">   $grades=login_post($url2,$cookie,http_build_query($post));</div><div class="line">   echo $grades;//输出成绩页面</div></pre></td></tr></table></figure>
+<p><img src="http://op72m4y17.bkt.clouddn.com/19p.png" alt="成功获取成绩"></p>
+<h3 id="对上述数据的一个简单解释"><a href="#对上述数据的一个简单解释" class="headerlink" title="对上述数据的一个简单解释"></a>对上述数据的一个简单解释</h3><ul>
+<li><p>首先是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">   preg_match_all(&apos;/&lt;span id=&quot;xhxm&quot;&gt;([^&lt;&gt;]+)&lt;\/span&gt;/&apos;, $con2, $xm);</div><div class="line">$xm[1][0]=substr($xm[1][0],0,-4);  //字符串截取，获得姓名</div></pre></td></tr></table></figure>
+</li>
+<li><p>有图有真相，截取姓名<br><img src="http://op72m4y17.bkt.clouddn.com/17p.png" alt="初始登录界面的截取"></p>
+</li>
+<li>还有另外一个选择，在成绩所在页面截取也ok<br><img src="http://op72m4y17.bkt.clouddn.com/18p.png" alt="成绩界面的截取"><h2 id="最后附上非常简短的全部代码-输出全部成绩"><a href="#最后附上非常简短的全部代码-输出全部成绩" class="headerlink" title="最后附上非常简短的全部代码(输出全部成绩)"></a>最后附上非常简短的全部代码(输出全部成绩)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    ini_set(&apos;max_execution_time&apos;, 3000);</div><div class="line">    session_start();</div><div class="line">    $id=session_id();</div><div class="line">    $_SESSION[&apos;id&apos;]=$id;</div><div class="line">    $cookie = tempnam(&apos;./cookie&apos;, &apos;cookie&apos;); //用一个随机的不重复的文件名保存cookie,$cookie即为cookie文件名  </div><div class="line">    $verify_code_url = &quot;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/CheckCode.aspx&quot;; //验证码地址</div><div class="line">    $curl = curl_init();//初始化一个curl</div><div class="line">    curl_setopt($curl, CURLOPT_URL, $verify_code_url);//设置URL</div><div class="line">    curl_setopt($curl, CURLOPT_COOKIEJAR, $cookie);  //保存cookie</div><div class="line">    curl_setopt($curl, CURLOPT_HEADER, 0);//设置浏览器头</div><div class="line">    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//设置返回方式，不自动输出，只能通过echo输出</div><div class="line">    $img = curl_exec($curl);  //执行curl，获得验证码图片</div><div class="line">    curl_close($curl);//关闭curl</div><div class="line">    $fp = fopen(&quot;verifyCode.jpg&quot;,&quot;w&quot;);  //打开一个jpg格式文件保存验证码</div><div class="line">    fwrite($fp,$img);   </div><div class="line">    fclose($fp);</div><div class="line">    header(&quot;Content-type: text/html; charset=gb2312&quot;); </div><div class="line">    //设置charset,这个在原网页html头部可以看到,避免输出编码错误 </div><div class="line">    sleep(10);//给你10s输入验证码</div><div class="line">    $_POST[&apos;code&apos;]= file_get_contents(&apos;code.txt&apos;);</div><div class="line">    $_POST[&apos;xh&apos;]=&apos;你的学号&apos;;</div><div class="line">    $_POST[&apos;pw&apos;]=&apos;你的密码&apos;;</div><div class="line">    $_SESSION[&apos;xh&apos;]=$_POST[&apos;xh&apos;];</div><div class="line">    $xh=$_POST[&apos;xh&apos;];</div><div class="line">    $pw=$_POST[&apos;pw&apos;];</div><div class="line">    $code= $_POST[&apos;code&apos;];</div><div class="line">    $url=&quot;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/default2.aspx&quot;;  //教务处地址</div><div class="line">    $con1=login_post($url,$cookie,&apos;&apos;);</div><div class="line">    preg_match_all(&apos;/&lt;input type=&quot;hidden&quot; name=&quot;__VIEWSTATE&quot; value=&quot;([^&lt;&gt;]+)&quot; \/&gt;/&apos;, $con1, $view); //获取__VIEWSTATE字段并存到$view数组中</div><div class="line">    $post=array(</div><div class="line">        &apos;__VIEWSTATE&apos;=&gt;$view[1][0],</div><div class="line">        &apos;txtUserName&apos;=&gt;$xh,</div><div class="line">        &apos;TextBox2&apos;=&gt;$pw,</div><div class="line">        &apos;txtSecretCode&apos;=&gt;$code,</div><div class="line">        &apos;RadioButtonList1&apos;=&gt;iconv(&apos;utf-8&apos;, &apos;gb2312&apos;, &apos;学生&apos;),</div><div class="line">        &apos;Button1&apos;=&gt;iconv(&apos;utf-8&apos;, &apos;gb2312&apos;, &apos;登录&apos;),</div><div class="line">        &apos;lbLanguage&apos;=&gt;&apos;&apos;,</div><div class="line">        &apos;hidPdrs&apos;=&gt;&apos;&apos;,</div><div class="line">        &apos;hidsc&apos;=&gt;&apos;&apos;</div><div class="line">    );</div><div class="line">    $con2=login_post($url,$cookie,http_build_query($post));</div><div class="line">    //echo $con2;</div><div class="line">//自定义一个发起curl链接的函数，传入url,cookie和post数据</div><div class="line">    function login_post($url,$cookie,$post)&#123;</div><div class="line">        $ch = curl_init();</div><div class="line">        curl_setopt($ch, CURLOPT_URL, $url);</div><div class="line">        curl_setopt($ch, CURLOPT_HEADER, 0);</div><div class="line">        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);  //不自动输出数据，要echo才行</div><div class="line">        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  //重要，抓取跳转后数据</div><div class="line">        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie); </div><div class="line">        curl_setopt($ch, CURLOPT_REFERER, &apos;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/default2.aspx&apos;);  //重要，302跳转需要referer，可以在Request Headers找到 </div><div class="line">        curl_setopt($ch, CURLOPT_POSTFIELDS,$post);  //post提交数据</div><div class="line">        $result=curl_exec($ch);</div><div class="line">        curl_close($ch);</div><div class="line">        return $result;</div><div class="line">    &#125;</div><div class="line">	preg_match_all(&apos;/&lt;span id=&quot;xhxm&quot;&gt;([^&lt;&gt;]+)&lt;\/span&gt;/&apos;, $con2, $xm);</div><div class="line">	$xm[1][0]=substr($xm[1][0],0,-4);  //字符串截取，获得姓名</div><div class="line">	$url2=&quot;http://xsweb.scuteo.com/(4t02zy451w5ikqjsubt1qe3e)/xf_xsqxxxk.aspx?xh=&quot;.$xh.&quot;&amp;xm=&quot;.$xm[1][0];</div><div class="line">	$viewstate=login_post($url2,$cookie,&apos;&apos;);</div><div class="line">	preg_match_all(&apos;/&lt;input type=&quot;hidden&quot; name=&quot;__VIEWSTATE&quot; value=&quot;([^&lt;&gt;]+)&quot; \/&gt;/&apos;, $viewstate, $vs);</div><div class="line">	$state=$vs[1][0];  //$state存放一会post的__VIEWSTATE</div><div class="line">	$post=array(</div><div class="line">	   &apos;__EVENTTARGET&apos;=&gt;&apos;&apos;,</div><div class="line">	   &apos;__EVENTARGUMENT&apos;=&gt;&apos;&apos;,</div><div class="line">	   &apos;__VIEWSTATE&apos;=&gt;$state,</div><div class="line">	  &apos;hidLanguage&apos;=&gt;&apos;&apos;,</div><div class="line">	&apos;ddlXN&apos;=&gt;&apos;2016-2017&apos;,//若改为2015-2016则为2015-2016年度成绩</div><div class="line">	&apos;ddlXQ&apos;=&gt;&apos;2&apos;,//若改为1则为第一学期成绩</div><div class="line">	&apos;ddl_kcxz&apos;=&gt;&apos;&apos;,</div><div class="line">	&apos;btn_xq&apos;=&gt;&apos;%D1%A7%C6%DA%B3%C9%BC%A8&apos;</div><div class="line">	);</div><div class="line">    $grades=login_post($url2,$cookie,http_build_query($post));</div><div class="line">    echo $grades;//输出成绩页面</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="爬取所有成绩"><a href="#爬取所有成绩" class="headerlink" title="爬取所有成绩"></a>爬取所有成绩</h3><blockquote>
+<p>需要改动的post数据有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&apos;ddlXN&apos;=&gt;&apos;&apos;,</div><div class="line">&apos;ddlXQ&apos;=&gt;&apos;&apos;,</div><div class="line">&apos;ddl_kcxz&apos;=&gt;&apos;&apos;,</div><div class="line">&apos;btn_zcj&apos;=&gt;&apos;%C0%FA%C4%EA%B3%C9%BC%A8&apos;</div><div class="line">//而且url要改成获取总成绩的链接(请在network里面搜寻)</div><div class="line">$url2=http://xsweb.scuteo.com/(05b2142ecws0cfacyw3agr45)/xscjcx.aspx?xh=&quot;.$xh.&quot;&amp;xm=&quot;.$xm[1][0];</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/20p.png" alt="所有成绩的输出"></p>
+<h3 id="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正，下一篇博文将会讲解如何实现自动抢课功能，而在下下篇博文会介绍图形化展示爬取综测智育成绩的网页制作。"><a href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正，下一篇博文将会讲解如何实现自动抢课功能，而在下下篇博文会介绍图形化展示爬取综测智育成绩的网页制作。" class="headerlink" title="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正，下一篇博文将会讲解如何实现自动抢课功能，而在下下篇博文会介绍图形化展示爬取综测智育成绩的网页制作。"></a>各位小伙伴有任何问题可以在下方留言，我会及时解答或订正，下一篇博文将会讲解如何实现自动抢课功能，而在下下篇博文会介绍图形化展示爬取综测智育成绩的网页制作。</h3><p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/09/18/php-spider1/">PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
+        <p><span>发布时间:</span>2017-09-18, 23:59:58</p>
+        <p><span>最后更新:</span>2017-09-19, 22:09:29</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/09/18/php-spider1/" title="PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本">http://yikunhaocong.com/2017/09/18/php-spider1/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2017/09/18/php-spider1/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/09/19/php-spider2/">
+                    PHP实战笔记(二)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/09/06/djangocms-uwsgi/">
+                    如何用uWSGI最快地将Django(CMS)部署到Nginx上
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#intro"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础：先把php语法学熟，并初步掌握php-curl库的用法-个人用时1-2天"><span class="toc-number">2.</span> <span class="toc-text">基础：先把php语法学熟，并初步掌握php_curl库的用法(个人用时1-2天)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”"><span class="toc-number">3.</span> <span class="toc-text">1.学会用谷歌浏览器F12的开发者工具进行网站数据“抓包”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#开始分析网页数据与页面构造"><span class="toc-number">3.1.</span> <span class="toc-text">开始分析网页数据与页面构造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览器Headers参数的简单解释"><span class="toc-number">3.2.</span> <span class="toc-text">浏览器Headers参数的简单解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#校园网内网环境下的登录"><span class="toc-number">3.3.</span> <span class="toc-text">校园网内网环境下的登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-将登录流程完完全全走一遍-浏览器中进行-，然后根据network进行分析"><span class="toc-number">4.</span> <span class="toc-text">2.将登录流程完完全全走一遍(浏览器中进行)，然后根据network进行分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#开始输入账号密码验证码进行登录"><span class="toc-number">4.1.</span> <span class="toc-text">开始输入账号密码验证码进行登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根据Form-Data确定我们要通过php提交的数据"><span class="toc-number">4.2.</span> <span class="toc-text">根据Form Data确定我们要通过php提交的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根据页面信息搜寻隐藏的需要提交的数据"><span class="toc-number">4.3.</span> <span class="toc-text">根据页面信息搜寻隐藏的需要提交的数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-用找到的url-找到的请求数据进行php模拟登录"><span class="toc-number">5.</span> <span class="toc-text">3.用找到的url+找到的请求数据进行php模拟登录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不对，还有一个验证码呢？"><span class="toc-number">5.1.</span> <span class="toc-text">不对，还有一个验证码呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php登录的代码-一-先自定义一个curl发起连接的函数"><span class="toc-number">5.2.</span> <span class="toc-text">php登录的代码(一) 先自定义一个curl发起连接的函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php登录的代码-二-首先获取验证码并手动输入"><span class="toc-number">5.3.</span> <span class="toc-text">php登录的代码(二) 首先获取验证码并手动输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php登录的代码-三-集齐所需数据开始登陆进去"><span class="toc-number">5.4.</span> <span class="toc-text">php登录的代码(三) 集齐所需数据开始登陆进去</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php登录的代码-1-2-3-总-运行此php代码输入验证码可以成功登录"><span class="toc-number">5.5.</span> <span class="toc-text">php登录的代码(1+2+3=总) 运行此php代码输入验证码可以成功登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-进入成绩查询页面并爬取个人成绩"><span class="toc-number">6.</span> <span class="toc-text">4.进入成绩查询页面并爬取个人成绩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#首先上述的过程要保证成功执行"><span class="toc-number">6.1.</span> <span class="toc-text">首先上述的过程要保证成功执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成绩查询页面Request的分析"><span class="toc-number">6.2.</span> <span class="toc-text">成绩查询页面Request的分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#post所需要的数据进行成绩的爬取！"><span class="toc-number">6.3.</span> <span class="toc-text">post所需要的数据进行成绩的爬取！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对上述数据的一个简单解释"><span class="toc-number">6.4.</span> <span class="toc-text">对上述数据的一个简单解释</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最后附上非常简短的全部代码-输出全部成绩"><span class="toc-number">7.</span> <span class="toc-text">最后附上非常简短的全部代码(输出全部成绩)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#爬取所有成绩"><span class="toc-number">7.1.</span> <span class="toc-text">爬取所有成绩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正，下一篇博文将会讲解如何实现自动抢课功能，而在下下篇博文会介绍图形化展示爬取综测智育成绩的网页制作。"><span class="toc-number">7.2.</span> <span class="toc-text">各位小伙伴有任何问题可以在下方留言，我会及时解答或订正，下一篇博文将会讲解如何实现自动抢课功能，而在下下篇博文会介绍图形化展示爬取综测智育成绩的网页制作。</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+	<div id="uyan_frame"></div>
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2128463';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/09/19/php-spider2/" title="上一篇: PHP实战笔记(二)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/09/06/djangocms-uwsgi/" title="下一篇: 如何用uWSGI最快地将Django(CMS)部署到Nginx上">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider3/">PHP实战笔记(三)定向爬取综测系统自身班级所有成绩并进行智育Z1分值排名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider2/">PHP实战笔记(二)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/php-spider1/">PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/06/djangocms-uwsgi/">如何用uWSGI最快地将Django(CMS)部署到Nginx上</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/p-table/">多级页表虚拟内存管理器C++、python和node.js的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/appV3-0/">(V3.0最新版+开源地址)基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/19/app/">基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">基于Node.js框架和Express/socket.io的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">基于Node.js框架和Express/socket.io的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 Kali-Hac
+            </div>
+            <div class="footer-right">
+                <a href="yikunhaocong.xyz" target="_blank" title="Contact with me">Hac's</a>  Blog Powered</a> by <a href="http://hexo.io/" target="_blank" >Hexo <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+             tags: ".article-tag a", 
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
