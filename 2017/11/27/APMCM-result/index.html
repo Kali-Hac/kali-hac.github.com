@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kali-Hac" />
+
+
+
+<meta name="description" content="Abstract原文地址：(2017APMCM_A题提交论文)比赛时间：2017.11.23 - 2017.11.27比赛题目：2017APMCM Problems.rar此博文仅提供作品内容概要参考，具体可查看原论文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning">
+<meta property="og:url" content="http://yikunhaocong.com/2017/11/27/APMCM-result/index.html">
+<meta property="og:site_name" content="Ykhc">
+<meta property="og:description" content="Abstract原文地址：(2017APMCM_A题提交论文)比赛时间：2017.11.23 - 2017.11.27比赛题目：2017APMCM Problems.rar此博文仅提供作品内容概要参考，具体可查看原论文">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
+<meta property="og:updated_time" content="2017-11-27T06:27:05.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning">
+<meta name="twitter:description" content="Abstract原文地址：(2017APMCM_A题提交论文)比赛时间：2017.11.23 - 2017.11.27比赛题目：2017APMCM Problems.rar此博文仅提供作品内容概要参考，具体可查看原论文">
+<meta name="twitter:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Ykhc" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning | Ykhc</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Kali-Hac</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">心存敬畏，不忘初心。</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="http://120.24.43.156:3000">Hac在线聊天系统</a></li>
+                        
+                            <li><a href="http://120.24.43.156">第十二届软件文化节</a></li>
+                        
+                            <li><a href="/about/">关于我/关注iSoftware</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com/" title="StackOverflow"></a>
+                            
+                                <a class="fa 微信" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
+                            
+                                <a class="fa 豆瓣" href="https://movie.douban.com/" title="豆瓣"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aes-128-cbc对称加密/">Aes-128-cbc对称加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidSQLite简单应用/">AndroidSQLite简单应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bernoulli-NB/">Bernoulli NB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CryptoJS/">CryptoJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decision-Tree-Classifier/">Decision Tree Classifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPS定位/">GPS定位</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gaussian-NB/">Gaussian NB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP-WebSocket/">HTTP/WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Neighbors-Classifier/">K-Neighbors Classifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LASSO-Random-LASSO/">LASSO, Random LASSO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logit-Model/">Logit Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multinomial-NB/">Multinomial NB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx的socket转发/">Nginx的socket转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payloads/">Payloads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFE/">RFE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Random-Forest-Classifier/">Random Forest Classifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ridge-Regression/">Ridge Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SMS功能/">SMS功能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Software/">Software</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Table/">Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telnet/">Telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie验证/">cookie验证</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/font-family/">font-family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl/">php_curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl快速开发/">php_curl快速开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php学习-实战笔记/">php学习/实战笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php应用脚本/">php应用脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket-io/">socket.io</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uWSGI与Nginx的通信/">uWSGI与Nginx的通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制uwsgi协议/">二进制uwsgi协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作者：Hac原创/">作者：Hac原创</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反向代理服务器/">反向代理服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/在线聊天-点歌系统/">在线聊天/点歌系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多级页表/">多级页表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多进程模拟/">多进程模拟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安卓传感器的运用/">安卓传感器的运用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层TCP即时通讯/">底层TCP即时通讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旁带缓冲TLB表/">旁带缓冲TLB表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性加速度传感器/">线性加速度传感器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/综测系统数据爬取、自动排名/">综测系统数据爬取、自动排名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络爬虫/">网络爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本语言的面向对象设计/">脚本语言的面向对象设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化脚本/">自动化脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/谷歌抓包分析隐藏数据/">谷歌抓包分析隐藏数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通讯加密的应用/">通讯加密的应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页框LRU回收机制/">页框LRU回收机制</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.csdn.net/csdn568302203">My CSDN</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://github.com/Kali-Hac/node_js_chat">My GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">把好运留给别人，把实力留给自己。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Kali-Hac</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Kali-Hac</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">心存敬畏，不忘初心。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="http://120.24.43.156:3000">Hac在线聊天系统</a></li>
+                
+                    <li><a href="http://120.24.43.156">第十二届软件文化节</a></li>
+                
+                    <li><a href="/about/">关于我/关注iSoftware</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/" title="StackOverflow"></a>
+                            
+                                <a class="fa 微信" target="_blank" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
+                            
+                                <a class="fa 豆瓣" target="_blank" href="https://movie.douban.com/" title="豆瓣"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-APMCM-result" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/27/APMCM-result/" class="article-date">
+      <time datetime="2017-11-27T04:04:59.000Z" itemprop="datePublished">2017-11-27</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/作者-不分顺序-：Hac-Gangsen-Deng-Xiaocong-Luo/">作者(不分顺序)：Hac,Gangsen Deng, Xiaocong Luo</a><a class="article-category-link" href="/categories/作者-不分顺序-：Hac-Gangsen-Deng-Xiaocong-Luo/2017APMCM-Problem-A/">2017APMCM_Problem A</a><a class="article-category-link" href="/categories/作者-不分顺序-：Hac-Gangsen-Deng-Xiaocong-Luo/2017APMCM-Problem-A/2017MCM-ICM预备役/">2017MCM/ICM预备役</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bernoulli-NB/">Bernoulli NB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Decision-Tree-Classifier/">Decision Tree Classifier</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gaussian-NB/">Gaussian NB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/K-Neighbors-Classifier/">K-Neighbors Classifier</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LASSO-Random-LASSO/">LASSO, Random LASSO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Logit-Model/">Logit Model</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Multinomial-NB/">Multinomial NB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RFE/">RFE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Random-Forest-Classifier/">Random Forest Classifier</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ridge-Regression/">Ridge Regression</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p></p><h2 id="intro">Abstract</h2><br>原文地址：<a href="http://op72m4y17.bkt.clouddn.com/A1914.pdf" target="_blank" rel="external">(2017APMCM_A题提交论文)</a><br>比赛时间：2017.11.23 - 2017.11.27<br>比赛题目：<a href="https://publicqn.saikr.com/313e9e4138bca2b66461b72c9b26b1a01511412075928.rar" target="_blank" rel="external">2017APMCM Problems.rar</a><br>此博文仅提供作品内容概要参考，具体可查看原论文<br><a id="more"></a><p></p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>By using Logit Model, we successfully found out first three factors that influence the Sleep Quality most, which are Sex, Age and Nervousness and build up a quantitative model among them. By applying Lasso, Ridge and their improved models, we were able to extract the key features that have great impact on the diagnosis results. We found that the diagnosis results are closely related with seven features. Each of them are scored under different models and we made a Sleep Index to represent the general condition of sleep. With the comparison of different classification model, we successfully select the best classier with its features. We found that Decision Tree Classifier with seven features has the highest prediction accuracy at 84.5%. Finally, by using the Sleep Index, we try to construct a model to optimize the best sleep time for us to main healthy. </p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>China has become the second largest economy in the world in recent years and our people is embracing a better life today. However, the competition in job markets is becoming much fiercer as well. We could see that there is an increasing number of people suffering from stress and insomnia, resulting in poor health. As the living condition continue to go up, nowadays, people are more concerned about their health than ever before. And health is closely connected with sleep, it if necessary for us to analyze the relationship between sleep and health. In this essay, by using logit model and other machine learning method, we try to develop a comprehensive model between sleep and health, which could help people to main a balance between rest and work.<br>Considering the fact that all the data given is discrete, as Williams (2006) pointed out that using logit model could be more robust, we use the logit model to find out the relationship between the indicators given and the sleep quality. After that, we apply different machine learning models to exact the key features of sleep and construct a Sleep Index. Later we used different classification models to train “AI doctors”, and we select the best of them, which is the Decision Tree Classifier. Finally, by using the Sleep Index, we try to construct a model to optimize the best sleep time for us to main healthy. </p>
+<h2 id="Problem-One-What-is-the-relationship-between-the-indicators-given-and-the-quality-of-sleep"><a href="#Problem-One-What-is-the-relationship-between-the-indicators-given-and-the-quality-of-sleep" class="headerlink" title="Problem One: What is the relationship between the indicators given and the quality of sleep?"></a>Problem One: What is the relationship between the indicators given and the quality of sleep?</h2><h3 id="Data-Clean-gt-Correlation-Analysis-gt-Variable-list-gt-Logit-Model-gt-Conclusion"><a href="#Data-Clean-gt-Correlation-Analysis-gt-Variable-list-gt-Logit-Model-gt-Conclusion" class="headerlink" title="Data Clean &gt; Correlation Analysis &gt; Variable list &gt; Logit Model &gt; Conclusion"></a>Data Clean &gt; Correlation Analysis &gt; Variable list &gt; Logit Model &gt; Conclusion</h3><blockquote>
+<p>In a nutshell, the first three factors that influence the Sleep Quality are Sex, Age and Nervousness, which is quite conceivable. Nowadays, generally, male would take more responsibility in earning sufficient funds to raise the family, and suffer more competition with others. Therefore, it is conceivable that male have a higher probability of facing a worse sleep quality. And in our daily life, the old suffer from egersis more often. And it is quite obvious that the more nervous one is, the less likely that he is going to have good sleep quality.</p>
+</blockquote>
+<h2 id="Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep"><a href="#Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep" class="headerlink" title="Problem Two: What is the relationship between the diagnosis results and sleep?"></a>Problem Two: What is the relationship between the diagnosis results and sleep?</h2><h3 id="Feature-Extraction-gt-Feature-Score-Model-Regression-Results-and-Analysis-gt-Further-Analysis-gt-Sleep-Index-gt-Conclusion"><a href="#Feature-Extraction-gt-Feature-Score-Model-Regression-Results-and-Analysis-gt-Further-Analysis-gt-Sleep-Index-gt-Conclusion" class="headerlink" title="Feature Extraction &gt; Feature Score, Model Regression Results and Analysis &gt; Further Analysis &gt; Sleep Index &gt; Conclusion"></a>Feature Extraction &gt; Feature Score, Model Regression Results and Analysis &gt; Further Analysis &gt; Sleep Index &gt; Conclusion</h3><blockquote>
+<p>By analyzing the scatter point and the feature selection model results, we could drop two features Sex and Hypnagogue. The reason why we don’t take Sex into account is that the spread of diseases in male and female are almost the same which means that Sex is a partial unrelated factor. The reason why we could delete Hypnagogue is because it scores the lowest in each model</p>
+</blockquote>
+<h2 id="Problem-Three-Assuming-you-are-a-doctor-what-diagnosis-would-you-make-to-the-patient-based-on-the-data-in-Annex-III"><a href="#Problem-Three-Assuming-you-are-a-doctor-what-diagnosis-would-you-make-to-the-patient-based-on-the-data-in-Annex-III" class="headerlink" title="Problem Three: Assuming you are a doctor, what diagnosis would you make to the patient based on the data in Annex III?"></a>Problem Three: Assuming you are a doctor, what diagnosis would you make to the patient based on the data in Annex III?</h2><h3 id="Classification-Models-gt-Conclusion"><a href="#Classification-Models-gt-Conclusion" class="headerlink" title="Classification Models &gt; Conclusion"></a>Classification Models &gt; Conclusion</h3><blockquote>
+<p>From Fig. 12 to Fig.17, we could see that generally, the accuracy rate of RandomForest Classifier<br>Decision Tree Classifier would increase as the number of features increase. The best classification feature set includes all the seven features and the best classifier is the Decision Tree, which could reach an accuracy rate of 84.5%.<br>Therefore, we decides to use the Decision Tree Classifier with seven features to do the diagnosis prediction.</p>
+</blockquote>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Williams, Richard. “Generalized ordered logit/partial proportional odds models for ordinal dependent variables.” Stata Journal 6.1 (2006): 58.<br>[2] Kinney, Justin B., and Gurinder S. Atwal. “Equitability, mutual information, and the maximal information coefficient.” Proceedings of the National Academy of Sciences 111.9 (2014): 3354-3359.<br>[3] Zhou, Yang, Rong Jin, and Steven Hoi. “Exclusive lasso for multi-task feature selection.” International conference on artificial intelligence and statistics. 2010. Liu, Huan, and Hiroshi Motoda, eds. Computational methods of feature selection. CRC Press, 2007.<br>[4] Liu, Huan, and Hiroshi Motoda, eds. Computational methods of feature selection. CRC Press, 2007.<br>[5] Meinshausen, Nicolai, and Peter Bühlmann. “Stability selection.” Journal of the Royal Statistical Society: Series B (Statistical Methodology) 72.4 (2010): 417-473.<br>Wang, Sijian, et al. “Random lasso.” The annals of applied statistics 5.1 (2011): 468.<br>[6] Granitto, Pablo M., et al. “Recursive feature elimination with random forest for PTR-MS analysis of agroindustrial products.” Chemometrics and Intelligent Laboratory Systems 83.2 (2006): 83-90.</p>
+<h2 id="本论文原文地址：-2017APMCM-A题提交论文"><a href="#本论文原文地址：-2017APMCM-A题提交论文" class="headerlink" title="本论文原文地址：(2017APMCM_A题提交论文)"></a>本论文原文地址：<a href="http://op72m4y17.bkt.clouddn.com/A1914.pdf" target="_blank" rel="external">(2017APMCM_A题提交论文)</a></h2><h3 id="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"><a href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正" class="headerlink" title="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"></a>各位小伙伴有任何问题可以在下方留言，我会及时解答或订正</h3><p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/11/27/APMCM-result/">A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
+        <p><span>发布时间:</span>2017-11-27, 12:04:59</p>
+        <p><span>最后更新:</span>2017-11-27, 14:27:05</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/27/APMCM-result/" title="A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning">http://yikunhaocong.com/2017/11/27/APMCM-result/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2017/11/27/APMCM-result/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/11/27/APMCM-team1914/">
+                    2017APMCM_A题 Problem2&amp;3建模笔记
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#intro"><span class="toc-number">1.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-number">2.</span> <span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">3.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Problem-One-What-is-the-relationship-between-the-indicators-given-and-the-quality-of-sleep"><span class="toc-number">4.</span> <span class="toc-text">Problem One: What is the relationship between the indicators given and the quality of sleep?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-Clean-gt-Correlation-Analysis-gt-Variable-list-gt-Logit-Model-gt-Conclusion"><span class="toc-number">4.1.</span> <span class="toc-text">Data Clean > Correlation Analysis > Variable list > Logit Model > Conclusion</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep"><span class="toc-number">5.</span> <span class="toc-text">Problem Two: What is the relationship between the diagnosis results and sleep?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Feature-Extraction-gt-Feature-Score-Model-Regression-Results-and-Analysis-gt-Further-Analysis-gt-Sleep-Index-gt-Conclusion"><span class="toc-number">5.1.</span> <span class="toc-text">Feature Extraction > Feature Score, Model Regression Results and Analysis > Further Analysis > Sleep Index > Conclusion</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Problem-Three-Assuming-you-are-a-doctor-what-diagnosis-would-you-make-to-the-patient-based-on-the-data-in-Annex-III"><span class="toc-number">6.</span> <span class="toc-text">Problem Three: Assuming you are a doctor, what diagnosis would you make to the patient based on the data in Annex III?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Classification-Models-gt-Conclusion"><span class="toc-number">6.1.</span> <span class="toc-text">Classification Models > Conclusion</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#References"><span class="toc-number">7.</span> <span class="toc-text">References</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本论文原文地址：-2017APMCM-A题提交论文"><span class="toc-number">8.</span> <span class="toc-text">本论文原文地址：(2017APMCM_A题提交论文)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"><span class="toc-number">8.1.</span> <span class="toc-text">各位小伙伴有任何问题可以在下方留言，我会及时解答或订正</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+	<div id="uyan_frame"></div>
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2128463';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/11/27/APMCM-team1914/" title="下一篇: 2017APMCM_A题 Problem2&amp;3建模笔记">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/APMCM-result/">A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/APMCM-team1914/">2017APMCM_A题 Problem2&3建模笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider3/">PHP实战笔记(三)定向爬取综测系统自身班级所有成绩并进行智育Z1分值排名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider2/">PHP实战笔记(二)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/php-spider1/">PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/06/djangocms-uwsgi/">如何用uWSGI最快地将Django(CMS)部署到Nginx上</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/p-table/">多级页表虚拟内存管理器C++、python和node.js的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/appV3-0/">(V3.0最新版+开源地址)基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/19/app/">基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">基于Node.js框架和Express/socket.io的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">基于Node.js框架和Express/socket.io的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 Kali-Hac
+            </div>
+            <div class="footer-right">
+                <a href="yikunhaocong.xyz" target="_blank" title="Contact with me">Hac's</a>  Blog Powered</a> by <a href="http://hexo.io/" target="_blank" >Hexo <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+             tags: ".article-tag a", 
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
