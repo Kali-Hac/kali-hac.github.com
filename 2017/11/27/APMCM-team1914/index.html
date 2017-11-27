@@ -15,12 +15,12 @@
 
 
 
-<meta name="description" content="前言此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。更多细节可看原文：(2017APMCM_A题提交论文)比赛题目：2017APMCM Problems.rar">
+<meta name="description" content="前言此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。更多细节可看原文：(2017APMCM_A题提交论文)个人代码及数据图集：2017APMCM_A_Problem2&amp;amp;3–py_Code比赛题目：2017APMCM Problems.rar">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2017APMCM_A题 Problem2&3建模笔记">
 <meta property="og:url" content="http://yikunhaocong.com/2017/11/27/APMCM-team1914/index.html">
 <meta property="og:site_name" content="Ykhc">
-<meta property="og:description" content="前言此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。更多细节可看原文：(2017APMCM_A题提交论文)比赛题目：2017APMCM Problems.rar">
+<meta property="og:description" content="前言此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。更多细节可看原文：(2017APMCM_A题提交论文)个人代码及数据图集：2017APMCM_A_Problem2&amp;amp;3–py_Code比赛题目：2017APMCM Problems.rar">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/AP_1.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/AP_2.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/AP_3.png">
@@ -42,10 +42,10 @@
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/AP_18.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/AP_19.png">
 <meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
-<meta property="og:updated_time" content="2017-11-27T08:22:33.703Z">
+<meta property="og:updated_time" content="2017-11-27T08:35:53.865Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2017APMCM_A题 Problem2&3建模笔记">
-<meta name="twitter:description" content="前言此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。更多细节可看原文：(2017APMCM_A题提交论文)比赛题目：2017APMCM Problems.rar">
+<meta name="twitter:description" content="前言此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。更多细节可看原文：(2017APMCM_A题提交论文)个人代码及数据图集：2017APMCM_A_Problem2&amp;amp;3–py_Code比赛题目：2017APMCM Problems.rar">
 <meta name="twitter:image" content="http://op72m4y17.bkt.clouddn.com/AP_1.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -353,7 +353,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p></p><h2 id="intro">前言</h2><br>此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。<br>更多细节可看原文：<a href="http://op72m4y17.bkt.clouddn.com/A1914.pdf" target="_blank" rel="external">(2017APMCM_A题提交论文)</a><br>比赛题目：<a href="https://publicqn.saikr.com/313e9e4138bca2b66461b72c9b26b1a01511412075928.rar" target="_blank" rel="external">2017APMCM Problems.rar</a><br><a id="more"></a><p></p>
+        <p></p><h2 id="intro">前言</h2><br>此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。<br>更多细节可看原文：<a href="http://op72m4y17.bkt.clouddn.com/A1914.pdf" target="_blank" rel="external">(2017APMCM_A题提交论文)</a><br>个人代码及数据图集：<a href="https://github.com/Kali-Hac/APMCM_2017_A" target="_blank" rel="external">2017APMCM_A_Problem2&amp;3–py_Code</a><br>比赛题目：<a href="https://publicqn.saikr.com/313e9e4138bca2b66461b72c9b26b1a01511412075928.rar" target="_blank" rel="external">2017APMCM Problems.rar</a><br><a id="more"></a><p></p>
 <h2 id="Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep"><a href="#Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep" class="headerlink" title="Problem Two: What is the relationship between the diagnosis results and sleep?"></a>Problem Two: What is the relationship between the diagnosis results and sleep?</h2><blockquote>
 <p>题目附带的表格II中共有6000多个样本，每个样本包含年龄、性别、性质、病种、睡眠质量、入睡时间、睡眠时间、睡眠效率、精神质指数、日间行为障碍指数。每一项特征的评分都为0，1，2，3中的一个，按照原题解释是：The relevant scores for sleep conditions are given in Annex II (“0” for good, “1”<br>for normal, “2” for poor, and “3” for very poor), the higher the score, the worse the<br>sleep condition. 也就是说，评分越高说明睡眠条件越差，简单而言，就是越低对睡眠“质量”越有好处。(个人觉得这个评分机制不是很好)</p>
 </blockquote>
@@ -434,7 +434,7 @@
         <p><span>本文标题:</span><a href="/2017/11/27/APMCM-team1914/">2017APMCM_A题 Problem2&amp;3建模笔记</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
         <p><span>发布时间:</span>2017-11-27, 11:57:34</p>
-        <p><span>最后更新:</span>2017-11-27, 16:22:33</p>
+        <p><span>最后更新:</span>2017-11-27, 16:35:53</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/11/27/APMCM-team1914/" title="2017APMCM_A题 Problem2&amp;3建模笔记">http://yikunhaocong.com/2017/11/27/APMCM-team1914/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2017/11/27/APMCM-team1914/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
