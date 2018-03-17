@@ -905,6 +905,84 @@
     </entry>
     
     <entry>
+      <title><![CDATA[基于Node.js框架和Express/socket.io的动态即时聊天系统(下)]]></title>
+      <url>http://yikunhaocong.com/2017/04/30/node-js-chat2/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>总结一下开发中的问题&amp;解决方法(接上一篇博文)<p></p>
+<a id="more"></a>
+<h2 id="开发中的问题-amp-解决方法"><a href="#开发中的问题-amp-解决方法" class="headerlink" title="开发中的问题&amp;解决方法"></a>开发中的问题&amp;解决方法</h2><h3 id="第一个是多个界面的切换"><a href="#第一个是多个界面的切换" class="headerlink" title="第一个是多个界面的切换"></a>第一个是多个界面的切换</h3><blockquote>
+<p>解决方法很粗暴，直接用display:”none”和display:”block”实现动态切换与隐藏，不过多个界面的切换逻辑要先理清楚，由于我的这个页面比较简单，通过这种方式实现是最简单的切换(无需费时)，建议是把各类界面的切换函数封装起来，以便于减少代码量和方便使用。比如我4个界面只需要用下面简短的四个函数就可以实现<br><a href="http://op72m4y17.bkt.clouddn.com/44.png" target="_blank" rel="external"></a></p>
+</blockquote>
+<h3 id="第二个是加密-解密的实现"><a href="#第二个是加密-解密的实现" class="headerlink" title="第二个是加密/解密的实现"></a>第二个是加密/解密的实现</h3><blockquote>
+<p>通常node.js里面可以直接require(‘crypto’)模块来直接使用加密api,但如果要嵌入网页的话，采取”script”标签方式是无法使用require方法的，除非你先导入require.js(先去搜索再下载)，再进行一下各种配置，但我不建议采用这种方法。我的解决方法是找到crypto对应的网页js包–CryptoJS，然后把需要用到的js文件导入(可能有不同依赖，需要先确认好再完整导入)，然后就可以在chat.js里面调用函数或重载一下使加密/解密过程得以在通讯中实现。<br>特别要记得按顺序导入如下图，否则加密过程中会出现Parse、Cipher创建等一系列未知的错误。<br><img src="http://op72m4y17.bkt.clouddn.com/22.png" alt="按这个顺序导入"></p>
+<ul>
+<li>这里友情提供CrytoJS包下载链接<a href="https://code.google.com/archive/p/crypto-js/downloads" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/downloads</a>，具体怎么用请看谷歌教程<a href="https://code.google.com/archive/p/crypto-js/" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/</a></li>
+</ul>
+</blockquote>
+<h3 id="第三个是音乐库的导入"><a href="#第三个是音乐库的导入" class="headerlink" title="第三个是音乐库的导入"></a>第三个是音乐库的导入</h3><blockquote>
+<p>我在前面说了我是直接找到网易云音乐的外链播放器的id嵌入到网页的，这种方法很麻烦(需要自己去找对应的歌曲id再放进去)，刚开始我是写了一个python爬虫爬取id但失败了(可能是cookie认证或者网站的反爬虫机制绕不过，但我没有过多尝试，但我觉得真正要实现应该不难(需要研究一下，就比如之前模拟登录爬取数据一样，一定会有方法可以实现)，所以我会考虑在下一个版本中实现这种方法，我最想做的事就是跨语言开发，利用自己比较熟悉python的优势以及python在数据方面处理的优秀能力与node.js结合，一定会有很强大的威力。<br>至于python如何嵌入到node.js,很简单，用node.js开个新进程，运行py文件，然后以控制台输入输出的形式来获取python文件运行后的数据，实现两种语言的交互。<br><img src="http://op72m4y17.bkt.clouddn.com/4.png" alt="暂时导入网易云音乐的静态接口，下一个迭代版本将采用python爬虫+node.js搜索导入url接口"></p>
+</blockquote>
+<h3 id="第四个是管理员广播音乐的轮换"><a href="#第四个是管理员广播音乐的轮换" class="headerlink" title="第四个是管理员广播音乐的轮换"></a>第四个是管理员广播音乐的轮换</h3><blockquote>
+<p>最终想了个差强人意的解决方法，利用socket.emit(‘text’,from,msg)发送信息的过程来顺便进行音乐广播，当前管理员点歌之后，再发一条信息就能将这首歌广播出去(其他用户将同时在这个时刻播放与管理员相同的曲目)。在新用户连接进来时，会直接播放当前已点的歌曲(但手机浏览器是切换到了这首歌，但要不要播放取决于用户)。当管理员断开连接后，新加入的用户会变成新的音乐管理员(dj)，然后可以进行歌曲的广播(点歌动作发生后)。在这整个过程中，如果管理员没有点歌的话，用户是可以随时选择听自己喜欢的歌曲。<br><img src="http://op72m4y17.bkt.clouddn.com/2.png" alt=""></p>
+<h3 id="还有清屏、解密转换等小问题就不赘言了"><a href="#还有清屏、解密转换等小问题就不赘言了" class="headerlink" title="还有清屏、解密转换等小问题就不赘言了"></a>还有清屏、解密转换等小问题就不赘言了</h3></blockquote>
+<h2 id="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"><a href="#最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口" class="headerlink" title="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"></a>最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口</h2><p><img src="http://op72m4y17.bkt.clouddn.com/tcp.png" alt="代码目录"></p>
+<blockquote>
+<p>不需要导入任何模块，聊天效果图如下<br>通过telnet连接到服务器<br><img src="http://op72m4y17.bkt.clouddn.com/tcp1.png" alt=""><br>以冒号隔开用户名和加密秘钥(这里采取括号形式结束输入)由于telnet传输是立刻传输的，所以这里需要有个结束符号’)’<br><img src="http://op72m4y17.bkt.clouddn.com/tcp2.png" alt=""><br>可以看到输入的三句英文都以Aes-128-cbc加密后的字符串输出，其它用户用(*密码)的形式可以对具有这个密码的所有用户所发的信息进行解密！<br><img src="http://op72m4y17.bkt.clouddn.com/tcp3.png" alt=""><br>自定义服务器后台监控&amp;输出<br><img src="http://op72m4y17.bkt.clouddn.com/tcp4.png" alt="后台监控&amp;输出"></p>
+</blockquote>
+<h3 id="加密模块"><a href="#加密模块" class="headerlink" title="加密模块"></a>加密模块</h3><blockquote>
+<p>分享一下加密模块代码,总共16行，很简短，加密向量默认为iv=’5683022032017422’<br><img src="http://op72m4y17.bkt.clouddn.com/jm.png" alt="Aes-128-cbc加密代码"></p>
+</blockquote>
+<ul>
+<li>Tcp_chat服务器代码就不分享了，比较简单，主要用了net模块(比http模块更底层的网络模块)，代码里大部分是自定义的服务器后端监控&amp;输出(代码量超过基于socket.io的聊天网页)，可见socket.io模块的强大。</li>
+</ul>
+<blockquote>
+<p>《基于Node.js框架和Express/socket.io的动态即时聊天系统》这两篇博文仅用于分享开发经验和整理node.js笔记，该项目已开源至<a href="https://github.com/Kali-Hac/node_js_chat" target="_blank" rel="external">我的github/node_js_chat项目</a>，有需要可以查阅代码。另：有任何问题的小伙伴可以在评论区留言，我会尽量解答或订正。<br><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> 作者:Hac </category>
+            
+            <category> Node.js实战笔记 </category>
+            
+            <category> Node.js网络通讯后台的搭建 </category>
+            
+            <category> Telnet网络通讯后台的搭建 </category>
+            
+            <category> JavaScript聊天动态界面的构建 </category>
+            
+            <category> crypto加密模块的网页嵌入(CryptoJS) </category>
+            
+            <category> 1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播的后台实现 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> socket.io </tag>
+            
+            <tag> express </tag>
+            
+            <tag> CryptoJS </tag>
+            
+            <tag> HTTP/WebSocket </tag>
+            
+            <tag> 底层TCP即时通讯 </tag>
+            
+            <tag> Telnet </tag>
+            
+            <tag> Aes-128-cbc对称加密 </tag>
+            
+            <tag> 在线聊天/点歌系统 </tag>
+            
+            <tag> 通讯加密的应用 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[基于Node.js框架和Express/socket.io的动态即时聊天系统(上)]]></title>
       <url>http://yikunhaocong.com/2017/04/30/node-js-chat/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播。<p></p>
@@ -987,84 +1065,6 @@
             <tag> 在线聊天/点歌系统 </tag>
             
             <tag> 通讯加密的应用 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[基于Node.js框架和Express/socket.io的动态即时聊天系统(下)]]></title>
-      <url>http://yikunhaocong.com/2017/04/30/node-js-chat2/</url>
-      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>总结一下开发中的问题&amp;解决方法(接上一篇博文)<p></p>
-<a id="more"></a>
-<h2 id="开发中的问题-amp-解决方法"><a href="#开发中的问题-amp-解决方法" class="headerlink" title="开发中的问题&amp;解决方法"></a>开发中的问题&amp;解决方法</h2><h3 id="第一个是多个界面的切换"><a href="#第一个是多个界面的切换" class="headerlink" title="第一个是多个界面的切换"></a>第一个是多个界面的切换</h3><blockquote>
-<p>解决方法很粗暴，直接用display:”none”和display:”block”实现动态切换与隐藏，不过多个界面的切换逻辑要先理清楚，由于我的这个页面比较简单，通过这种方式实现是最简单的切换(无需费时)，建议是把各类界面的切换函数封装起来，以便于减少代码量和方便使用。比如我4个界面只需要用下面简短的四个函数就可以实现<br><a href="http://op72m4y17.bkt.clouddn.com/44.png" target="_blank" rel="external"></a></p>
-</blockquote>
-<h3 id="第二个是加密-解密的实现"><a href="#第二个是加密-解密的实现" class="headerlink" title="第二个是加密/解密的实现"></a>第二个是加密/解密的实现</h3><blockquote>
-<p>通常node.js里面可以直接require(‘crypto’)模块来直接使用加密api,但如果要嵌入网页的话，采取”script”标签方式是无法使用require方法的，除非你先导入require.js(先去搜索再下载)，再进行一下各种配置，但我不建议采用这种方法。我的解决方法是找到crypto对应的网页js包–CryptoJS，然后把需要用到的js文件导入(可能有不同依赖，需要先确认好再完整导入)，然后就可以在chat.js里面调用函数或重载一下使加密/解密过程得以在通讯中实现。<br>特别要记得按顺序导入如下图，否则加密过程中会出现Parse、Cipher创建等一系列未知的错误。<br><img src="http://op72m4y17.bkt.clouddn.com/22.png" alt="按这个顺序导入"></p>
-<ul>
-<li>这里友情提供CrytoJS包下载链接<a href="https://code.google.com/archive/p/crypto-js/downloads" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/downloads</a>，具体怎么用请看谷歌教程<a href="https://code.google.com/archive/p/crypto-js/" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/</a></li>
-</ul>
-</blockquote>
-<h3 id="第三个是音乐库的导入"><a href="#第三个是音乐库的导入" class="headerlink" title="第三个是音乐库的导入"></a>第三个是音乐库的导入</h3><blockquote>
-<p>我在前面说了我是直接找到网易云音乐的外链播放器的id嵌入到网页的，这种方法很麻烦(需要自己去找对应的歌曲id再放进去)，刚开始我是写了一个python爬虫爬取id但失败了(可能是cookie认证或者网站的反爬虫机制绕不过，但我没有过多尝试，但我觉得真正要实现应该不难(需要研究一下，就比如之前模拟登录爬取数据一样，一定会有方法可以实现)，所以我会考虑在下一个版本中实现这种方法，我最想做的事就是跨语言开发，利用自己比较熟悉python的优势以及python在数据方面处理的优秀能力与node.js结合，一定会有很强大的威力。<br>至于python如何嵌入到node.js,很简单，用node.js开个新进程，运行py文件，然后以控制台输入输出的形式来获取python文件运行后的数据，实现两种语言的交互。<br><img src="http://op72m4y17.bkt.clouddn.com/4.png" alt="暂时导入网易云音乐的静态接口，下一个迭代版本将采用python爬虫+node.js搜索导入url接口"></p>
-</blockquote>
-<h3 id="第四个是管理员广播音乐的轮换"><a href="#第四个是管理员广播音乐的轮换" class="headerlink" title="第四个是管理员广播音乐的轮换"></a>第四个是管理员广播音乐的轮换</h3><blockquote>
-<p>最终想了个差强人意的解决方法，利用socket.emit(‘text’,from,msg)发送信息的过程来顺便进行音乐广播，当前管理员点歌之后，再发一条信息就能将这首歌广播出去(其他用户将同时在这个时刻播放与管理员相同的曲目)。在新用户连接进来时，会直接播放当前已点的歌曲(但手机浏览器是切换到了这首歌，但要不要播放取决于用户)。当管理员断开连接后，新加入的用户会变成新的音乐管理员(dj)，然后可以进行歌曲的广播(点歌动作发生后)。在这整个过程中，如果管理员没有点歌的话，用户是可以随时选择听自己喜欢的歌曲。<br><img src="http://op72m4y17.bkt.clouddn.com/2.png" alt=""></p>
-<h3 id="还有清屏、解密转换等小问题就不赘言了"><a href="#还有清屏、解密转换等小问题就不赘言了" class="headerlink" title="还有清屏、解密转换等小问题就不赘言了"></a>还有清屏、解密转换等小问题就不赘言了</h3></blockquote>
-<h2 id="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"><a href="#最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口" class="headerlink" title="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"></a>最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口</h2><p><img src="http://op72m4y17.bkt.clouddn.com/tcp.png" alt="代码目录"></p>
-<blockquote>
-<p>不需要导入任何模块，聊天效果图如下<br>通过telnet连接到服务器<br><img src="http://op72m4y17.bkt.clouddn.com/tcp1.png" alt=""><br>以冒号隔开用户名和加密秘钥(这里采取括号形式结束输入)由于telnet传输是立刻传输的，所以这里需要有个结束符号’)’<br><img src="http://op72m4y17.bkt.clouddn.com/tcp2.png" alt=""><br>可以看到输入的三句英文都以Aes-128-cbc加密后的字符串输出，其它用户用(*密码)的形式可以对具有这个密码的所有用户所发的信息进行解密！<br><img src="http://op72m4y17.bkt.clouddn.com/tcp3.png" alt=""><br>自定义服务器后台监控&amp;输出<br><img src="http://op72m4y17.bkt.clouddn.com/tcp4.png" alt="后台监控&amp;输出"></p>
-</blockquote>
-<h3 id="加密模块"><a href="#加密模块" class="headerlink" title="加密模块"></a>加密模块</h3><blockquote>
-<p>分享一下加密模块代码,总共16行，很简短，加密向量默认为iv=’5683022032017422’<br><img src="http://op72m4y17.bkt.clouddn.com/jm.png" alt="Aes-128-cbc加密代码"></p>
-</blockquote>
-<ul>
-<li>Tcp_chat服务器代码就不分享了，比较简单，主要用了net模块(比http模块更底层的网络模块)，代码里大部分是自定义的服务器后端监控&amp;输出(代码量超过基于socket.io的聊天网页)，可见socket.io模块的强大。</li>
-</ul>
-<blockquote>
-<p>《基于Node.js框架和Express/socket.io的动态即时聊天系统》这两篇博文仅用于分享开发经验和整理node.js笔记，该项目已开源至<a href="https://github.com/Kali-Hac/node_js_chat" target="_blank" rel="external">我的github/node_js_chat项目</a>，有需要可以查阅代码。另：有任何问题的小伙伴可以在评论区留言，我会尽量解答或订正。<br><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
-</blockquote>
-]]></content>
-      
-        <categories>
-            
-            <category> 作者:Hac </category>
-            
-            <category> Node.js实战笔记 </category>
-            
-            <category> Node.js网络通讯后台的搭建 </category>
-            
-            <category> Telnet网络通讯后台的搭建 </category>
-            
-            <category> JavaScript聊天动态界面的构建 </category>
-            
-            <category> crypto加密模块的网页嵌入(CryptoJS) </category>
-            
-            <category> 1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播的后台实现 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> socket.io </tag>
-            
-            <tag> express </tag>
-            
-            <tag> CryptoJS </tag>
-            
-            <tag> HTTP/WebSocket </tag>
-            
-            <tag> Aes-128-cbc对称加密 </tag>
-            
-            <tag> 在线聊天/点歌系统 </tag>
-            
-            <tag> 通讯加密的应用 </tag>
-            
-            <tag> 底层TCP即时通讯 </tag>
-            
-            <tag> Telnet </tag>
             
         </tags>
         
