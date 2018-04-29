@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[确认过眼神，Barnes-Hut算法的py实现]]></title>
+      <title><![CDATA[确认过眼神，四叉树Barnes-Hut算法的py实现]]></title>
       <url>http://yikunhaocong.com/2018/04/29/barnes-hut/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>本博文紧接上一篇，主要讲解自己实现的Quadtree和Barnes–Hut算法py版本，附上我的github地址<a href="https://github.com/Kali-Hac/YifanHu_python/tree/master/Barnes_Hut" target="_blank" rel="external">https://github.com/Kali-Hac/YifanHu_python/tree/master/Barnes_Hut</a></strong><br><a id="more"></a><p></p>
 <h2 id="开讲前准备"><a href="#开讲前准备" class="headerlink" title="开讲前准备"></a>开讲前准备</h2><ul>
