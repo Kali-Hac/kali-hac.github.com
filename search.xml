@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[Yifanhu Layout源码解析]]></title>
+      <title><![CDATA[确认下眼神，Yifanhu Layout源码解析]]></title>
       <url>http://yikunhaocong.com/2018/04/24/Yifanhu_source_code/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>本博文仅针对Gephi实现Yifanhu Layout算法的<a href="https://github.com/gephi/gephi/tree/master/modules/LayoutPlugin/src/main/java/org/gephi/layout/plugin/force" target="_blank" rel="external">Jave源码</a>关键部分进行解析，亦当自己的学习笔记。下一篇会接着讲Quadtree和Barnes–Hut算法的Python重现</strong><br><a id="more"></a><br>【传送门：网络布局集大成之作】 <a href="http://www.mathematica-journal.com/issue/v10i1/contents/graph_draw/graph_draw.pdf" target="_blank" rel="external">Efficient, High-Quality Force-Directed Graph Drawing - Yifanhu</a><p></p>
 <blockquote>
@@ -39,7 +39,7 @@
 </blockquote>
 <p><strong>第一点：</strong> 如果刚好能找到一个已存在的最小区域，那么需要在这个过程中更新所有父节点的重心，当然包括新节点的区域重心</p>
 <p><strong>第二点：</strong> 如果需要进行新的四分才能找到新节点放置的区域，那么除了上述父重心的更新外，还需要对新划分的所有区域进行重心的更新(试想一下，如果之前存在的点刚好可以放进新划分的区域，那么新划分的区域重心肯定不为0，需要及时进行更新)，因此遇到上述第二种不断四分的情况，需要将原来存在的点不断代入并进行新重心的更新</p>
-<h2 id="yifanhu模块"><a href="#yifanhu模块" class="headerlink" title="yifanhu模块"></a>yifanhu模块</h2><h3 id="YifanHuLayout-java"><a href="#YifanHuLayout-java" class="headerlink" title="YifanHuLayout.java"></a>YifanHuLayout.java</h3><p><strong><a href="https://github.com/gephi/gephi/blob/master/modules/LayoutPlugin/src/main/java/org/gephi/layout/plugin/force/yifanHu/YifanHuLayout.java" target="_blank" rel="external">class YifanHuLayout：点击此处查看源码</a></strong><br>[成员变量及函数]<br><strong>1.private float optimalDistance;</strong><br>=&gt; 布局中距离的优化目标<br><strong>此处设置为Math.pow(getRelativeStrength(), 1.0 / 3) <em> getAverageEdgeLength(graph))，即(斥力相对于引力的比例的三分一次方 </em> 网络图边的平均长度</strong></p>
+<h2 id="yifanhu模块"><a href="#yifanhu模块" class="headerlink" title="yifanhu模块"></a>yifanhu模块</h2><h3 id="YifanHuLayout-java"><a href="#YifanHuLayout-java" class="headerlink" title="YifanHuLayout.java"></a>YifanHuLayout.java</h3><p><strong><a href="https://github.com/gephi/gephi/blob/master/modules/LayoutPlugin/src/main/java/org/gephi/layout/plugin/force/yifanHu/YifanHuLayout.java" target="_blank" rel="external">class YifanHuLayout：点击此处查看源码</a></strong><br>[成员变量及函数]<br><strong>1.private float optimalDistance;</strong><br>=&gt; 布局中距离的优化目标<br><strong>此处设置为Math.pow(getRelativeStrength(), 1.0 / 3) x getAverageEdgeLength(graph)，即(斥力相对于引力的比例的三分一次方 乘以 网络图边的平均长度</strong></p>
 <p><strong>2.private float relativeStrength;</strong><br>=&gt; 斥力相对于引力的比例系数<br><strong>此处设置为0.2</strong></p>
 <p><strong>3.private float step;</strong><br>=&gt; (力矢量)坐标更新的步长<br><strong>此处设置为optimalDistance/5</strong></p>
 <p><strong>4.private float initialStep;</strong><br>=&gt; 初始步长<br><strong>此处设置为optimalDistance/5</strong></p>
@@ -48,7 +48,7 @@
 <p><strong>7.private int quadTreeMaxLevel;</strong><br>=&gt; 四叉树最大四分次数<br><strong>此处设置为10</strong></p>
 <p><strong>8.private float barnesHutTheta;</strong><br>=&gt; BarnesHut算法搜寻重心和计算的阈值<br><strong>此处设置为1.2</strong></p>
 <p><strong>9.private float convergenceThreshold;</strong><br><strong>此处设置为1e-4</strong></p>
-<p><strong>10.private boolean adaptiveCooling;</strong><br>=&gt; 自适应退火算法的开启，与<strong>5</strong>想对应<br><strong>此处设置为true</strong><br><img src="http://op72m4y17.bkt.clouddn.com/yfh_3.png" alt=""></p>
+<p><strong>10.private boolean adaptiveCooling;</strong><br>=&gt; 自适应退火算法的开启，与<strong>5</strong>相对应<br><strong>此处设置为true</strong><br><img src="http://op72m4y17.bkt.clouddn.com/yfh_3.png" alt=""></p>
 <p><strong>11.private Displacement displacement;</strong><br>=&gt; 通过力的计算，节点需要偏移的位置</p>
 <p><strong>12.private double energy0;</strong><br>=&gt; 初始布局的能量</p>
 <p><strong>13.private double energy;</strong><br>=&gt; 当前布局的能量</p>
@@ -97,7 +97,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[A Dynamic Privacy Trading System]]></title>
+      <title><![CDATA[(贻笑大方的论文)A Dynamic Privacy Trading System]]></title>
       <url>http://yikunhaocong.com/2018/03/17/2018-ICM-F/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>2018 MCM/ICM Problem F : <a href="http://op72m4y17.bkt.clouddn.com/2018_ICM_Problem_F.pdf" target="_blank" rel="external">http://op72m4y17.bkt.clouddn.com/2018_ICM_Problem_F.pdf</a></strong><p></p>
 <p><strong>在此再次感谢XC和GS两位好兄弟的通力合作，有付出就会有收获</strong><br><strong>心存敬畏，不忘初心</strong></p>
@@ -137,7 +137,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Show, Attend and Tell——Neural Image Caption Generation with Visual Attention]]></title>
+      <title><![CDATA[(论文解析)Show, Attend and Tell——Neural Image Caption Generation with Visual Attention]]></title>
       <url>http://yikunhaocong.com/2018/01/20/Visual-Attention/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br><strong>希望结合自身已有的知识和相关文献，将论文以一种全面而简洁、明确而有趣的方式重新演绎一遍，亦当知识点复习。</strong><br><a id="more"></a><p></p>
 <p>Xu K, Ba J, Kiros R, et al. Show, attend and tell: Neural image caption generation with visual attention[C]//International Conference on Machine Learning. 2015: 2048-2057.</p>
@@ -273,175 +273,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning]]></title>
-      <url>http://yikunhaocong.com/2017/11/27/APMCM-result/</url>
-      <content type="html"><![CDATA[<p></p><h2 id="intro">Abstract</h2><br>原文地址：<a href="http://op72m4y17.bkt.clouddn.com/A1914.pdf" target="_blank" rel="external">(2017APMCM_A题提交论文)</a><br>比赛时间：2017.11.23 - 2017.11.27<br>比赛题目：<a href="https://publicqn.saikr.com/313e9e4138bca2b66461b72c9b26b1a01511412075928.rar" target="_blank" rel="external">2017APMCM Problems.rar</a><br>此博文仅提供作品内容概要参考，具体可查看原论文<br><a id="more"></a><p></p>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>By using Logit Model, we successfully found out first three factors that influence the Sleep Quality most, which are Sex, Age and Nervousness and build up a quantitative model among them. By applying Lasso, Ridge and their improved models, we were able to extract the key features that have great impact on the diagnosis results. We found that the diagnosis results are closely related with seven features. Each of them are scored under different models and we made a Sleep Index to represent the general condition of sleep. With the comparison of different classification model, we successfully select the best classier with its features. We found that Decision Tree Classifier with seven features has the highest prediction accuracy at 84.5%. Finally, by using the Sleep Index, we try to construct a model to optimize the best sleep time for us to main healthy. </p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>China has become the second largest economy in the world in recent years and our people is embracing a better life today. However, the competition in job markets is becoming much fiercer as well. We could see that there is an increasing number of people suffering from stress and insomnia, resulting in poor health. As the living condition continue to go up, nowadays, people are more concerned about their health than ever before. And health is closely connected with sleep, it if necessary for us to analyze the relationship between sleep and health. In this essay, by using logit model and other machine learning method, we try to develop a comprehensive model between sleep and health, which could help people to main a balance between rest and work.<br>Considering the fact that all the data given is discrete, as Williams (2006) pointed out that using logit model could be more robust, we use the logit model to find out the relationship between the indicators given and the sleep quality. After that, we apply different machine learning models to exact the key features of sleep and construct a Sleep Index. Later we used different classification models to train “AI doctors”, and we select the best of them, which is the Decision Tree Classifier. Finally, by using the Sleep Index, we try to construct a model to optimize the best sleep time for us to main healthy. </p>
-<h2 id="Problem-One-What-is-the-relationship-between-the-indicators-given-and-the-quality-of-sleep"><a href="#Problem-One-What-is-the-relationship-between-the-indicators-given-and-the-quality-of-sleep" class="headerlink" title="Problem One: What is the relationship between the indicators given and the quality of sleep?"></a>Problem One: What is the relationship between the indicators given and the quality of sleep?</h2><h3 id="Data-Clean-gt-Correlation-Analysis-gt-Variable-list-gt-Logit-Model-gt-Conclusion"><a href="#Data-Clean-gt-Correlation-Analysis-gt-Variable-list-gt-Logit-Model-gt-Conclusion" class="headerlink" title="Data Clean &gt; Correlation Analysis &gt; Variable list &gt; Logit Model &gt; Conclusion"></a>Data Clean &gt; Correlation Analysis &gt; Variable list &gt; Logit Model &gt; Conclusion</h3><blockquote>
-<p>In a nutshell, the first three factors that influence the Sleep Quality are Sex, Age and Nervousness, which is quite conceivable. Nowadays, generally, male would take more responsibility in earning sufficient funds to raise the family, and suffer more competition with others. Therefore, it is conceivable that male have a higher probability of facing a worse sleep quality. And in our daily life, the old suffer from egersis more often. And it is quite obvious that the more nervous one is, the less likely that he is going to have good sleep quality.</p>
-</blockquote>
-<h2 id="Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep"><a href="#Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep" class="headerlink" title="Problem Two: What is the relationship between the diagnosis results and sleep?"></a>Problem Two: What is the relationship between the diagnosis results and sleep?</h2><h3 id="Feature-Extraction-gt-Feature-Score-Model-Regression-Results-and-Analysis-gt-Further-Analysis-gt-Sleep-Index-gt-Conclusion"><a href="#Feature-Extraction-gt-Feature-Score-Model-Regression-Results-and-Analysis-gt-Further-Analysis-gt-Sleep-Index-gt-Conclusion" class="headerlink" title="Feature Extraction &gt; Feature Score, Model Regression Results and Analysis &gt; Further Analysis &gt; Sleep Index &gt; Conclusion"></a>Feature Extraction &gt; Feature Score, Model Regression Results and Analysis &gt; Further Analysis &gt; Sleep Index &gt; Conclusion</h3><blockquote>
-<p>By analyzing the scatter point and the feature selection model results, we could drop two features Sex and Hypnagogue. The reason why we don’t take Sex into account is that the spread of diseases in male and female are almost the same which means that Sex is a partial unrelated factor. The reason why we could delete Hypnagogue is because it scores the lowest in each model</p>
-</blockquote>
-<h2 id="Problem-Three-Assuming-you-are-a-doctor-what-diagnosis-would-you-make-to-the-patient-based-on-the-data-in-Annex-III"><a href="#Problem-Three-Assuming-you-are-a-doctor-what-diagnosis-would-you-make-to-the-patient-based-on-the-data-in-Annex-III" class="headerlink" title="Problem Three: Assuming you are a doctor, what diagnosis would you make to the patient based on the data in Annex III?"></a>Problem Three: Assuming you are a doctor, what diagnosis would you make to the patient based on the data in Annex III?</h2><h3 id="Classification-Models-gt-Conclusion"><a href="#Classification-Models-gt-Conclusion" class="headerlink" title="Classification Models &gt; Conclusion"></a>Classification Models &gt; Conclusion</h3><blockquote>
-<p>From Fig. 12 to Fig.17, we could see that generally, the accuracy rate of RandomForest Classifier<br>Decision Tree Classifier would increase as the number of features increase. The best classification feature set includes all the seven features and the best classifier is the Decision Tree, which could reach an accuracy rate of 84.5%.<br>Therefore, we decides to use the Decision Tree Classifier with seven features to do the diagnosis prediction.</p>
-</blockquote>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[1] Williams, Richard. “Generalized ordered logit/partial proportional odds models for ordinal dependent variables.” Stata Journal 6.1 (2006): 58.<br>[2] Kinney, Justin B., and Gurinder S. Atwal. “Equitability, mutual information, and the maximal information coefficient.” Proceedings of the National Academy of Sciences 111.9 (2014): 3354-3359.<br>[3] Zhou, Yang, Rong Jin, and Steven Hoi. “Exclusive lasso for multi-task feature selection.” International conference on artificial intelligence and statistics. 2010. Liu, Huan, and Hiroshi Motoda, eds. Computational methods of feature selection. CRC Press, 2007.<br>[4] Liu, Huan, and Hiroshi Motoda, eds. Computational methods of feature selection. CRC Press, 2007.<br>[5] Meinshausen, Nicolai, and Peter Bühlmann. “Stability selection.” Journal of the Royal Statistical Society: Series B (Statistical Methodology) 72.4 (2010): 417-473.<br>Wang, Sijian, et al. “Random lasso.” The annals of applied statistics 5.1 (2011): 468.<br>[6] Granitto, Pablo M., et al. “Recursive feature elimination with random forest for PTR-MS analysis of agroindustrial products.” Chemometrics and Intelligent Laboratory Systems 83.2 (2006): 83-90.</p>
-<h2 id="本论文原文地址：-2017APMCM-A题提交论文"><a href="#本论文原文地址：-2017APMCM-A题提交论文" class="headerlink" title="本论文原文地址：(2017APMCM_A题提交论文)"></a>本论文原文地址：<a href="http://op72m4y17.bkt.clouddn.com/A1914.pdf" target="_blank" rel="external">(2017APMCM_A题提交论文)</a></h2><h3 id="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"><a href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正" class="headerlink" title="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"></a>各位小伙伴有任何问题可以在下方留言，我会及时解答或订正</h3><p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 作者(不分顺序)：Hac,Gangsen Deng, Xiaocong Luo </category>
-            
-            <category> 2017APMCM_Problem A </category>
-            
-            <category> 2017MCM/ICM预备役 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Logit Model </tag>
-            
-            <tag> LASSO, Random LASSO </tag>
-            
-            <tag> Ridge Regression </tag>
-            
-            <tag> RFE </tag>
-            
-            <tag> Multinomial NB </tag>
-            
-            <tag> Gaussian NB </tag>
-            
-            <tag> Bernoulli NB </tag>
-            
-            <tag> K-Neighbors Classifier </tag>
-            
-            <tag> Random Forest Classifier </tag>
-            
-            <tag> Decision Tree Classifier </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[2017APMCM_A题 Problem2&3建模笔记]]></title>
-      <url>http://yikunhaocong.com/2017/11/27/APMCM-team1914/</url>
-      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>此博文仅提供个人解题思路参考，包含建模所用的支撑材料、可执行代码以及原论文相关内容的解析。<br>更多细节可看原文：<a href="http://op72m4y17.bkt.clouddn.com/A1914.pdf" target="_blank" rel="external">(2017APMCM_A题提交论文)</a><br>个人代码及数据图集：<a href="https://github.com/Kali-Hac/APMCM_2017_A" target="_blank" rel="external">2017APMCM_A_Problem2&amp;3–py_Code</a><br>比赛题目：<a href="https://publicqn.saikr.com/313e9e4138bca2b66461b72c9b26b1a01511412075928.rar" target="_blank" rel="external">2017APMCM Problems.rar</a><br><a id="more"></a><p></p>
-<h2 id="Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep"><a href="#Problem-Two-What-is-the-relationship-between-the-diagnosis-results-and-sleep" class="headerlink" title="Problem Two: What is the relationship between the diagnosis results and sleep?"></a>Problem Two: What is the relationship between the diagnosis results and sleep?</h2><blockquote>
-<p>题目附带的表格II中共有6000多个样本，每个样本包含年龄、性别、性质、病种、睡眠质量、入睡时间、睡眠时间、睡眠效率、精神质指数、日间行为障碍指数。每一项特征的评分都为0，1，2，3中的一个，按照原题解释是：The relevant scores for sleep conditions are given in Annex II (“0” for good, “1”<br>for normal, “2” for poor, and “3” for very poor), the higher the score, the worse the<br>sleep condition. 也就是说，评分越高说明睡眠条件越差，简单而言，就是越低对睡眠“质量”越有好处。(个人觉得这个评分机制不是很好)</p>
-</blockquote>
-<p><img src="http://op72m4y17.bkt.clouddn.com/AP_1.png" alt="&#39;题A表格II内容&#39;"></p>
-<h2 id="解决流程"><a href="#解决流程" class="headerlink" title="解决流程"></a>解决流程</h2><p><img src="http://op72m4y17.bkt.clouddn.com/AP_2.png" alt="实际应用的模型建立过程"></p>
-<h3 id="1-采取多个特征选择模型进行特征重要性的筛选-gt-期望目的：能够选出重要性比较显著的特征再来分类，减少无关特征"><a href="#1-采取多个特征选择模型进行特征重要性的筛选-gt-期望目的：能够选出重要性比较显著的特征再来分类，减少无关特征" class="headerlink" title="1.采取多个特征选择模型进行特征重要性的筛选 &gt; 期望目的：能够选出重要性比较显著的特征再来分类，减少无关特征"></a>1.采取多个特征选择模型进行特征重要性的筛选 &gt; 期望目的：能够选出重要性比较显著的特征再来分类，减少无关特征</h3><h3 id="2-给表中的9个特征进行打分评比，观察模型选择结果"><a href="#2-给表中的9个特征进行打分评比，观察模型选择结果" class="headerlink" title="2.给表中的9个特征进行打分评比，观察模型选择结果"></a>2.给表中的9个特征进行打分评比，观察模型选择结果</h3><p><img src="http://op72m4y17.bkt.clouddn.com/AP_3.png" alt="特征所得分数结果直方图对比"><br><img src="http://op72m4y17.bkt.clouddn.com/AP_8.png" alt="特征所得分数结果表格对比"><br>From Table, we could directly see that the feature scores given via Lasso and Ridge are relatively close, which also indicates that most of the features are relatively independent. And when using the Recursive Feature Elimination (RFE), we found that the feature score of Sleep Latency and Sleep Time add up to one, which is quite conceivable in logic. And in this case, Sleep Latency is a relatively key factor.<br>From Fig.6, we could get the following conclusion:</p>
-<ol>
-<li>It is obvious that Sleep quality has the highest feature score, which indicates that Sleep quality has the biggest impact on health. If Sleep quality drop down, it would be of higher possibility for one to be diagnosed with all the listed diseases.</li>
-<li>We could drop the feature Hypnagogue, because it scores low in each method.<blockquote>
-<p>得到我们一个想要实现的目标，去除了一个最弱的特征，无论在哪个特征选择模型中都得分最低的Hypnagogue，在后续分类过程中将去除。</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="3-我们在此处使用的特征选择模型包括："><a href="#3-我们在此处使用的特征选择模型包括：" class="headerlink" title="3.我们在此处使用的特征选择模型包括："></a>3.我们在此处使用的特征选择模型包括：</h3><h3 id="A-Mutual-Information-and-Maximal-Information-coefficient-MIC"><a href="#A-Mutual-Information-and-Maximal-Information-coefficient-MIC" class="headerlink" title="A. Mutual Information and Maximal Information coefficient (MIC)"></a>A. Mutual Information and Maximal Information coefficient (MIC)</h3><p><img src="http://dataunion.org/wp-content/uploads/2015/04/4dbuAXe.png" alt="MIC互信息指数计算"></p>
-<blockquote>
-<p>p(x,y) is the joint probability distributions function of X and Y; p(x) and p(y) is the marginal probability distribution function of X and Y.<br>By referring to the article of Kinney(2014), because both the dependent and independent variables are discrete, using I(X,Y) to analyze the correlation is easy and practical. And later, we would make a comparison of these two methods.<br>由于本题的自变量特征和因变量的取值都属于离散型，因此用I(X,Y)来评估相关性具有易用性和可行性。</p>
-</blockquote>
-<h3 id="B-L1-Regularization-LASSO"><a href="#B-L1-Regularization-LASSO" class="headerlink" title="B. L1 Regularization /LASSO"></a>B. L1 Regularization /LASSO</h3><p><img src="http://op72m4y17.bkt.clouddn.com/AP_4.png" alt="Lasso"></p>
-<blockquote>
-<p>L1 regularization adds the L1 norm of the coefficient ω as a penalty to the loss function, which forces the coefficients corresponding to those weak features to become zero because the regular term is non-zero. Therefore, regularization of L1 tends to make the regression model sparse (coefficient ω is often 0). This feature makes L1 regularization a good feature selection method.<br>L1正则化由于加了一次惩罚项能够使微相关的特征系数加快降为0，在保留强特征的同时也可能会造成模型稀疏化，但我们就是用这个来找强特征，所以稀疏化在在某种意义上来说可以使我们更直观地找到强特征，下面还有它的加强版，大大增强了稀疏化无关系数的效果。</p>
-</blockquote>
-<h3 id="C-Its-improved-LASSO-Model-Random-LASSO"><a href="#C-Its-improved-LASSO-Model-Random-LASSO" class="headerlink" title="C. Its improved LASSO Model: Random LASSO"></a>C. Its improved LASSO Model: Random LASSO</h3><p><img src="http://op72m4y17.bkt.clouddn.com/AP_5.png" alt="Random LASSO"></p>
-<blockquote>
-<p>In order to select the strongest feature, we apply the stability theory here and the Random LASSO method. Stability selection is an advanced method based on the combination of subsampling and selection algorithms. The selection algorithm can be regression, SVM or other similar methods. By referring to Meinshausen(2010), we used Radom LASSO. Its main idea is to run feature selection algorithms on different subsets of data and subsets of features, continuously repeating and finally summarizing feature selection results, such as the ability to count the frequency at which a feature is considered as an important feature (the number of times of being selected as an important feature divided by the number of times the subset it is tested on).<br>Ideally, important features score close to 100%. A slightly weaker feature score will be a non-zero number, while the most unwanted feature score will be close to zero.<br>稳定性选择就是将二次抽样和选择算法结合起来，将稳定性选择的思想应用到Lasso身上，可以最终得到最稳定的特征，同时把不是很稳定的特征去除，虽然去除的特征可能是比较重要的，但是我们能够断定保留下来的特征是足够强的，至于更均匀的特征保留我们交给其它模型来找。</p>
-</blockquote>
-<h3 id="D-L2-Regularization-Ridge-Regression"><a href="#D-L2-Regularization-Ridge-Regression" class="headerlink" title="D. L2 Regularization/ Ridge Regression"></a>D. L2 Regularization/ Ridge Regression</h3><p><img src="http://op72m4y17.bkt.clouddn.com/AP_6.png" alt="Ridge Regression"></p>
-<blockquote>
-<p>L2 regularization adds the L2 norm of the coefficient vector to the loss function. Since the coefficients in the L2 penalty term are quadratic, there are many differences between L2 and L1. The most obvious point is that L2 regularization averages the coefficients. Liu (2007) pointed out that, for the associated features, they can get closer coefficients.<br>L2正则化由于加了一个二次惩罚项，所以它不会像L1正则化那样使模型变得稀疏，而是尽量地让模型各个特征的系数趋向均匀，这个可以让我们找到相关性(耦合性)比较强的特征，弥补了上面稳定性选择方法的缺陷。</p>
-</blockquote>
-<h3 id="E-Its-improved-Model-RFE-Model"><a href="#E-Its-improved-Model-RFE-Model" class="headerlink" title="E. Its improved Model: RFE Model"></a>E. Its improved Model: RFE Model</h3><p><img src="http://op72m4y17.bkt.clouddn.com/AP_7.png" alt="RFE Model"></p>
-<blockquote>
-<p>By referring to Granitto (2006), we proposed an improved Ridge Regression Model: RFE Model. The main idea of recursive feature elimination is to build a model iteratively (such as SVM or regression model) and then select the best (or worst) features (which can be selected based on the coefficients). And we put the selected features aside and then repeat this process for the remaining features until all the features have traversed. The order in which the features are eliminated in this process is the order of the features. Therefore, this is a greedy algorithm for finding the best subset of features.<br>The stability of the RFE depends on which model the underlying layer uses in the iteration. For example, RFE is not stable if the normalized regressions used by RFEs are not stable, and RFE is unstable if Ridge regressions are stable and Ridge regularized regressions are stable.<br>递归特征消除的主要思想是反复的构建模型（如SVM或者回归模型）然后选出最好的（或者最差的）的特征（可以根据系数来选），把选出来的特征放到一遍，然后在剩余的特征上重复这个过程，直到所有特征都遍历了。这个过程中特征被消除的次序就是特征的排序。因此，这是一种寻找最优特征子集的贪心算法。<br>RFE的稳定性很大程度上取决于在迭代的时候底层用哪种模型。例如，假如RFE采用的普通的回归，没有经过正则化的回归是不稳定的，那么RFE就是不稳定的；假如采用的是Ridge，而用Ridge正则化的回归是稳定的，那么RFE就是稳定的。</p>
-</blockquote>
-<h2 id="针对最稳定的特征Sleep-quality进行分析"><a href="#针对最稳定的特征Sleep-quality进行分析" class="headerlink" title="针对最稳定的特征Sleep quality进行分析"></a>针对最稳定的特征Sleep quality进行分析</h2><blockquote>
-<p>Sleep quality与人数排名前4的病症分布<br><img src="http://op72m4y17.bkt.clouddn.com/AP_9.png" alt="Sleep quality与人数排名前4的病症分布"></p>
-</blockquote>
-<p>we could see that, among the all the four diseases with most patients, the worse sleep quality is, the more people would have such disease. In general, we could get a rough idea that the sleep quality has a great impact on health.<br>可以看到，睡眠质量和患病可能性还是有显著关系的<br>对于同一种病，睡眠质量越差(3是最差的)的人群中患的人数更多。</p>
-<h3 id="开始绘制散点图，观察病症分布与特征及其分数-0-1-2-3-的关系"><a href="#开始绘制散点图，观察病症分布与特征及其分数-0-1-2-3-的关系" class="headerlink" title="开始绘制散点图，观察病症分布与特征及其分数(0,1,2,3)的关系"></a>开始绘制散点图，观察病症分布与特征及其分数(0,1,2,3)的关系</h3><blockquote>
-<p>将290种病分别用0-289表示，观察一些重要特征当分数为0，1，2，3时疾病种类的分布</p>
-</blockquote>
-<p>we could directly see that the scatter points are becoming thicker and thicker as the sleep quality goes down. This shows that the worse sleep quality is, the higher probability of having relevant diseases.<br><img src="http://op72m4y17.bkt.clouddn.com/AP_10.png" alt="Sleep quality"></p>
-<p>we could see that the higher sleep latency is, the higher probability of having relevant diseases.<br><img src="http://op72m4y17.bkt.clouddn.com/AP_11.png" alt="Sleep latency"></p>
-<p>we could see the relationship between sleep efficiency and diagnosis exhibits the same pattern as that of sleep efficiency<br><img src="http://op72m4y17.bkt.clouddn.com/AP_12.png" alt="Sleep efficience"></p>
-<p>we could find out that the disease spread between male and female are almost the same, which means that it is a partial unrelated factor</p>
-<blockquote>
-<p>终于在这里又找到一个我们想要的东西了，Sex在散点图的分布中无论取何值都比较均匀，可以接受它是一个无关特征，在后续的分类中将去除。<br><img src="http://op72m4y17.bkt.clouddn.com/AP_13.png" alt="sex"></p>
-</blockquote>
-<h3 id="稍微总结一下"><a href="#稍微总结一下" class="headerlink" title="稍微总结一下"></a>稍微总结一下</h3><p>我们成功在特征选择过程中找到两个弱特征并去除，现在还剩下7个特征在后续分类算法中要用于训练和评估。<br>By analyzing the scatter point and the feature selection model results, we could drop two features Sex and Hypnagogue. The reason why we don’t take Sex into account is that the spread of diseases in male and female are almost the same which means that Sex is a partial unrelated factor. The reason why we could delete Hypnagogue is because it scores the lowest in each model.</p>
-<blockquote>
-<p>但实际上我们好像还没解决题目二的问题，但实际上这个过程也在为题目三的解答做铺垫，我们可以先把题目三得到的答案拿来用，基于以上特征选择模型和题三的分类模型结果，我们有理由提出一个睡眠指数的公式用于评估睡眠总质量，也能够更好在后续的分析过程中进行应用，来充分分析睡眠与健康之间的关系，如下：<br>Sleep Index ：<br>    After extracting the features, we construct an index to represent the general condition of sleep.<br>Dependent Variable: sleep_y<br>Independent Variable Set: sleep_x = {Sleep quality, Sleep latency,Sleep time,Sleep efficientcy, Sleep disorder,Daytime dyfunction}<br>Each sleep_x feature is sleep_xi, (i =1,2,3…6)<br>sleep_y=(1/2.09)<em>sleep_x1+(0.03/2.09)</em>sleep_x2+(0.06/2.09)<em>sleep_x3+(0.10/2.09)</em>sleep_x4+(0.41/2.09)<em>sleep_x5 + (0.49/2.09)</em>sleep_x6<br>可以用这个睡眠指标与各类病症患病率和病人数量进行一个分布图的绘制，能够更好的反映诊断结果与睡眠之间的关系，此处就不再给出。</p>
-</blockquote>
-<h2 id="Problem-Three-Assuming-you-are-a-doctor-what-diagnosis-would-you-make-to-the-patient-based-on-the-data-in-Annex-III"><a href="#Problem-Three-Assuming-you-are-a-doctor-what-diagnosis-would-you-make-to-the-patient-based-on-the-data-in-Annex-III" class="headerlink" title="Problem Three: Assuming you are a doctor, what diagnosis would you make to the patient based on the data in Annex III?"></a>Problem Three: Assuming you are a doctor, what diagnosis would you make to the patient based on the data in Annex III?</h2><h3 id="实际上就是一个分类预测问题"><a href="#实际上就是一个分类预测问题" class="headerlink" title="实际上就是一个分类预测问题"></a>实际上就是一个分类预测问题</h3><blockquote>
-<p>按照一位数据分析程序猿标准的思维，就顺着“如果能够在有限且可接受的时间范围内遍历所有可能性得到最优结果，那么就应该往这个方向继续分析和优化”的思路，我把剩余的7个特征进行了组合，准备结合多个分类模型进行暴力寻优一波，然后惊喜出现了。</p>
-</blockquote>
-<p>采用的分类模型有6个：(在图中以左侧命名)<br>MultNB: Multinomial NB<br>GausNB: Gaussian NB<br>BernNB: Bernoulli NB<br>KNN: Neighbors Classifier<br>RF: Random Forest Classifier<br>DT: Decision Tree Classifier<br>Based on the results from problem 2, we drop two features, which are the Sex and Hypnagogue.<br>特征组合有99种，我是准备以3个特征起步，简单点说，就是3个特征、4个特征、5个特征、6个特征、7个特征的组合(特征不分顺序)，一共有99种<br>Thus here we used 99 combinations of seven features for classification training and prediction (Set the least selected number of features as 3). The training set and the prediction are the same here. In the following analysis, we would start from three features for each classifier. And if by adding one feature to the classifier, the prediction accuracy of the classifier would improve, then we would add it to the classifier.<br>分类要用到的特征有7个：(分别用0-6表示)<br>Seven features is represented using 0-6, which are: {‘Age’, ‘Sleep quality’, ‘Sleep latency’, ‘Sleep time’, ‘Sleep efficiency’, ‘Sleep disorder’,’Daytime dyfunction’}</p>
-<h4 id="样本有限，选择在整个训练集上测试"><a href="#样本有限，选择在整个训练集上测试" class="headerlink" title="样本有限，选择在整个训练集上测试"></a>样本有限，选择在整个训练集上测试</h4><p>第一个看不出什么结果<br>The x axis is the type of classification method and the y axis is the prediction accuracy rate. Here we could see that when there are three features, the classification method with the highest accuracy rate is DT, which is Decision Tree Classifier.<br><img src="http://op72m4y17.bkt.clouddn.com/AP_14.png" alt="1-6"></p>
-<p>第二个开始有点眉目了，<br>we could see that [DT]0.502(0/1/2/4) &gt; [DT] 0.493(0/1/2/3). Thus, it means that the importance of feature 4 &gt; 3, which means that Sleep efficiency &gt; Sleep time.<br>得到两个有重要排序的特征<br>(这里采用的就是高中单一实验变量的实验思想)<br><img src="http://op72m4y17.bkt.clouddn.com/AP_15.png" alt="6-15"></p>
-<p>开始出现三个特征重要性的排序了<br>we could get [DT]0.515(0/1/2/6) &lt; [DT]0.517(0/1/3/6) &lt; [DT]0.526(0/1/4/6) . Thus, Feature 4 &gt; 3 &gt; 2, which means that the feature importance sequence is: Sleep efficiency &gt; Sleep time &gt; Sleep latency<br><img src="http://op72m4y17.bkt.clouddn.com/AP_16.png" alt="15-24"></p>
-<p>再次验证了前两次排序的结果！<br>we get that: [DT]0.639(0/1/2/3/6) &lt; [DT]0.645(0/1/2/4/6), thus: Feature 4 &gt;3, which means Sleep efficiency &gt; Sleep time  Also, we could get: [DT]0.652(0/1/3/4/6) &gt; [DT]0.645(0/1/2/4/6); Thus, feature 3 &gt; 2, which means Sleep time &gt; Sleep latency<br><img src="http://op72m4y17.bkt.clouddn.com/AP_17.png" alt="24-30"></p>
-<p>Performance of Different Classification Methods Using Six Features (with Different Feature Set)<br>到了最后就只剩下决策树和随机森林这两个算法在竞争了，有理可寻<br><img src="http://op72m4y17.bkt.clouddn.com/AP_18.png" alt="30-34"></p>
-<p>最优结果出来了，就是用决策树+所有特征进行分类<br>Performance of Different Classification Method Using Seven Features<br><img src="http://op72m4y17.bkt.clouddn.com/AP_19.png" alt="34-37"></p>
-<ul>
-<li>题二的Sleep Index睡眠指数有一部分是根据这个特征排序得到各睡眠特征的权重的，假设为Sleep latency:Sleep time:Sleep efficiency=1:2:3，满足上述关系，再结合岭回归特征选择模型的结果能够推出公式：</li>
-</ul>
-<p>Sleep Index ：<br>    After extracting the features, we construct an index to represent the general condition of sleep.<br>Dependent Variable: sleep_y<br>Independent Variable Set: sleep_x = {Sleep quality, Sleep latency,Sleep time,Sleep efficientcy, Sleep disorder,Daytime dyfunction}<br>Each sleep_x feature is sleep_xi, (i =1,2,3…6)<br>sleep_y=(1/2.09)<em>sleep_x1+(0.03/2.09)</em>sleep_x2+(0.06/2.09)<em>sleep_x3+(0.10/2.09)</em>sleep_x4+(0.41/2.09)<em>sleep_x5 + (0.49/2.09)</em>sleep_x6</p>
-<h3 id="最终用84-5-准确率的决策树训练后的模型进行预测，Finish-P3"><a href="#最终用84-5-准确率的决策树训练后的模型进行预测，Finish-P3" class="headerlink" title="最终用84.5%准确率的决策树训练后的模型进行预测，Finish P3"></a>最终用84.5%准确率的决策树训练后的模型进行预测，Finish P3</h3><blockquote>
-<p>建模总结：本来只是想简单地输出准确率和对应特征组合，没想到引出了一个用于评估特征重要性的巧妙方法，就是利用同一分类方法在不同特征组合(只有一个特征变量)情况下的分类准确率来评估特征重要性，若使用了这个特征能够分类更加准确，那么有理由说明这个特征比之前那个特征更重要，这也跟特征选择模型RFE思想有点类似。不需要进行拓扑排序，第二个结果直接验证特征排序的准确性，这更进一步体现了排序的可信度，这也从侧面反映了我们在题二中去除的特征的确是比较无关的，才能够实现这样的分类效果，才能够通过剩余的有一定关联的特征里发现重要性排序。<br>始终相信，多尝试多关注细节就能有更多收获<br>这次APMCM确实比上次打MCM时更有收获也更能学以致用，为下一次MCM/ICM继续Fighting!</p>
-</blockquote>
-<h2 id="本论文原文地址：-2017APMCM-A题提交论文"><a href="#本论文原文地址：-2017APMCM-A题提交论文" class="headerlink" title="本论文原文地址：(2017APMCM_A题提交论文)"></a>本论文原文地址：<a href="http://op72m4y17.bkt.clouddn.com/A1914.pdf" target="_blank" rel="external">(2017APMCM_A题提交论文)</a></h2><h3 id="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"><a href="#各位小伙伴有任何问题可以在下方留言，我会及时解答或订正" class="headerlink" title="各位小伙伴有任何问题可以在下方留言，我会及时解答或订正"></a>各位小伙伴有任何问题可以在下方留言，我会及时解答或订正</h3><p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 作者：Hac </category>
-            
-            <category> 2017APMCM_Problem A </category>
-            
-            <category> 数学建模总结笔记 </category>
-            
-            <category> 2017MCM/ICM预备役 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> LASSO, Random LASSO </tag>
-            
-            <tag> Ridge Regression </tag>
-            
-            <tag> RFE </tag>
-            
-            <tag> Multinomial NB </tag>
-            
-            <tag> Gaussian NB </tag>
-            
-            <tag> Bernoulli NB </tag>
-            
-            <tag> K-Neighbors Classifier </tag>
-            
-            <tag> Random Forest Classifier </tag>
-            
-            <tag> Decision Tree Classifier </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[PHP实战笔记(三)定向爬取综测系统自身班级所有成绩并进行智育Z1分值排名]]></title>
+      <title><![CDATA[趣味爬虫(下)定向爬取综测系统自身班级所有成绩并进行智育Z1分值排名]]></title>
       <url>http://yikunhaocong.com/2017/09/19/php-spider3/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校综测系统的模拟登录、自动获取全班人成绩以及智育分Z1排名功能(本博文仅对已实现的爬取功能进行简介,实验环境是在校园网内)<br><a id="more"></a><p></p>
 <h2 id="以下截取图的成绩详情来自于若干软件学院和计算机学院的测试账号"><a href="#以下截取图的成绩详情来自于若干软件学院和计算机学院的测试账号" class="headerlink" title="以下截取图的成绩详情来自于若干软件学院和计算机学院的测试账号"></a>以下截取图的成绩详情来自于若干软件学院和计算机学院的测试账号</h2><h2 id="先上综测网址的界面图"><a href="#先上综测网址的界面图" class="headerlink" title="先上综测网址的界面图"></a>先上综测网址的界面图</h2><h3 id="登录界面无验证码，比模拟教务系统简单"><a href="#登录界面无验证码，比模拟教务系统简单" class="headerlink" title="登录界面无验证码，比模拟教务系统简单"></a>登录界面无验证码，比模拟教务系统简单</h3><p><img src="http://op72m4y17.bkt.clouddn.com/34pp.png" alt="登录界面"></p>
@@ -478,7 +310,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[PHP实战笔记(二)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本]]></title>
+      <title><![CDATA[趣味爬虫(中)制作模拟登录并具备教务查询功能的脚本]]></title>
       <url>http://yikunhaocong.com/2017/09/19/php-spider2/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、自动选课功能(本博文针对抢课流程进行分析,实验环境是在校园网内)<br>    php脚本代码已开源至：<a href="https://github.com/Kali-Hac/php_spider" target="_blank" rel="external">https://github.com/Kali-Hac/php_spider</a><br><a id="more"></a><p></p>
 <h2 id="基础：先把php语法学熟，并初步掌握php-curl库的用法"><a href="#基础：先把php语法学熟，并初步掌握php-curl库的用法" class="headerlink" title="基础：先把php语法学熟，并初步掌握php_curl库的用法"></a>基础：先把php语法学熟，并初步掌握php_curl库的用法</h2><p>想快速制作一个好的爬虫，关键在于对浏览器请求页面及所获数据的分析，分析得越彻底越仔细，你的代码模拟的效果就越可靠越高效。</p>
@@ -542,7 +374,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本]]></title>
+      <title><![CDATA[趣味爬虫(上)制作模拟登录并具备教务查询功能的脚本]]></title>
       <url>http://yikunhaocong.com/2017/09/18/php-spider1/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    本博文只限于分享php学习经验，给像我一样刚入门的php小白提供借鉴的经验，将系统地分析如何用php代码实现学校教务系统的模拟登录、抓取成绩功能(本博文针对抓取成绩流程进行分析,实验环境是在校园网内)。<br>    php脚本代码已开源至：<a href="https://github.com/Kali-Hac/php_spider" target="_blank" rel="external">https://github.com/Kali-Hac/php_spider</a><br><a id="more"></a><p></p>
 <h2 id="基础：先把php语法学熟，并初步掌握php-curl库的用法-个人用时1-2天"><a href="#基础：先把php语法学熟，并初步掌握php-curl库的用法-个人用时1-2天" class="headerlink" title="基础：先把php语法学熟，并初步掌握php_curl库的用法(个人用时1-2天)"></a>基础：先把php语法学熟，并初步掌握php_curl库的用法(个人用时1-2天)</h2><p>想快速制作一个好的爬虫，关键在于对浏览器请求页面及所获数据的分析，分析得越彻底越仔细，你的代码模拟的效果就越可靠越高效。</p>
@@ -653,7 +485,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[如何用uWSGI最快地将Django(CMS)部署到Nginx上]]></title>
+      <title><![CDATA[利用uWSGI稳健地将Django(CMS)部署到Nginx上]]></title>
       <url>http://yikunhaocong.com/2017/09/06/djangocms-uwsgi/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    CentOS服务器配置Djangocms应用，刚开始在windows下用Apache+mod_wsgi.so配置属实是坑多到令人发指，python-web应用建议在linux下用uwsgi+Nginx配置(windows不支持uwsgi),进一步实现负载均衡。<br>    本博文只针对自己搭建+部署的djangocms应用进行解析<br><a id="more"></a><p></p>
 <h2 id="Apache-mod-wsgi-so配置django应用"><a href="#Apache-mod-wsgi-so配置django应用" class="headerlink" title="Apache+mod_wsgi.so配置django应用"></a>Apache+mod_wsgi.so配置django应用</h2><ul>
@@ -841,7 +673,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[(V3.0最新版+开源地址)基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app]]></title>
+      <title><![CDATA[(V3.0)基于AndroidSQLite和传感器的创意app(下)]]></title>
       <url>http://yikunhaocong.com/2017/06/27/appV3-0/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>app项目地址</strong>：<a href="https://github.com/Kali-Hac/Hac_app" target="_blank" rel="external">https://github.com/Kali-Hac/Hac_app</a><br>    本篇博文是AppV3.0版本更新后的用户手册，新增加了不少实用的功能&amp;更友好的界面，更方便用户的使用，往后还会继续更新。<br><a id="more"></a><p></p>
 <h2 id="1-基本功能使用"><a href="#1-基本功能使用" class="headerlink" title="1.基本功能使用"></a>1.基本功能使用</h2><h3 id="1-1开启app页面-停留5s-√"><a href="#1-1开启app页面-停留5s-√" class="headerlink" title="1-1开启app页面(停留5s) √"></a>1-1开启app页面(停留5s) √</h3><p><img src="http://op72m4y17.bkt.clouddn.com/31.png" alt=""></p>
@@ -920,7 +752,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app]]></title>
+      <title><![CDATA[(V3.0)基于AndroidSQLite和传感器的创意app(上)]]></title>
       <url>http://yikunhaocong.com/2017/06/19/app/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    本博文仅为对安卓开发感兴趣的小伙伴们提供经验，这是自己数据库实训的开发文档之一(测试报告&amp;代码编写)，此外还有用户使用手册和实训总结以及各类设计说明书可能会在后续更新，安卓项目将会开源至我的github上。<br><a id="more"></a><br><img src="http://op72m4y17.bkt.clouddn.com/app32.png" alt="app界面"><br>1.Android项目总览<br>1-1子模块代码结构&amp;功能简介：<br>1-1-1: cmlibrary子模块<br>1-1-2: doublescroll子模块<br>1-1-3: lovelyprogressbar子模块(这个就没有什么好讲的了，主要用于加载的动画效果)<br>1-2主模块代码结构&amp;功能简介：<br>1-2-2主模块layout结构&amp;界面简介：<br>2.Android代码测试<br>2-1开启app页面(停留5s) √<br>2-1主页面展示，带加速度检测(包括联系人、紧急联系人、健康/运动备忘录、设置信息) √<br>2-2 紧急联系人通讯录增删改查√<br>2-3 备忘录的增删改查(包括界面友好的提示)√<br>2-4 高德地图定位系统以及紧急短信收发(加速度阈值设定)√<br>(重要)3.Android数据库构建<p></p>
 <p>(首页开始)</p>
@@ -998,85 +830,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[基于Node.js框架和Express/socket.io的动态即时聊天系统(下)]]></title>
-      <url>http://yikunhaocong.com/2017/04/30/node-js-chat2/</url>
-      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>总结一下开发中的问题&amp;解决方法(接上一篇博文)<p></p>
-<a id="more"></a>
-<h2 id="开发中的问题-amp-解决方法"><a href="#开发中的问题-amp-解决方法" class="headerlink" title="开发中的问题&amp;解决方法"></a>开发中的问题&amp;解决方法</h2><h3 id="第一个是多个界面的切换"><a href="#第一个是多个界面的切换" class="headerlink" title="第一个是多个界面的切换"></a>第一个是多个界面的切换</h3><blockquote>
-<p>解决方法很粗暴，直接用display:”none”和display:”block”实现动态切换与隐藏，不过多个界面的切换逻辑要先理清楚，由于我的这个页面比较简单，通过这种方式实现是最简单的切换(无需费时)，建议是把各类界面的切换函数封装起来，以便于减少代码量和方便使用。比如我4个界面只需要用下面简短的四个函数就可以实现<br><a href="http://op72m4y17.bkt.clouddn.com/44.png" target="_blank" rel="external"></a></p>
-</blockquote>
-<h3 id="第二个是加密-解密的实现"><a href="#第二个是加密-解密的实现" class="headerlink" title="第二个是加密/解密的实现"></a>第二个是加密/解密的实现</h3><blockquote>
-<p>通常node.js里面可以直接require(‘crypto’)模块来直接使用加密api,但如果要嵌入网页的话，采取”script”标签方式是无法使用require方法的，除非你先导入require.js(先去搜索再下载)，再进行一下各种配置，但我不建议采用这种方法。我的解决方法是找到crypto对应的网页js包–CryptoJS，然后把需要用到的js文件导入(可能有不同依赖，需要先确认好再完整导入)，然后就可以在chat.js里面调用函数或重载一下使加密/解密过程得以在通讯中实现。<br>特别要记得按顺序导入如下图，否则加密过程中会出现Parse、Cipher创建等一系列未知的错误。<br><img src="http://op72m4y17.bkt.clouddn.com/22.png" alt="按这个顺序导入"></p>
-<ul>
-<li>这里友情提供CrytoJS包下载链接<a href="https://code.google.com/archive/p/crypto-js/downloads" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/downloads</a>，具体怎么用请看谷歌教程<a href="https://code.google.com/archive/p/crypto-js/" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/</a></li>
-</ul>
-</blockquote>
-<h3 id="第三个是音乐库的导入"><a href="#第三个是音乐库的导入" class="headerlink" title="第三个是音乐库的导入"></a>第三个是音乐库的导入</h3><blockquote>
-<p>我在前面说了我是直接找到网易云音乐的外链播放器的id嵌入到网页的，这种方法很麻烦(需要自己去找对应的歌曲id再放进去)，刚开始我是写了一个python爬虫爬取id但失败了(可能是cookie认证或者网站的反爬虫机制绕不过，但我没有过多尝试，但我觉得真正要实现应该不难(需要研究一下，就比如之前模拟登录爬取数据一样，一定会有方法可以实现)，所以我会考虑在下一个版本中实现这种方法，我最想做的事就是跨语言开发，利用自己比较熟悉python的优势以及python在数据方面处理的优秀能力与node.js结合，一定会有很强大的威力。<br>至于python如何嵌入到node.js,很简单，用node.js开个新进程，运行py文件，然后以控制台输入输出的形式来获取python文件运行后的数据，实现两种语言的交互。<br><img src="http://op72m4y17.bkt.clouddn.com/4.png" alt="暂时导入网易云音乐的静态接口，下一个迭代版本将采用python爬虫+node.js搜索导入url接口"></p>
-</blockquote>
-<h3 id="第四个是管理员广播音乐的轮换"><a href="#第四个是管理员广播音乐的轮换" class="headerlink" title="第四个是管理员广播音乐的轮换"></a>第四个是管理员广播音乐的轮换</h3><blockquote>
-<p>最终想了个差强人意的解决方法，利用socket.emit(‘text’,from,msg)发送信息的过程来顺便进行音乐广播，当前管理员点歌之后，再发一条信息就能将这首歌广播出去(其他用户将同时在这个时刻播放与管理员相同的曲目)。在新用户连接进来时，会直接播放当前已点的歌曲(但手机浏览器是切换到了这首歌，但要不要播放取决于用户)。当管理员断开连接后，新加入的用户会变成新的音乐管理员(dj)，然后可以进行歌曲的广播(点歌动作发生后)。在这整个过程中，如果管理员没有点歌的话，用户是可以随时选择听自己喜欢的歌曲。<br><img src="http://op72m4y17.bkt.clouddn.com/2.png" alt=""></p>
-<h3 id="还有清屏、解密转换等小问题就不赘言了"><a href="#还有清屏、解密转换等小问题就不赘言了" class="headerlink" title="还有清屏、解密转换等小问题就不赘言了"></a>还有清屏、解密转换等小问题就不赘言了</h3></blockquote>
-<h2 id="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"><a href="#最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口" class="headerlink" title="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"></a>最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口</h2><p><img src="http://op72m4y17.bkt.clouddn.com/tcp.png" alt="代码目录"></p>
-<blockquote>
-<p>不需要导入任何模块，聊天效果图如下<br>通过telnet连接到服务器<br><img src="http://op72m4y17.bkt.clouddn.com/tcp1.png" alt=""><br>以冒号隔开用户名和加密秘钥(这里采取括号形式结束输入)由于telnet传输是立刻传输的，所以这里需要有个结束符号’)’<br><img src="http://op72m4y17.bkt.clouddn.com/tcp2.png" alt=""><br>可以看到输入的三句英文都以Aes-128-cbc加密后的字符串输出，其它用户用(*密码)的形式可以对具有这个密码的所有用户所发的信息进行解密！<br><img src="http://op72m4y17.bkt.clouddn.com/tcp3.png" alt=""><br>自定义服务器后台监控&amp;输出<br><img src="http://op72m4y17.bkt.clouddn.com/tcp4.png" alt="后台监控&amp;输出"></p>
-</blockquote>
-<h3 id="加密模块"><a href="#加密模块" class="headerlink" title="加密模块"></a>加密模块</h3><blockquote>
-<p>分享一下加密模块代码,总共16行，很简短，加密向量默认为iv=’5683022032017422’<br><img src="http://op72m4y17.bkt.clouddn.com/jm.png" alt="Aes-128-cbc加密代码"></p>
-</blockquote>
-<ul>
-<li>Tcp_chat服务器代码就不分享了，比较简单，主要用了net模块(比http模块更底层的网络模块)，代码里大部分是自定义的服务器后端监控&amp;输出(代码量超过基于socket.io的聊天网页)，可见socket.io模块的强大。</li>
-</ul>
-<blockquote>
-<p>《基于Node.js框架和Express/socket.io的动态即时聊天系统》这两篇博文仅用于分享开发经验和整理node.js笔记，该项目已开源至<a href="https://github.com/Kali-Hac/node_js_chat" target="_blank" rel="external">我的github/node_js_chat项目</a>，有需要可以查阅代码。另：有任何问题的小伙伴可以在评论区留言，我会尽量解答或订正。<br><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
-</blockquote>
-]]></content>
-      
-        <categories>
-            
-            <category> 作者:Hac </category>
-            
-            <category> Node.js实战笔记 </category>
-            
-            <category> Node.js网络通讯后台的搭建 </category>
-            
-            <category> Telnet网络通讯后台的搭建 </category>
-            
-            <category> JavaScript聊天动态界面的构建 </category>
-            
-            <category> crypto加密模块的网页嵌入(CryptoJS) </category>
-            
-            <category> 1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播的后台实现 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> socket.io </tag>
-            
-            <tag> express </tag>
-            
-            <tag> CryptoJS </tag>
-            
-            <tag> HTTP/WebSocket </tag>
-            
-            <tag> 底层TCP即时通讯 </tag>
-            
-            <tag> Telnet </tag>
-            
-            <tag> Aes-128-cbc对称加密 </tag>
-            
-            <tag> 在线聊天/点歌系统 </tag>
-            
-            <tag> 通讯加密的应用 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[基于Node.js框架和Express/socket.io的动态即时聊天系统(上)]]></title>
+      <title><![CDATA[Node.js+Express/socket.io，有点创意的动态即时聊天系统(上)]]></title>
       <url>http://yikunhaocong.com/2017/04/30/node-js-chat/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>这两天想打一个在线聊天系统，正好最近申了一个项目的后台是基于Node.js构建的，再者可以结合一下自己的前端JavaScript的编程来学习。第一次真正自己构建一个自主js后台，码了很有趣的一个聊天系统，可以1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播。<p></p>
 <a id="more"></a>
@@ -1164,7 +918,85 @@
     </entry>
     
     <entry>
-      <title><![CDATA[几行指令让你的C++代码速度提升100%+]]></title>
+      <title><![CDATA[Node.js+Express/socket.io，有点创意的动态即时聊天系统(下)]]></title>
+      <url>http://yikunhaocong.com/2017/04/30/node-js-chat2/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>总结一下开发中的问题&amp;解决方法(接上一篇博文)<p></p>
+<a id="more"></a>
+<h2 id="开发中的问题-amp-解决方法"><a href="#开发中的问题-amp-解决方法" class="headerlink" title="开发中的问题&amp;解决方法"></a>开发中的问题&amp;解决方法</h2><h3 id="第一个是多个界面的切换"><a href="#第一个是多个界面的切换" class="headerlink" title="第一个是多个界面的切换"></a>第一个是多个界面的切换</h3><blockquote>
+<p>解决方法很粗暴，直接用display:”none”和display:”block”实现动态切换与隐藏，不过多个界面的切换逻辑要先理清楚，由于我的这个页面比较简单，通过这种方式实现是最简单的切换(无需费时)，建议是把各类界面的切换函数封装起来，以便于减少代码量和方便使用。比如我4个界面只需要用下面简短的四个函数就可以实现<br><a href="http://op72m4y17.bkt.clouddn.com/44.png" target="_blank" rel="external"></a></p>
+</blockquote>
+<h3 id="第二个是加密-解密的实现"><a href="#第二个是加密-解密的实现" class="headerlink" title="第二个是加密/解密的实现"></a>第二个是加密/解密的实现</h3><blockquote>
+<p>通常node.js里面可以直接require(‘crypto’)模块来直接使用加密api,但如果要嵌入网页的话，采取”script”标签方式是无法使用require方法的，除非你先导入require.js(先去搜索再下载)，再进行一下各种配置，但我不建议采用这种方法。我的解决方法是找到crypto对应的网页js包–CryptoJS，然后把需要用到的js文件导入(可能有不同依赖，需要先确认好再完整导入)，然后就可以在chat.js里面调用函数或重载一下使加密/解密过程得以在通讯中实现。<br>特别要记得按顺序导入如下图，否则加密过程中会出现Parse、Cipher创建等一系列未知的错误。<br><img src="http://op72m4y17.bkt.clouddn.com/22.png" alt="按这个顺序导入"></p>
+<ul>
+<li>这里友情提供CrytoJS包下载链接<a href="https://code.google.com/archive/p/crypto-js/downloads" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/downloads</a>，具体怎么用请看谷歌教程<a href="https://code.google.com/archive/p/crypto-js/" target="_blank" rel="external">https://code.google.com/archive/p/crypto-js/</a></li>
+</ul>
+</blockquote>
+<h3 id="第三个是音乐库的导入"><a href="#第三个是音乐库的导入" class="headerlink" title="第三个是音乐库的导入"></a>第三个是音乐库的导入</h3><blockquote>
+<p>我在前面说了我是直接找到网易云音乐的外链播放器的id嵌入到网页的，这种方法很麻烦(需要自己去找对应的歌曲id再放进去)，刚开始我是写了一个python爬虫爬取id但失败了(可能是cookie认证或者网站的反爬虫机制绕不过，但我没有过多尝试，但我觉得真正要实现应该不难(需要研究一下，就比如之前模拟登录爬取数据一样，一定会有方法可以实现)，所以我会考虑在下一个版本中实现这种方法，我最想做的事就是跨语言开发，利用自己比较熟悉python的优势以及python在数据方面处理的优秀能力与node.js结合，一定会有很强大的威力。<br>至于python如何嵌入到node.js,很简单，用node.js开个新进程，运行py文件，然后以控制台输入输出的形式来获取python文件运行后的数据，实现两种语言的交互。<br><img src="http://op72m4y17.bkt.clouddn.com/4.png" alt="暂时导入网易云音乐的静态接口，下一个迭代版本将采用python爬虫+node.js搜索导入url接口"></p>
+</blockquote>
+<h3 id="第四个是管理员广播音乐的轮换"><a href="#第四个是管理员广播音乐的轮换" class="headerlink" title="第四个是管理员广播音乐的轮换"></a>第四个是管理员广播音乐的轮换</h3><blockquote>
+<p>最终想了个差强人意的解决方法，利用socket.emit(‘text’,from,msg)发送信息的过程来顺便进行音乐广播，当前管理员点歌之后，再发一条信息就能将这首歌广播出去(其他用户将同时在这个时刻播放与管理员相同的曲目)。在新用户连接进来时，会直接播放当前已点的歌曲(但手机浏览器是切换到了这首歌，但要不要播放取决于用户)。当管理员断开连接后，新加入的用户会变成新的音乐管理员(dj)，然后可以进行歌曲的广播(点歌动作发生后)。在这整个过程中，如果管理员没有点歌的话，用户是可以随时选择听自己喜欢的歌曲。<br><img src="http://op72m4y17.bkt.clouddn.com/2.png" alt=""></p>
+<h3 id="还有清屏、解密转换等小问题就不赘言了"><a href="#还有清屏、解密转换等小问题就不赘言了" class="headerlink" title="还有清屏、解密转换等小问题就不赘言了"></a>还有清屏、解密转换等小问题就不赘言了</h3></blockquote>
+<h2 id="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"><a href="#最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口" class="headerlink" title="最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口"></a>最后再附上自己在打这个聊天项目前打的一个灰常简单的基于TCP的即时通讯cmd窗口</h2><p><img src="http://op72m4y17.bkt.clouddn.com/tcp.png" alt="代码目录"></p>
+<blockquote>
+<p>不需要导入任何模块，聊天效果图如下<br>通过telnet连接到服务器<br><img src="http://op72m4y17.bkt.clouddn.com/tcp1.png" alt=""><br>以冒号隔开用户名和加密秘钥(这里采取括号形式结束输入)由于telnet传输是立刻传输的，所以这里需要有个结束符号’)’<br><img src="http://op72m4y17.bkt.clouddn.com/tcp2.png" alt=""><br>可以看到输入的三句英文都以Aes-128-cbc加密后的字符串输出，其它用户用(*密码)的形式可以对具有这个密码的所有用户所发的信息进行解密！<br><img src="http://op72m4y17.bkt.clouddn.com/tcp3.png" alt=""><br>自定义服务器后台监控&amp;输出<br><img src="http://op72m4y17.bkt.clouddn.com/tcp4.png" alt="后台监控&amp;输出"></p>
+</blockquote>
+<h3 id="加密模块"><a href="#加密模块" class="headerlink" title="加密模块"></a>加密模块</h3><blockquote>
+<p>分享一下加密模块代码,总共16行，很简短，加密向量默认为iv=’5683022032017422’<br><img src="http://op72m4y17.bkt.clouddn.com/jm.png" alt="Aes-128-cbc加密代码"></p>
+</blockquote>
+<ul>
+<li>Tcp_chat服务器代码就不分享了，比较简单，主要用了net模块(比http模块更底层的网络模块)，代码里大部分是自定义的服务器后端监控&amp;输出(代码量超过基于socket.io的聊天网页)，可见socket.io模块的强大。</li>
+</ul>
+<blockquote>
+<p>《基于Node.js框架和Express/socket.io的动态即时聊天系统》这两篇博文仅用于分享开发经验和整理node.js笔记，该项目已开源至<a href="https://github.com/Kali-Hac/node_js_chat" target="_blank" rel="external">我的github/node_js_chat项目</a>，有需要可以查阅代码。另：有任何问题的小伙伴可以在评论区留言，我会尽量解答或订正。<br><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> 作者:Hac </category>
+            
+            <category> Node.js实战笔记 </category>
+            
+            <category> Node.js网络通讯后台的搭建 </category>
+            
+            <category> Telnet网络通讯后台的搭建 </category>
+            
+            <category> JavaScript聊天动态界面的构建 </category>
+            
+            <category> crypto加密模块的网页嵌入(CryptoJS) </category>
+            
+            <category> 1.(聊天)信息加密传输/2.获取秘钥解密/3.管理员点歌广播的后台实现 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> socket.io </tag>
+            
+            <tag> express </tag>
+            
+            <tag> CryptoJS </tag>
+            
+            <tag> HTTP/WebSocket </tag>
+            
+            <tag> Aes-128-cbc对称加密 </tag>
+            
+            <tag> 在线聊天/点歌系统 </tag>
+            
+            <tag> 通讯加密的应用 </tag>
+            
+            <tag> 底层TCP即时通讯 </tag>
+            
+            <tag> Telnet </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[几行指令让你的C++代码速度提升100%+，了解一下？]]></title>
       <url>http://yikunhaocong.com/2017/03/31/tbb/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>主要讲解VS内置OpenMP库的使用和Intel_TBB开源库的配置，与普通C++代码串行运行的速度进行对比，教会你如何快速使用OpenMP和Intel_TBB内置的并行算法使你的C++代码运行速度大幅度提升(充分调用CPU开启多线程)。<p></p>
 <a id="more"></a>
@@ -1297,7 +1129,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     </entry>
     
     <entry>
-      <title><![CDATA[安全渗透测试①:Kali-Linux 几行指令制作最简单的木马]]></title>
+      <title><![CDATA[有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马]]></title>
       <url>http://yikunhaocong.com/2017/03/25/kali-linux/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。<p></p>
 <a id="more"></a>
@@ -1406,7 +1238,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     </entry>
     
     <entry>
-      <title><![CDATA[几个国内专用的公共 DNS]]></title>
+      <title><![CDATA[(转)几个国内专用的公共 DNS]]></title>
       <url>http://yikunhaocong.com/2016/05/11/public-dns/</url>
       <content type="html"><![CDATA[<p>　　之前 <a href="http://www.bootcdn.cn/" target="_blank" rel="external">有个网站</a> 自己经常上不去，查了挺久才发现是 DNS 的问题，更换为公共 DNS 后访问恢复正常。由此可见，挑选一个合适自己网络的 DNS 还是挺有必要的。</p>
 <a id="more"></a>
@@ -1457,7 +1289,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     </entry>
     
     <entry>
-      <title><![CDATA[Markdown 表格样式调整与自适应优化]]></title>
+      <title><![CDATA[(我转)Markdown 表格样式调整与自适应优化]]></title>
       <url>http://yikunhaocong.com/2016/03/04/markdown-table-style/</url>
       <content type="html"><![CDATA[<p>　　Markdown 写的表格最终会被解析成 HTML 代码，如果使用的编辑器支持自定义 CSS，就能方便的调整样式。如果可以引入 JavaScript，样式自适应也能较好地实现。</p>
 <a id="more"></a>
@@ -1530,7 +1362,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     </entry>
     
     <entry>
-      <title><![CDATA[前端工程化工具初选]]></title>
+      <title><![CDATA[(再转)前端工程化工具初选]]></title>
       <url>http://yikunhaocong.com/2016/02/16/front-end-tools/</url>
       <content type="html"><![CDATA[<p>　　面对日益纷杂的前端工具，作为新人常感无从下手。经过一番检索和简单对比，再结合自己的喜好，筛选了将要学习和使用的工具，以适应日益工程化、专业化的 Web 前端开发工作。</p>
 <a id="more"></a>
@@ -1615,7 +1447,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     </entry>
     
     <entry>
-      <title><![CDATA[为 Hexo 主题添加评论模块 — Disqus, 多说, 友言]]></title>
+      <title><![CDATA[(我又转)为 Hexo 主题添加评论模块 — Disqus, 多说, 友言]]></title>
       <url>http://yikunhaocong.com/2016/01/02/hexo-comments/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>目前自己的主题 <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" rel="external">Yelee</a> 已支持使用 Disqus, 多说和友言评论，代码逻辑和配置也做了些优化，应该是比较完善了。简单分离整理一下，分享于此，方便大家添加到自己制作或使用的主题中。<p></p>
 <a id="more"></a>
@@ -1662,7 +1494,7 @@ parallel语句后面要跟一个大括号对将要并行执行的代码括起来
     </entry>
     
     <entry>
-      <title><![CDATA[CSS font-family 网页字体使用小结]]></title>
+      <title><![CDATA[(我转转转)CSS font-family 网页字体使用小结]]></title>
       <url>http://yikunhaocong.com/2015/12/09/css-font-family/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2>一直到最近才开始调整博客的字体，之前都是全站微软雅黑了事。慢慢调整后发现 font-family 这个属性相关的知识还是不少的，整理一下常用的部分，分享于此。<p></p>
 <a id="more"></a>

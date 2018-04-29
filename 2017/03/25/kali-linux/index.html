@@ -17,7 +17,7 @@
 
 <meta name="description" content="前言记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安全渗透测试①:Kali-Linux 几行指令制作最简单的木马">
+<meta property="og:title" content="有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马">
 <meta property="og:url" content="http://yikunhaocong.com/2017/03/25/kali-linux/index.html">
 <meta property="og:site_name" content="Ykhc">
 <meta property="og:description" content="前言记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。">
@@ -53,9 +53,9 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20170325195259614?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="http://img.blog.csdn.net/20170325195349099?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="http://img.blog.csdn.net/20170401022928043?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:updated_time" content="2017-05-07T12:15:24.220Z">
+<meta property="og:updated_time" content="2018-04-29T02:35:35.939Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="安全渗透测试①:Kali-Linux 几行指令制作最简单的木马">
+<meta name="twitter:title" content="有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马">
 <meta name="twitter:description" content="前言记录安装和配置Kali-linux，并使Msfvenom库生成木马和入侵win的过程。">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20170325161736981?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 
@@ -89,7 +89,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>安全渗透测试①:Kali-Linux 几行指令制作最简单的木马 | Ykhc</title>
+<title>有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马 | Ykhc</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -199,26 +199,18 @@
                     <nav class="header-menu">
                         <ul>
                         
-                            <li><a href="/">主页</a></li>
+                            <li><a href="/">HOME</a></li>
                         
-                            <li><a href="/archives/">所有文章</a></li>
+                            <li><a href="/archives/">articles</a></li>
+                        
+                            <li><a href="/about/">My Beliefs</a></li>
                         
                         </ul>
                     </nav>
                     <nav class="header-nav">
                         <ul class="social">
                             
-                                <a class="fa GitHub" href="https://github.com/" title="GitHub"></a>
-                            
-                                <a class="fa CSDN" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
-                            
-                                <a class="fa StackOverflow" href="http://stackoverflow.com/" title="StackOverflow"></a>
-                            
-                                <a class="fa 微信" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
-                            
-                                <a class="fa 豆瓣" href="https://movie.douban.com/" title="豆瓣"></a>
-                            
-                                <a class="fa 网易云音乐" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                                <a class="fa GitHub" href="https://github.com/Kali-Hac" title="GitHub"></a>
                             
                         </ul>
                     </nav>
@@ -227,7 +219,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AP-SIR模型/">(AP)SIR模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aes-128-cbc对称加密/">Aes-128-cbc对称加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidSQLite简单应用/">AndroidSQLite简单应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention-Mechanism/">Attention Mechanism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Barnes–Hut-Force-Calculation/">Barnes–Hut Force Calculation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bernoulli-NB/">Bernoulli NB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CNN-RNN-LSTM/">CNN/RNN-LSTM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CryptoJS/">CryptoJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decision-Tree-Classifier/">Decision Tree Classifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Force-Directed-Algorithms/">Force-Directed Algorithms</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPS定位/">GPS定位</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gaussian-NB/">Gaussian NB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP-WebSocket/">HTTP/WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Image-Caption/">Image Caption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Anonymity/">K-Anonymity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Means/">K-Means++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Neighbors-Classifier/">K-Neighbors Classifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LASSO-Random-LASSO/">LASSO, Random LASSO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Logit-Model/">Logit Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multi-arms-Bandit-Problems/">Multi-arms Bandit Problems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multinomial-NB/">Multinomial NB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx的socket转发/">Nginx的socket转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payloads/">Payloads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quadtree/">Quadtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RFE/">RFE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Random-Forest-Classifier/">Random Forest Classifier</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ridge-Regression/">Ridge Regression</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SMS功能/">SMS功能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Software/">Software</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Table/">Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telnet/">Telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Upper-Bounded-Confidence-UBC/">Upper Bounded Confidence(UBC)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VarUBC/">VarUBC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie验证/">cookie验证</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/font-family/">font-family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl/">php_curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl快速开发/">php_curl快速开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php学习-实战笔记/">php学习/实战笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php应用脚本/">php应用脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket-io/">socket.io</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uWSGI与Nginx的通信/">uWSGI与Nginx的通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人信息动态交易平台/">个人信息动态交易平台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制uwsgi协议/">二进制uwsgi协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作者：Hac原创/">作者：Hac原创</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反向代理服务器/">反向代理服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/在线聊天-点歌系统/">在线聊天/点歌系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多级页表/">多级页表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多进程模拟/">多进程模拟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安卓传感器的运用/">安卓传感器的运用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层TCP即时通讯/">底层TCP即时通讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旁带缓冲TLB表/">旁带缓冲TLB表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性加速度传感器/">线性加速度传感器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/综测系统数据爬取、自动排名/">综测系统数据爬取、自动排名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络爬虫/">网络爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本语言的面向对象设计/">脚本语言的面向对象设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化脚本/">自动化脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/谷歌抓包分析隐藏数据/">谷歌抓包分析隐藏数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通讯加密的应用/">通讯加密的应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页框LRU回收机制/">页框LRU回收机制</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AP-SIR模型/">(AP)SIR模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aes-128-cbc对称加密/">Aes-128-cbc对称加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidSQLite简单应用/">AndroidSQLite简单应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention-Mechanism/">Attention Mechanism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Barnes–Hut-Force-Calculation/">Barnes–Hut Force Calculation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CNN-RNN-LSTM/">CNN/RNN-LSTM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CryptoJS/">CryptoJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Force-Directed-Algorithms/">Force-Directed Algorithms</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPS定位/">GPS定位</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP-WebSocket/">HTTP/WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Image-Caption/">Image Caption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Anonymity/">K-Anonymity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Means/">K-Means++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multi-arms-Bandit-Problems/">Multi-arms Bandit Problems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx的socket转发/">Nginx的socket转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payloads/">Payloads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quadtree/">Quadtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SMS功能/">SMS功能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Software/">Software</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Table/">Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telnet/">Telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Upper-Bounded-Confidence-UBC/">Upper Bounded Confidence(UBC)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VarUBC/">VarUBC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie验证/">cookie验证</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/font-family/">font-family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl/">php_curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl快速开发/">php_curl快速开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php学习-实战笔记/">php学习/实战笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php应用脚本/">php应用脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket-io/">socket.io</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uWSGI与Nginx的通信/">uWSGI与Nginx的通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人信息动态交易平台/">个人信息动态交易平台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制uwsgi协议/">二进制uwsgi协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作者：Hac原创/">作者：Hac原创</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反向代理服务器/">反向代理服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/在线聊天-点歌系统/">在线聊天/点歌系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多级页表/">多级页表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多进程模拟/">多进程模拟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安卓传感器的运用/">安卓传感器的运用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层TCP即时通讯/">底层TCP即时通讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旁带缓冲TLB表/">旁带缓冲TLB表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性加速度传感器/">线性加速度传感器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/综测系统数据爬取、自动排名/">综测系统数据爬取、自动排名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络爬虫/">网络爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本语言的面向对象设计/">脚本语言的面向对象设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化脚本/">自动化脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/谷歌抓包分析隐藏数据/">谷歌抓包分析隐藏数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通讯加密的应用/">通讯加密的应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页框LRU回收机制/">页框LRU回收机制</a></li></ul>
                     </div>
                 </section>
                 
@@ -238,10 +230,6 @@
                     
                       <a class="main-nav-link switch-friends-link" href="https://github.com/Kali-Hac/">My GitHub</a>
                     
-                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
-                    
-                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
-                    
                     </div>
                 </section>
                 
@@ -250,7 +238,7 @@
                 
                 <section class="switch-part switch-part4">
                 
-                    <div id="js-aboutme">把好运留给别人，把实力留给自己。</div>
+                    <div id="js-aboutme">“A creative man is motivated by the desire to achieve, not by the desire to beat others.” – Ayn Rand</div>
                 </section>
                 
             </div>
@@ -278,9 +266,11 @@
             <nav class="header-menu">
                 <ul>
                 
-                    <li><a href="/">主页</a></li>
+                    <li><a href="/">HOME</a></li>
                 
-                    <li><a href="/archives/">所有文章</a></li>
+                    <li><a href="/archives/">articles</a></li>
+                
+                    <li><a href="/about/">My Beliefs</a></li>
                 
                 <div class="clearfix"></div>
                 </ul>
@@ -288,17 +278,7 @@
             <nav class="header-nav">
                         <ul class="social">
                             
-                                <a class="fa GitHub" target="_blank" href="https://github.com/" title="GitHub"></a>
-                            
-                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/csdn568302203" title="CSDN"></a>
-                            
-                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/" title="StackOverflow"></a>
-                            
-                                <a class="fa 微信" target="_blank" href="http://img.blog.csdn.net/20170326010938246?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ1NETjU2ODMwMjIwMw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" title="微信"></a>
-                            
-                                <a class="fa 豆瓣" target="_blank" href="https://movie.douban.com/" title="豆瓣"></a>
-                            
-                                <a class="fa 网易云音乐" target="_blank" href="http://mp.weixin.qq.com/s/WlupT0t9iGa4B9ZIPXVT2A" title="网易云音乐"></a>
+                                <a class="fa GitHub" target="_blank" href="https://github.com/Kali-Hac" title="GitHub"></a>
                             
                         </ul>
             </nav>
@@ -325,7 +305,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      安全渗透测试①:Kali-Linux 几行指令制作最简单的木马
+      有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马
     </h1>
   
 
@@ -439,12 +419,12 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/25/kali-linux/">安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/25/kali-linux/">有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
         <p><span>发布时间:</span>2017-03-25, 15:30:40</p>
-        <p><span>最后更新:</span>2017-05-07, 20:15:24</p>
+        <p><span>最后更新:</span>2018-04-29, 10:35:35</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/25/kali-linux/" title="安全渗透测试①:Kali-Linux 几行指令制作最简单的木马">http://yikunhaocong.com/2017/03/25/kali-linux/</a>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/25/kali-linux/" title="有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马">http://yikunhaocong.com/2017/03/25/kali-linux/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2017/03/25/kali-linux/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -459,14 +439,14 @@
         
             <div id="article-nav-newer" class="article-nav-title">
                 <a href="/2017/03/31/tbb/">
-                    几行指令让你的C++代码速度提升100%+
+                    几行指令让你的C++代码速度提升100%+，了解一下？
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
                 <a href="/2016/05/11/public-dns/">
-                    几个国内专用的公共 DNS
+                    (转)几个国内专用的公共 DNS
                 </a>
             </div>
         
@@ -514,7 +494,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"安全渗透测试①:Kali-Linux 几行指令制作最简单的木马　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -548,7 +528,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/31/tbb/" title="上一篇: 几行指令让你的C++代码速度提升100%+">
+            <a href="/2017/03/31/tbb/" title="上一篇: 几行指令让你的C++代码速度提升100%+，了解一下？">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -556,13 +536,13 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2016/05/11/public-dns/" title="下一篇: 几个国内专用的公共 DNS">
+            <a href="/2016/05/11/public-dns/" title="下一篇: (转)几个国内专用的公共 DNS">
                 <i class="fa fa-angle-right"></i>
             </a>
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/Yifanhu_source_code/">Yifanhu Layout源码解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/17/2018-ICM-F/">A Dynamic Privacy Trading System</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/20/Visual-Attention/">Show, Attend and Tell——Neural Image Caption Generation with Visual Attention</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/APMCM-result/">A Comprehensive Analysis of the Effects of Sleep on Human Body----From the Perspectives of Logit Model and Machine Learning</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/APMCM-team1914/">2017APMCM_A题 Problem2&3建模笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider3/">PHP实战笔记(三)定向爬取综测系统自身班级所有成绩并进行智育Z1分值排名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider2/">PHP实战笔记(二)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/php-spider1/">PHP实战笔记(一)零基础的phper如何在三天内完成模拟登录并具备教务系统功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/06/djangocms-uwsgi/">如何用uWSGI最快地将Django(CMS)部署到Nginx上</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/p-table/">多级页表虚拟内存管理器C++、python和node.js的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/appV3-0/">(V3.0最新版+开源地址)基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/19/app/">基于AndroidSQLite和传感器的“摇一摇”定位&备忘提醒app</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">基于Node.js框架和Express/socket.io的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">基于Node.js框架和Express/socket.io的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/Yifanhu_source_code/">确认下眼神，Yifanhu Layout源码解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/17/2018-ICM-F/">(贻笑大方的论文)A Dynamic Privacy Trading System</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/20/Visual-Attention/">(论文解析)Show, Attend and Tell——Neural Image Caption Generation with Visual Attention</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider3/">趣味爬虫(下)定向爬取综测系统自身班级所有成绩并进行智育Z1分值排名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider2/">趣味爬虫(中)制作模拟登录并具备教务查询功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/php-spider1/">趣味爬虫(上)制作模拟登录并具备教务查询功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/06/djangocms-uwsgi/">利用uWSGI稳健地将Django(CMS)部署到Nginx上</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/p-table/">多级页表虚拟内存管理器C++、python和node.js的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/appV3-0/">(V3.0)基于AndroidSQLite和传感器的创意app(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/19/app/">(V3.0)基于AndroidSQLite和传感器的创意app(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">Node.js+Express/socket.io，有点创意的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">Node.js+Express/socket.io，有点创意的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+，了解一下？</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">(转)几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">(我转)Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">(再转)前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">(我又转)为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">(我转转转)CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
 
 
 
