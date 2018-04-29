@@ -1063,15 +1063,15 @@
             
             <tag> HTTP/WebSocket </tag>
             
+            <tag> 底层TCP即时通讯 </tag>
+            
+            <tag> Telnet </tag>
+            
             <tag> Aes-128-cbc对称加密 </tag>
             
             <tag> 在线聊天/点歌系统 </tag>
             
             <tag> 通讯加密的应用 </tag>
-            
-            <tag> 底层TCP即时通讯 </tag>
-            
-            <tag> Telnet </tag>
             
         </tags>
         
