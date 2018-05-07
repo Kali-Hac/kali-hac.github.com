@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kali-Hac" />
+
+
+
+<meta name="description" content="前言    “是故学然后知不足，教然后知困。知不足然后能自反也，知困然后能自强也。故曰教学相长也。”——《礼记·学记》    Learning to Teach, Yang Fan, Fei Tian,Tao Qin, Xiang-Yang Li, Tie-Yan Liu, Proceedings of Sixth International Conference on Learning Repr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICLR 2018 | Learning to Teach 论文品读">
+<meta property="og:url" content="http://yikunhaocong.com/2018/05/07/L2T/index.html">
+<meta property="og:site_name" content="Ykhc">
+<meta property="og:description" content="前言    “是故学然后知不足，教然后知困。知不足然后能自反也，知困然后能自强也。故曰教学相长也。”——《礼记·学记》    Learning to Teach, Yang Fan, Fei Tian,Tao Qin, Xiang-Yang Li, Tie-Yan Liu, Proceedings of Sixth International Conference on Learning Repr">
+<meta property="og:image" content="http://yikunhaocong.com/5">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L1.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L2.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L3.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L4.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L5.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L7.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L8.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L9.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L10.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L13.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L11.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L12.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L16.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L15.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/L14.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
+<meta property="og:updated_time" content="2018-05-07T04:43:04.030Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ICLR 2018 | Learning to Teach 论文品读">
+<meta name="twitter:description" content="前言    “是故学然后知不足，教然后知困。知不足然后能自反也，知困然后能自强也。故曰教学相长也。”——《礼记·学记》    Learning to Teach, Yang Fan, Fei Tian,Tao Qin, Xiang-Yang Li, Tie-Yan Liu, Proceedings of Sixth International Conference on Learning Repr">
+<meta name="twitter:image" content="http://yikunhaocong.com/5">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Ykhc" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>ICLR 2018 | Learning to Teach 论文品读 | Ykhc</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Kali-Hac</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">99% of sweat plus 1% of talent</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">HOME</a></li>
+                        
+                            <li><a href="/archives/">articles</a></li>
+                        
+                            <li><a href="/about/">My Beliefs</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/Kali-Hac" title="GitHub"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AP-SIR模型/">(AP)SIR模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aes-128-cbc对称加密/">Aes-128-cbc对称加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidSQLite简单应用/">AndroidSQLite简单应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention-Mechanism/">Attention Mechanism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Barnes–Hut-Force-Calculation/">Barnes–Hut Force Calculation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CNN-RNN-LSTM/">CNN/RNN-LSTM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CryptoJS/">CryptoJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Force-Directed-Algorithms/">Force-Directed Algorithms</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPS定位/">GPS定位</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP-WebSocket/">HTTP/WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Image-Caption/">Image Caption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Anonymity/">K-Anonymity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Means/">K-Means++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSRA/">MSRA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multi-arms-Bandit-Problems/">Multi-arms Bandit Problems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx的socket转发/">Nginx的socket转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payloads/">Payloads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quadtree/">Quadtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Reinforcement-learning/">Reinforcement learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SMS功能/">SMS功能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Software/">Software</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Table/">Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telnet/">Telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Upper-Bounded-Confidence-UBC/">Upper Bounded Confidence(UBC)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VarUBC/">VarUBC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie验证/">cookie验证</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/font-family/">font-family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl/">php_curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl快速开发/">php_curl快速开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php学习-实战笔记/">php学习/实战笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php应用脚本/">php应用脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket-io/">socket.io</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uWSGI与Nginx的通信/">uWSGI与Nginx的通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人信息动态交易平台/">个人信息动态交易平台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制uwsgi协议/">二进制uwsgi协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作者：Hac原创/">作者：Hac原创</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反向代理服务器/">反向代理服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/在线聊天-点歌系统/">在线聊天/点歌系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多级页表/">多级页表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多进程模拟/">多进程模拟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安卓传感器的运用/">安卓传感器的运用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层TCP即时通讯/">底层TCP即时通讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旁带缓冲TLB表/">旁带缓冲TLB表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性加速度传感器/">线性加速度传感器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/综测系统数据爬取、自动排名/">综测系统数据爬取、自动排名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络爬虫/">网络爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本语言的面向对象设计/">脚本语言的面向对象设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化脚本/">自动化脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/谷歌抓包分析隐藏数据/">谷歌抓包分析隐藏数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通讯加密的应用/">通讯加密的应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页框LRU回收机制/">页框LRU回收机制</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://github.com/Kali-Hac/">My GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">“A creative man is motivated by the desire to achieve, not by the desire to beat others.” – Ayn Rand</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Kali-Hac</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Kali-Hac</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">99% of sweat plus 1% of talent</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">HOME</a></li>
+                
+                    <li><a href="/archives/">articles</a></li>
+                
+                    <li><a href="/about/">My Beliefs</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/Kali-Hac" title="GitHub"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-L2T" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/07/L2T/" class="article-date">
+      <time datetime="2018-05-07T02:20:05.000Z" itemprop="datePublished">2018-05-07</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ICLR 2018 | Learning to Teach 论文品读
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/论文研读笔记/">论文研读笔记</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MSRA/">MSRA</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Reinforcement-learning/">Reinforcement learning</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p></p><h2 id="intro">前言</h2><br>    <strong>“是故学然后知不足，教然后知困。知不足然后能自反也，知困然后能自强也。故曰教学相长也。”——《礼记·学记》</strong><br>    <a href="https://openreview.net/pdf?id=HJewuJWCZ" target="_blank" rel="external">Learning to Teach, Yang Fan, Fei Tian,Tao Qin, Xiang-Yang Li, Tie-Yan Liu, Proceedings of Sixth International Conference on Learning Representations (ICLR 2018)</a><br><a id="more"></a><p></p>
+<h2 id="传统的机器学习算法和最近的自动学习算法"><a href="#传统的机器学习算法和最近的自动学习算法" class="headerlink" title="传统的机器学习算法和最近的自动学习算法"></a>传统的机器学习算法和最近的自动学习算法</h2><p>它们重点都在于如何让AI更好地学习：两种学习算法的训练过程都是在固定的数据集上，通过最小化固定的损失函数（Loss Function），优化得到位于模型假设空间（Hypothesis Space）里最优的模型。而两者差别仅仅在于优化过程是否是自动进行的，这一定程度上限制了自动学习技术的潜力。</p>
+<h2 id="Learning-to-Teach"><a href="#Learning-to-Teach" class="headerlink" title="Learning to Teach"></a>Learning to Teach</h2><p>通过和人类社会的学习机制对比，我们发现传统的机器学习和近年来的自动学习都忽略了一个很重要的方面：它们只学而不教。无论是训练数据、损失函数，还是模型的假设空间，都对应着人类教学过程里的若干重要环节。因此我们试图打破对于训练数据、损失函数和模型假设空间的限制，把教学这一重要的概念集成到机器学习系统中，使得人工智能和机器学习算法得以教学相长。我们将这一框架命名为“学习教学”（Learning to Teach，简写为L2T）。其中涵盖了若干个关键问题：</p>
+<ul>
+<li><p>1.<strong>数据教学力图为机器学习过程寻找到最优的训练集。</strong>训练数据对应人类教学过程中的教育材料，例如教科书。</p>
+</li>
+<li><p>2.<strong>损失函数教学力图为机器学习过程寻找到最优的损失函数。</strong>这类比于人类教学过程中，优秀的教师会通过高质量的测试过程来评估学生的学习质量，并对其进行引导。</p>
+</li>
+<li><p>3.<strong>模型空间教学力图为机器学习过程定义最优的模型假设空间。</strong>例如在训练的初期，我们可能会倾向于使用简单的线性模型来尽快学习到数据里的规律，而在训练的末期，我们可能更愿意选择复杂的深度模型来使得性能得到进一步增强。这类比于教师教授给学生的技能集合（Skills Set）：小学生只会学习到简单的数字运算，中学生则会学习到基本的代数知识，到了大学，微积分则成为了必备的技能。</p>
+</li>
+</ul>
+<h2 id="How-to-solve"><a href="#How-to-solve" class="headerlink" title="How to solve"></a>How to solve</h2><p>为了解决这些问题，我们定义了两个模型：学生模型和教师模型。前者即为通常意义下的机器学习模型，后者则负责为前者提供合适的数据、损失函数，或者模型假设空间。在下图中，我们简单展示了两个模型的完全自动化训练过程：在学生模型训练的每一步t，教师模型得到学生模型的状态向量（用于反映学生模型当前的状态），根据自身参数输出教学策略，诸如当前需要使用的训练数据、损失函数，或者优化的模型空间，反馈给学生模型。学生模型基于此进行一步优化（例如梯度下降），更新其参数。之后学生模型会将一个奖励信号（例如开发集上的准确率）反馈给教师模型。教师模型基于该信号对自己的教学策略进行优化更新。这样的过程循环往复直至教师模型收敛。<br><img src="5" alt="L2T的训练过程"></p>
+<h2 id="接着从头把公式撸一撸"><a href="#接着从头把公式撸一撸" class="headerlink" title="接着从头把公式撸一撸"></a>接着从头把公式撸一撸</h2><p><img src="http://op72m4y17.bkt.clouddn.com/L1.png" alt=""></p>
+<p>=&gt; R(W)是参数W的风险函数，注意不要把R理解为强化学习中的Reward奖励函数噢(强化学习的步骤在后面才有讲，它只是本文用来训练教师模型的一个手段)，在下面的教师模型中有说明，这里指的是Risk(W)</p>
+<p>=&gt; M是预测结果(离散型)或输出结果(连续型)的评估矩阵，由于M矩阵一般是离散值并且难以被优化，所以模型中构造Loss函数来对预测值进行评估。如果模型是为了寻找一个好的假设函数f，假设函数集合空间需要先给出</p>
+<p>=&gt; P(x,y)=P(x)P(y|x)是(x,y)的联合分布概率函数，刚开始是未知的,所以寻找最优预测函数f是基于训练集D{xi,yi}的</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L2.png" alt=""></p>
+<p>=&gt; 模型的(教学成果)目标函数，即通过训练教师/学生模型最小化基于已定义学习算法u的Loss函数，并得到最优化学习网络参数W的目标。实际上这里的参数w可以理解为学生模型的参数，这是学生的一个训练模型，因为下面：</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L3.png" alt=""></p>
+<p><strong>=&gt; 模型的(教学水平)目标函数，即通过最小化测试集数据在学生模型学习算法上的风险(也就是它的Loss函数)来最优化教师模型的目标(可以是数据集空间D，Loss假设函数空间L，或模型假设函数空间)</strong></p>
+<p>=&gt; 这里需要说明的一点是，这篇论文只在数据集空间D上进行了Learning to Teach的实验</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L4.png" alt=""></p>
+<p>=&gt; 框架说明，了解过Reinforcement learning基本步骤的小伙伴应该不难理解，基于前面状态的转移并采取行动A,<strong>但这里有个改进，除了考虑教师的历史状态，还综合考虑了学生模型的前一步状态(有种RNN/LSTM隐藏状态H(n-1)的感觉)，所以下面有对学生模型状态的表示进行说明</strong></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L5.png" alt=""></p>
+<p>=&gt; 整个Learning to Teach模型综合起来的核心目标函数</p>
+<p>=&gt; 使用强化学习的手段来正反馈训练教师模型。(<strong>注意，除了RL还可以使用其他手段来训练</strong>) 这里的r就是reward奖励函数啦，通过最大化教师的奖励值来对教师模型的指导输出做优化，得到最终的教师模型。 这个过程是通过与学生模型的输出和Loss(准确点叫做风险函数R(w)，因为教师模型不一定是指导生成最好的Loss函数来加快训练，有可能是指导生成数据集加快训练速度，或者指导选择模型)</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L7.png" alt=""></p>
+<p>=&gt; 论文的实验内容，让教师模型学会选择适当批次的数据和抛弃效果不好的训练集数据批次，来加快学生模型的训练，基于随机梯度下降SGD可以得到训练集的批次序列，<strong>实际上教师模型最终学习到的是如何决定哪些批次数据比较重要和哪些可以扔掉的能力</strong>，从而达到提高主模型(学生模型)训练效果的目的。</p>
+<h3 id="接下来是为教师-学生模型的交互进行建模"><a href="#接下来是为教师-学生模型的交互进行建模" class="headerlink" title="接下来是为教师/学生模型的交互进行建模"></a>接下来是为教师/学生模型的交互进行建模</h3><p><img src="http://op72m4y17.bkt.clouddn.com/L8.png" alt=""></p>
+<p>=&gt; 对训练批次(总共有M批)进行简单的0/1状态编码，0代表不重要可以去除，1代表对训练过程有作用需要保留</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L9.png" alt=""></p>
+<p>=&gt; 将学生模型训练收敛的速度作为教师模型奖励函数的指标，定义了一个奖励函数<strong>r_T= -log(i_acc/T’), T’是预设的最大训练迭代次数， i_acc是选择某个批次序列状态进行训练并能使准确率超过阈值的最小训练批次数</strong></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L10.png" alt=""></p>
+<p>=&gt; 状态特征的描述，<strong>学生模型状态：用一些比较简单的特征例如达到准确率阈值的最小迭代次数，平均历史训练loss和历史验证集准确率</strong></p>
+<p>=&gt; <strong>用来表示数据和学习者模型的特征(基于已有的研究方法来表示)：1.每个类的预测可能性；2.在数某个数据集上的loss值；3.边界值等</strong></p>
+<p>=&gt; 不得不说，上述的这些特征对模型训练可能会有关键作用，值得好好研究一下。</p>
+<h3 id="论文实验结果"><a href="#论文实验结果" class="headerlink" title="论文实验结果"></a>论文实验结果</h3><ul>
+<li>具体结果可以参见论文<br><img src="http://op72m4y17.bkt.clouddn.com/L13.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L11.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L12.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L16.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L15.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L14.png" alt=""></li>
+</ul>
+<blockquote>
+<p><strong>“The achievements of genius is produced by 99% of sweat plus 1% of talent, let alone me.”</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/05/07/L2T/">ICLR 2018 | Learning to Teach 论文品读</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
+        <p><span>发布时间:</span>2018-05-07, 10:20:05</p>
+        <p><span>最后更新:</span>2018-05-07, 12:43:04</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/05/07/L2T/" title="ICLR 2018 | Learning to Teach 论文品读">http://yikunhaocong.com/2018/05/07/L2T/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2018/05/07/L2T/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/04/29/barnes-hut/">
+                    确认过眼神，四叉树Barnes-Hut算法的py实现
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#intro"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#传统的机器学习算法和最近的自动学习算法"><span class="toc-number">2.</span> <span class="toc-text">传统的机器学习算法和最近的自动学习算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Learning-to-Teach"><span class="toc-number">3.</span> <span class="toc-text">Learning to Teach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-to-solve"><span class="toc-number">4.</span> <span class="toc-text">How to solve</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接着从头把公式撸一撸"><span class="toc-number">5.</span> <span class="toc-text">接着从头把公式撸一撸</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#接下来是为教师-学生模型的交互进行建模"><span class="toc-number">5.1.</span> <span class="toc-text">接下来是为教师/学生模型的交互进行建模</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#论文实验结果"><span class="toc-number">5.2.</span> <span class="toc-text">论文实验结果</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"ICLR 2018 | Learning to Teach 论文品读　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+	<div id="uyan_frame"></div>
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2128463';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/04/29/barnes-hut/" title="下一篇: 确认过眼神，四叉树Barnes-Hut算法的py实现">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/L2T/">ICLR 2018 | Learning to Teach 论文品读</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/29/barnes-hut/">确认过眼神，四叉树Barnes-Hut算法的py实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/Yifanhu_source_code/">确认下眼神，Yifanhu Layout源码解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/17/2018-ICM-F/">(贻笑大方的论文)A Dynamic Privacy Trading System</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/20/Visual-Attention/">ICML 2015 | Show, Attend and Tell——Neural Image Caption Generation with Visual Attention</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider3/">趣味爬虫(下)定向爬取综测系统自身班级所有成绩并进行智育Z1分值排名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider2/">趣味爬虫(中)制作模拟登录并具备教务查询功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/php-spider1/">趣味爬虫(上)制作模拟登录并具备教务查询功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/06/djangocms-uwsgi/">利用uWSGI稳健地将Django(CMS)部署到Nginx上</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/p-table/">多级页表虚拟内存管理器C++、python和node.js的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/appV3-0/">(V3.0)基于AndroidSQLite和传感器的创意app(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/19/app/">(V3.0)基于AndroidSQLite和传感器的创意app(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">Node.js+Express/socket.io，有点创意的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">Node.js+Express/socket.io，有点创意的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+，了解一下？</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">(转)几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">(我转)Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">(再转)前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">(我又转)为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">(我转转转)CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017-2018 Kali-Hac
+            </div>
+            <div class="footer-right">
+                <a href="yikunhaocong.xyz" target="_blank" title="Contact with me">Hac's</a>  Blog Powered</a> by <a href="http://hexo.io/" target="_blank" >Hexo <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+             tags: ".article-tag a", 
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

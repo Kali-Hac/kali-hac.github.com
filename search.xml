@@ -4,6 +4,71 @@
   
     
     <entry>
+      <title><![CDATA[ICLR 2018 | Learning to Teach 论文品读]]></title>
+      <url>http://yikunhaocong.com/2018/05/07/L2T/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>“是故学然后知不足，教然后知困。知不足然后能自反也，知困然后能自强也。故曰教学相长也。”——《礼记·学记》</strong><br>    <a href="https://openreview.net/pdf?id=HJewuJWCZ" target="_blank" rel="external">Learning to Teach, Yang Fan, Fei Tian,Tao Qin, Xiang-Yang Li, Tie-Yan Liu, Proceedings of Sixth International Conference on Learning Representations (ICLR 2018)</a><br><a id="more"></a><p></p>
+<h2 id="传统的机器学习算法和最近的自动学习算法"><a href="#传统的机器学习算法和最近的自动学习算法" class="headerlink" title="传统的机器学习算法和最近的自动学习算法"></a>传统的机器学习算法和最近的自动学习算法</h2><p>它们重点都在于如何让AI更好地学习：两种学习算法的训练过程都是在固定的数据集上，通过最小化固定的损失函数（Loss Function），优化得到位于模型假设空间（Hypothesis Space）里最优的模型。而两者差别仅仅在于优化过程是否是自动进行的，这一定程度上限制了自动学习技术的潜力。</p>
+<h2 id="Learning-to-Teach"><a href="#Learning-to-Teach" class="headerlink" title="Learning to Teach"></a>Learning to Teach</h2><p>通过和人类社会的学习机制对比，我们发现传统的机器学习和近年来的自动学习都忽略了一个很重要的方面：它们只学而不教。无论是训练数据、损失函数，还是模型的假设空间，都对应着人类教学过程里的若干重要环节。因此我们试图打破对于训练数据、损失函数和模型假设空间的限制，把教学这一重要的概念集成到机器学习系统中，使得人工智能和机器学习算法得以教学相长。我们将这一框架命名为“学习教学”（Learning to Teach，简写为L2T）。其中涵盖了若干个关键问题：</p>
+<ul>
+<li><p>1.<strong>数据教学力图为机器学习过程寻找到最优的训练集。</strong>训练数据对应人类教学过程中的教育材料，例如教科书。</p>
+</li>
+<li><p>2.<strong>损失函数教学力图为机器学习过程寻找到最优的损失函数。</strong>这类比于人类教学过程中，优秀的教师会通过高质量的测试过程来评估学生的学习质量，并对其进行引导。</p>
+</li>
+<li><p>3.<strong>模型空间教学力图为机器学习过程定义最优的模型假设空间。</strong>例如在训练的初期，我们可能会倾向于使用简单的线性模型来尽快学习到数据里的规律，而在训练的末期，我们可能更愿意选择复杂的深度模型来使得性能得到进一步增强。这类比于教师教授给学生的技能集合（Skills Set）：小学生只会学习到简单的数字运算，中学生则会学习到基本的代数知识，到了大学，微积分则成为了必备的技能。</p>
+</li>
+</ul>
+<h2 id="How-to-solve"><a href="#How-to-solve" class="headerlink" title="How to solve"></a>How to solve</h2><p>为了解决这些问题，我们定义了两个模型：学生模型和教师模型。前者即为通常意义下的机器学习模型，后者则负责为前者提供合适的数据、损失函数，或者模型假设空间。在下图中，我们简单展示了两个模型的完全自动化训练过程：在学生模型训练的每一步t，教师模型得到学生模型的状态向量（用于反映学生模型当前的状态），根据自身参数输出教学策略，诸如当前需要使用的训练数据、损失函数，或者优化的模型空间，反馈给学生模型。学生模型基于此进行一步优化（例如梯度下降），更新其参数。之后学生模型会将一个奖励信号（例如开发集上的准确率）反馈给教师模型。教师模型基于该信号对自己的教学策略进行优化更新。这样的过程循环往复直至教师模型收敛。<br><img src="5" alt="L2T的训练过程"></p>
+<h2 id="接着从头把公式撸一撸"><a href="#接着从头把公式撸一撸" class="headerlink" title="接着从头把公式撸一撸"></a>接着从头把公式撸一撸</h2><p><img src="http://op72m4y17.bkt.clouddn.com/L1.png" alt=""></p>
+<p>=&gt; R(W)是参数W的风险函数，注意不要把R理解为强化学习中的Reward奖励函数噢(强化学习的步骤在后面才有讲，它只是本文用来训练教师模型的一个手段)，在下面的教师模型中有说明，这里指的是Risk(W)</p>
+<p>=&gt; M是预测结果(离散型)或输出结果(连续型)的评估矩阵，由于M矩阵一般是离散值并且难以被优化，所以模型中构造Loss函数来对预测值进行评估。如果模型是为了寻找一个好的假设函数f，假设函数集合空间需要先给出</p>
+<p>=&gt; P(x,y)=P(x)P(y|x)是(x,y)的联合分布概率函数，刚开始是未知的,所以寻找最优预测函数f是基于训练集D{xi,yi}的</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L2.png" alt=""></p>
+<p>=&gt; 模型的(教学成果)目标函数，即通过训练教师/学生模型最小化基于已定义学习算法u的Loss函数，并得到最优化学习网络参数W的目标。实际上这里的参数w可以理解为学生模型的参数，这是学生的一个训练模型，因为下面：</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L3.png" alt=""></p>
+<p><strong>=&gt; 模型的(教学水平)目标函数，即通过最小化测试集数据在学生模型学习算法上的风险(也就是它的Loss函数)来最优化教师模型的目标(可以是数据集空间D，Loss假设函数空间L，或模型假设函数空间)</strong></p>
+<p>=&gt; 这里需要说明的一点是，这篇论文只在数据集空间D上进行了Learning to Teach的实验</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L4.png" alt=""></p>
+<p>=&gt; 框架说明，了解过Reinforcement learning基本步骤的小伙伴应该不难理解，基于前面状态的转移并采取行动A,<strong>但这里有个改进，除了考虑教师的历史状态，还综合考虑了学生模型的前一步状态(有种RNN/LSTM隐藏状态H(n-1)的感觉)，所以下面有对学生模型状态的表示进行说明</strong></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L5.png" alt=""></p>
+<p>=&gt; 整个Learning to Teach模型综合起来的核心目标函数</p>
+<p>=&gt; 使用强化学习的手段来正反馈训练教师模型。(<strong>注意，除了RL还可以使用其他手段来训练</strong>) 这里的r就是reward奖励函数啦，通过最大化教师的奖励值来对教师模型的指导输出做优化，得到最终的教师模型。 这个过程是通过与学生模型的输出和Loss(准确点叫做风险函数R(w)，因为教师模型不一定是指导生成最好的Loss函数来加快训练，有可能是指导生成数据集加快训练速度，或者指导选择模型)</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L7.png" alt=""></p>
+<p>=&gt; 论文的实验内容，让教师模型学会选择适当批次的数据和抛弃效果不好的训练集数据批次，来加快学生模型的训练，基于随机梯度下降SGD可以得到训练集的批次序列，<strong>实际上教师模型最终学习到的是如何决定哪些批次数据比较重要和哪些可以扔掉的能力</strong>，从而达到提高主模型(学生模型)训练效果的目的。</p>
+<h3 id="接下来是为教师-学生模型的交互进行建模"><a href="#接下来是为教师-学生模型的交互进行建模" class="headerlink" title="接下来是为教师/学生模型的交互进行建模"></a>接下来是为教师/学生模型的交互进行建模</h3><p><img src="http://op72m4y17.bkt.clouddn.com/L8.png" alt=""></p>
+<p>=&gt; 对训练批次(总共有M批)进行简单的0/1状态编码，0代表不重要可以去除，1代表对训练过程有作用需要保留</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L9.png" alt=""></p>
+<p>=&gt; 将学生模型训练收敛的速度作为教师模型奖励函数的指标，定义了一个奖励函数<strong>r_T= -log(i_acc/T’), T’是预设的最大训练迭代次数， i_acc是选择某个批次序列状态进行训练并能使准确率超过阈值的最小训练批次数</strong></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/L10.png" alt=""></p>
+<p>=&gt; 状态特征的描述，<strong>学生模型状态：用一些比较简单的特征例如达到准确率阈值的最小迭代次数，平均历史训练loss和历史验证集准确率</strong></p>
+<p>=&gt; <strong>用来表示数据和学习者模型的特征(基于已有的研究方法来表示)：1.每个类的预测可能性；2.在数某个数据集上的loss值；3.边界值等</strong></p>
+<p>=&gt; 不得不说，上述的这些特征对模型训练可能会有关键作用，值得好好研究一下。</p>
+<h3 id="论文实验结果"><a href="#论文实验结果" class="headerlink" title="论文实验结果"></a>论文实验结果</h3><ul>
+<li>具体结果可以参见论文<br><img src="http://op72m4y17.bkt.clouddn.com/L13.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L11.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L12.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L16.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L15.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/L14.png" alt=""></li>
+</ul>
+<blockquote>
+<p><strong>“The achievements of genius is produced by 99% of sweat plus 1% of talent, let alone me.”</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文研读笔记 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MSRA </tag>
+            
+            <tag> Reinforcement learning </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[确认过眼神，四叉树Barnes-Hut算法的py实现]]></title>
       <url>http://yikunhaocong.com/2018/04/29/barnes-hut/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>本博文紧接上一篇，主要讲解自己实现的Quadtree和Barnes–Hut算法py版本，附上我的github地址<a href="https://github.com/Kali-Hac/YifanHu_python/tree/master/Barnes_Hut" target="_blank" rel="external">https://github.com/Kali-Hac/YifanHu_python/tree/master/Barnes_Hut</a></strong><br><a id="more"></a><p></p>
@@ -219,9 +284,9 @@
     </entry>
     
     <entry>
-      <title><![CDATA[(论文解析)Show, Attend and Tell——Neural Image Caption Generation with Visual Attention]]></title>
+      <title><![CDATA[ICML 2015 | Show, Attend and Tell——Neural Image Caption Generation with Visual Attention]]></title>
       <url>http://yikunhaocong.com/2018/01/20/Visual-Attention/</url>
-      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br><strong>希望结合自身已有的知识和相关文献，将论文以一种全面而简洁、明确而有趣的方式重新演绎一遍，亦当知识点复习。</strong><br><a id="more"></a><p></p>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br><strong>希望结合自身已有的知识和相关文献，将论文以一种全面而简洁、明确而有趣的方式重新演绎一遍，亦当知识点复习。</strong><br><a href="http://202.38.196.91/cache/7/03/www.jmlr.org/1711a288cfc28455f7a1963b65d656c6/xuc15.pdf" target="_blank" rel="external">“Show, Attend and Tell: Neural Image Caption Generation with Visual Attention.”<br>Kelvin Xu, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron Courville, Ruslan Salakhutdinov, Richard Zemel, Yoshua Bengio</a><br><a id="more"></a><p></p>
 <p>Xu K, Ba J, Kiros R, et al. Show, attend and tell: Neural image caption generation with visual attention[C]//International Conference on Machine Learning. 2015: 2048-2057.</p>
 <h2 id="请用PC端浏览器打开"><a href="#请用PC端浏览器打开" class="headerlink" title="请用PC端浏览器打开"></a>请用PC端浏览器打开</h2><p><strong>手机浏览器不支持Google Chart的Latex公式图片生成，变量公式图片可能无法正常显示</strong></p>
 <h2 id="先预览一下论文模型的成果"><a href="#先预览一下论文模型的成果" class="headerlink" title="先预览一下论文模型的成果"></a>先预览一下论文模型的成果</h2><h4 id="输入一张图片，基本准确地输出一句描述"><a href="#输入一张图片，基本准确地输出一句描述" class="headerlink" title="输入一张图片，基本准确地输出一句描述"></a>输入一张图片，基本准确地输出一句描述</h4><p><img src="http://op72m4y17.bkt.clouddn.com/SAT_1.png" alt=""></p>
@@ -1063,15 +1128,15 @@
             
             <tag> HTTP/WebSocket </tag>
             
-            <tag> 底层TCP即时通讯 </tag>
-            
-            <tag> Telnet </tag>
-            
             <tag> Aes-128-cbc对称加密 </tag>
             
             <tag> 在线聊天/点歌系统 </tag>
             
             <tag> 通讯加密的应用 </tag>
+            
+            <tag> 底层TCP即时通讯 </tag>
+            
+            <tag> Telnet </tag>
             
         </tags>
         
