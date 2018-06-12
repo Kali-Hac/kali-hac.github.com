@@ -4,6 +4,153 @@
   
     
     <entry>
+      <title><![CDATA[CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition]]></title>
+      <url>http://yikunhaocong.com/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>细粒度动作识别和情绪预测任务 | 本博文为个人理解&amp;整理思路所写，仅供参考</strong><br>    <a href="http://openaccess.thecvf.com/content_cvpr_2018/papers/Zanfir_Monocular_3D_Pose_CVPR_2018_paper.pdf" target="_blank" rel="external">Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes - The Importance of Multiple Scene Constraints (CVPR 2018)</a><br><a id="more"></a><p></p>
+<blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB4.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/CVB15.png" alt=""></p>
+<h2 id="本论文目标："><a href="#本论文目标：" class="headerlink" title="本论文目标："></a>本论文目标：</h2><p>We analyze a large scale video dataset containing<br>child-therapist interactions and subtle behavioral annotations.The dataset is challenging for its long videos,large number of action and emotion (valence-arousal)annotations, difficult viewpoints, partial views, and occlusions between child and therapist.</p>
+<blockquote>
+<p><strong>1. 分析包含儿童-治疗师的大规模视频数据集，进行细微表情的注释，这些数据集包含大量动作和情绪(valence-arousal(可以理解为表示情绪类型和对应程度的一个坐标系))注释，和具有挑战性的场景——只看到部分视野以及会存在儿童与治疗师之间的occlusions(遮挡)。</strong></p>
+</blockquote>
+<p>We adapt state-of-the-art 3d human pose estimation models to this setting, making it possible to reliably<br>track and reconstruct both the child and the therapist,<br>from RGB data, at comparable performance levels with an industrial-grade Kinect system. This is desirable<br>as our proposed models offer not just 3d human pose reconstructions, but additionally detailed human body part segmentation information which can be effective, in the long run, in precisely capturing complex interactions or subtle behavior.</p>
+<blockquote>
+<p><strong>2. 我们将先进的三维人体姿态估计模型应用于该设置，使得可以使用工业级Kinect系统以可比较的性能水平从RGB数据中可靠地跟踪和重建儿童和治疗师。这是可取的，因为我们提出的模型不仅提供了三维人体姿态重建，还提供了详细的人体部位分割信息，从长远来看，它可以有效地捕捉复杂的相互作用或微妙的行为。</strong></p>
+</blockquote>
+<p>We establish several action and emotion recognition<br>baselines, including systems based on child representations, and models that jointly capture the<br>child and the therapist. The data, annotations and<br>recognition models are made available online at<br><a href="http://vision.imar.ro/de-enigma" target="_blank" rel="external">http://vision.imar.ro/de-enigma</a>.</p>
+<blockquote>
+<p><strong>3. 我们建立了几个动作和情绪识别基线，包括基于儿童表示的系统<br>和共同捕捉儿童和治疗师的模型。数据，注释和识别模型在上述的网站中可以获取。</strong></p>
+</blockquote>
+</blockquote>
+<h2 id="本论文的成果："><a href="#本论文的成果：" class="headerlink" title="本论文的成果："></a>本论文的成果：</h2><blockquote>
+<p>切入点：论文结合已有的一些辅助治疗手段，并处理已经诊断出的较大儿童的一些数据，在较少受限的环境中进行机器人辅助治疗，专注于理解针对儿童需求个性化技术发展的身体姿势。</p>
+</blockquote>
+<h2 id="模型基本过程"><a href="#模型基本过程" class="headerlink" title="模型基本过程"></a>模型基本过程</h2><h3 id="DE-ENIGMA-Action-Annotation-Setup"><a href="#DE-ENIGMA-Action-Annotation-Setup" class="headerlink" title="DE-ENIGMA Action Annotation Setup"></a>DE-ENIGMA Action Annotation Setup</h3><blockquote>
+<blockquote>
+<p><strong>The DE-ENIGMA dataset contains multi-modal recordings of therapy sessions of children with autism</strong></p>
+<p>In this paper, we consider only the RGB + depth modalities recorded using a Kinect v2 camera (at 30 FPS) placed right above the robot head, towards the child (see fig. 1).</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB1.png" alt=""></p>
+<blockquote>
+<p>首先是实验的启动，按照figure 1从左到右的一个说明，注意此处只有<strong>partial views of therapist and child</strong>，这也是与其它研究不太一样的点，本文接下来会提出一个提升识别部分人体适应性的方法。接下来的一个挑战是治疗师和儿童的交互可能会影响识别效果，后面也提出了针对这个挑战的解决方法。</p>
+<p>实验的一个记录和标注的过程：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB2.png" alt=""></p>
+<blockquote>
+<p>标注情况总览：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB3.png" alt=""></p>
+<blockquote>
+<p><strong>在所有标注的序列里，大概1/3(749/2031)是动作交互的序列</strong> </p>
+<p>标注的一些实例：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB4.png" alt=""></p>
+<blockquote>
+<p><strong>标注的类别存在较大的不平衡性，如下</strong>：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB5.png" alt=""></p>
+<blockquote>
+<p>对于同一类的标签，序列中存在较显著的不同：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB6.png" alt=""></p>
+</blockquote>
+<h3 id="Skeleton-Reconstruction-from-RGB-data"><a href="#Skeleton-Reconstruction-from-RGB-data" class="headerlink" title="Skeleton Reconstruction from RGB data"></a>Skeleton Reconstruction from RGB data</h3><blockquote>
+<blockquote>
+<p>目标：<strong>在有挑战性的治疗师情景设置里自动翻译和对一个儿童的行为做出反应</strong>。</p>
+</blockquote>
+<p><strong>DMHS</strong>(a multitask deep neural network that estimates both the 2d and 3d joint positions and the semantic human body part labeling of the person)这个在上一篇博文里有介绍了，此处不再赘述。</p>
+<blockquote>
+<p>本论文改进了<strong>DMHS</strong>，并提出<strong>DMHS Adaptation to Partially Visible People</strong>，即<strong>DMHSPV</strong>， 具体做法是先收集在自然场景里频繁可见的人类keypoint(特征点配置)，使用了COCO训练集(被标注了2d关节点)，只选择了50个最频繁的keypoint，创建了(H80KPartial)数据集，这是对<strong>Human80k</strong>的数据增强。</p>
+</blockquote>
+<p>对DMHS和DMHSPV在原数据集和增强数据集上进行对比：</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB7.png" alt=""></p>
+<blockquote>
+<p>For Human80K, the accuracy of both DMHS and DMHSPV methods is similar (with slightly better results for DMHSPV). However, the tests on H80KPartial reveal considerably improved accuracy of our fined-tuned variant of DMHS over the original (from 59.6% to 78.0%). This shows success in extending the network’s capabilities for partially visible humans, while preserving its accuracy for fully visible ones.<br><strong>可以看到DMHSPV在保留DMHS原有的识别准确性的基础上，对Partial(只出现部分人体)场景的和别误差降低，鲁棒性更强</strong></p>
+<p>对比两个网络进行可视化姿势重建，可以看到后者的效果更好：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB8.png" alt=""></p>
+<blockquote>
+<p><strong>Parametric Human Model Inference</strong> 这个模型在上一篇博文里已有说明(这篇论文是和上一篇论文一起写的，基于上一篇的feedforward-feedback模型)，此处不再赘述。</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB9.png" alt=""> </p>
+</blockquote>
+<h3 id="Skeleton-based-Action-Classification"><a href="#Skeleton-based-Action-Classification" class="headerlink" title="Skeleton-based Action Classification"></a>Skeleton-based Action Classification</h3><blockquote>
+<blockquote>
+<p><strong>2d姿势特征</strong> + <strong>3d姿势特征</strong> + <strong>交互建模</strong> + <strong>移动姿势</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB10.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/CVB11.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/CVB12.png" alt=""></p>
+<blockquote>
+<p>通过CNN进行特征提取，网络结构为：</p>
+<p><strong>Conv(3x3)-ReLU-Conv(3x3)-ReLU-Pool(2x2)-Conv(3x3)-ReLUConv(3x3)-Pool(2x2)-Dropout-FC-FC</strong>，输入是被规则化为一个固定时间长度的3d骨架信息。这里加入了增强了数据以避免过拟合，对每一个训练序列以Y为坐标轴随机旋转15°。</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB13.png" alt=""></p>
+<blockquote>
+<p>输入通过Kinect获取的3d骨架特征特征和通过DMHS-SMPL-T(移动姿势模型)获取的特征到CNN模型中</p>
+<p>通过RNN进行预测：</p>
+<p>建立了分层双向循环网络基线HBRNN，之前已显示在标准骨架动作分类数据集中表现良好。该模型由5个双向循环网络组成，每个网络接收5个骨架子组件的关节：躯干，左臂，右臂，左腿和右腿</p>
+<p>因为治疗师和孩子的腿被遮挡，所以我们不使用腿部数据，只使用对应于躯干，左臂和右臂的关节子集。我们还分别将治疗师左右臂的关节分别作为第四和第五部分。我们使用Kinect 3d姿态估计和由DMHS-SMPL-T推断的那些来测试网络。 Kinect的行为分类准确率为37.8％，DMHS-SMPL-T的行为分类准确率为36.2％。</p>
+</blockquote>
+</blockquote>
+<h2 id="实验结果："><a href="#实验结果：" class="headerlink" title="实验结果："></a>实验结果：</h2><h3 id="Continuous-Emotion-Prediction"><a href="#Continuous-Emotion-Prediction" class="headerlink" title="Continuous Emotion Prediction"></a>Continuous Emotion Prediction</h3><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB14.png" alt=""></p>
+<blockquote>
+<p>开始进行预测以及可视化结果，本论文的可视化手段颇有新意(不过之前基于面部特征识别情绪似乎已经采用)，命名为Valence-arousal space，特点是<strong>Representing emotions in a continuous space allows to capture more subtle affect states than using a few categorical emotion classes</strong>，如下：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB15.png" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB16.png" alt=""></p>
+<blockquote>
+<p>进行了<strong>RMSE(均方根误差)</strong>、<strong>PCC(皮尔逊积矩相关系数)</strong>、<strong>SAGR(签署协议评分</strong>,原文说明是We use a personalized evaluation protocol for the 7 children.Each child’s individual sessions are split into train/test in a a leave-one-session-out procedure and we report mean results for all children)的对比，如下：<br><img src="http://op72m4y17.bkt.clouddn.com/CVB18.png" alt=""></p>
+<h2 id="实验总流程："><a href="#实验总流程：" class="headerlink" title="实验总流程："></a>实验总流程：</h2><p>本论文重点在于实验的开展，所有过程如上</p>
+</blockquote>
+</blockquote>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><blockquote>
+<blockquote>
+<p>1.本论文已经在自闭症儿童的机器人辅助治疗期间记​​录的非临时视频中引入了大规模的细粒度动作和情绪识别任务。由于大量的序列（超过3,700个），长视频（每个10-15分钟），大量高度变化的动作（37个儿童行动班，19个治疗师行动），并且由于儿童仅部分可见并在非标准相机视点下观察、年龄差异和不可预测的行为增加了挑战。</p>
+<blockquote>
+<p>拓展&amp;可研究点：(探索中，后续更新</p>
+</blockquote>
+<p>2.调查了如何结合Feedforward-Feedback组件的最先进的RGB三维人体姿态重建方法如何适应该问题，并基于儿童和治疗师的二维和三维表示评估了多个动作和情绪识别基线。</p>
+<blockquote>
+<p>拓展&amp;可研究点：(探索中，后续更新</p>
+</blockquote>
+<p>3.经过模型的适当调整后，RGB数据中的当前二维和三维重建方法与工业级RGB-D Kinect系统相比具有竞争力。行为识别基线在40-50％的性能范围内，本论文引入的大规模数据提出了建模行为的一个挑战，同时影响了计算机视觉和儿童机器人与自闭症应用的交互。</p>
+<blockquote>
+<p>拓展&amp;可研究点：(探索中，后续更新</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+<blockquote>
+<p><strong>Discover Intelligence Future and Create More</strong></p>
+</blockquote>
+</blockquote>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> CVPR_2018 </category>
+            
+            <category> 论文研读笔记 </category>
+            
+            <category> 计算机视觉/模式识别 </category>
+            
+            <category> 语义分割与场景理解 </category>
+            
+            <category> 细粒度情绪/动作识别与预测 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> DMHS &amp; SMPL </tag>
+            
+            <tag> 3D pose reconstruction </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[CVPR 2018 | Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes]]></title>
       <url>http://yikunhaocong.com/2018/06/08/CVPR-2018-Monocular-3D-Pose-and-Shape/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>多人交互场景的视觉感知系统构建 | 本博文为个人理解&amp;整理思路所写，仅供参考</strong><br>    <a href="http://openaccess.thecvf.com/content_cvpr_2018/papers/Zanfir_Monocular_3D_Pose_CVPR_2018_paper.pdf" target="_blank" rel="external">Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes - The Importance of Multiple Scene Constraints (CVPR 2018)</a><br><a id="more"></a><br><img src="http://op72m4y17.bkt.clouddn.com/CVA0_5.png" alt=""><p></p>
@@ -1264,15 +1411,15 @@
             
             <tag> HTTP/WebSocket </tag>
             
+            <tag> 底层TCP即时通讯 </tag>
+            
+            <tag> Telnet </tag>
+            
             <tag> Aes-128-cbc对称加密 </tag>
             
             <tag> 在线聊天/点歌系统 </tag>
             
             <tag> 通讯加密的应用 </tag>
-            
-            <tag> 底层TCP即时通讯 </tag>
-            
-            <tag> Telnet </tag>
             
         </tags>
         

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kali-Hac" />
+
+
+
+<meta name="description" content="前言    细粒度动作识别和情绪预测任务 | 本博文为个人理解&amp;amp;整理思路所写，仅供参考    Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes - The Importance of Multiple Scene Constraints (CVPR 2018)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition">
+<meta property="og:url" content="http://yikunhaocong.com/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/index.html">
+<meta property="og:site_name" content="Ykhc">
+<meta property="og:description" content="前言    细粒度动作识别和情绪预测任务 | 本博文为个人理解&amp;amp;整理思路所写，仅供参考    Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes - The Importance of Multiple Scene Constraints (CVPR 2018)">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB4.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB15.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB1.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB2.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB3.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB4.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB5.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB6.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB7.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB8.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB9.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB10.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB11.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB12.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB13.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB14.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB15.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB16.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/CVB18.png">
+<meta property="og:image" content="http://op72m4y17.bkt.clouddn.com/1.jpg">
+<meta property="og:updated_time" content="2018-06-12T03:44:35.890Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition">
+<meta name="twitter:description" content="前言    细粒度动作识别和情绪预测任务 | 本博文为个人理解&amp;amp;整理思路所写，仅供参考    Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes - The Importance of Multiple Scene Constraints (CVPR 2018)">
+<meta name="twitter:image" content="http://op72m4y17.bkt.clouddn.com/CVB4.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Ykhc" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition | Ykhc</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Kali-Hac</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">99% of sweat plus 1% of talent</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">HOME</a></li>
+                        
+                            <li><a href="/archives/">POSTS</a></li>
+                        
+                            <li><a href="/resume/">My RESUME</a></li>
+                        
+                            <li><a href="/about/">My Beliefs</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/Kali-Hac" title="GitHub"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AP-SIR模型/">(AP)SIR模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/3D-pose-reconstruction/">3D pose reconstruction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Aes-128-cbc对称加密/">Aes-128-cbc对称加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AndroidSQLite简单应用/">AndroidSQLite简单应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Attention-Mechanism/">Attention Mechanism</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Barnes–Hut-Force-Calculation/">Barnes–Hut Force Calculation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-库配置与使用/">C++库配置与使用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CNN-RNN-LSTM/">CNN/RNN-LSTM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CryptoJS/">CryptoJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DMHS-SMPL/">DMHS & SMPL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DNS/">DNS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feedforward-Feedback-Model/">Feedforward-Feedback Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Force-Directed-Algorithms/">Force-Directed Algorithms</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPS定位/">GPS定位</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP-WebSocket/">HTTP/WebSocket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hungarian-algorithm/">Hungarian algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Image-Caption/">Image Caption</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Inter-TBB/">Inter_TBB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Anonymity/">K-Anonymity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/K-Means/">K-Means++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kali-linux/">Kali-linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kinematic-tree/">Kinematic tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSRA/">MSRA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Msfvenom/">Msfvenom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multi-arms-Bandit-Problems/">Multi-arms Bandit Problems</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Multiple-Scene-Constraints/">Multiple Scene Constraints</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx的socket转发/">Nginx的socket转发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Payloads/">Payloads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Quadtree/">Quadtree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Reinforcement-learning/">Reinforcement learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SMS功能/">SMS功能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Software/">Software</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sublime/">Sublime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Table/">Table</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telnet/">Telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Upper-Bounded-Confidence-UBC/">Upper Bounded Confidence(UBC)</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS内置OpenMP/">VS内置OpenMP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VarUBC/">VarUBC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/">Windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object-Object/">[object Object]</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie验证/">cookie验证</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/font-family/">font-family</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl/">php_curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php-curl快速开发/">php_curl快速开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php学习-实战笔记/">php学习/实战笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php应用脚本/">php应用脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket-io/">socket.io</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uWSGI与Nginx的通信/">uWSGI与Nginx的通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/个人信息动态交易平台/">个人信息动态交易平台</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制uwsgi协议/">二进制uwsgi协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/作者：Hac原创/">作者：Hac原创</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反向代理服务器/">反向代理服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/在线聊天-点歌系统/">在线聊天/点歌系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多级页表/">多级页表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多进程模拟/">多进程模拟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安卓传感器的运用/">安卓传感器的运用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层TCP即时通讯/">底层TCP即时通讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旁带缓冲TLB表/">旁带缓冲TLB表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性加速度传感器/">线性加速度传感器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/综测系统数据爬取、自动排名/">综测系统数据爬取、自动排名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络爬虫/">网络爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/脚本语言的面向对象设计/">脚本语言的面向对象设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化脚本/">自动化脚本</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/谷歌抓包分析隐藏数据/">谷歌抓包分析隐藏数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/负载均衡/">负载均衡</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通讯加密的应用/">通讯加密的应用</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/页框LRU回收机制/">页框LRU回收机制</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://github.com/Kali-Hac/">My GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">“A creative man is motivated by the desire to achieve, not by the desire to beat others.” – Ayn Rand</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Kali-Hac</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Kali-Hac</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">99% of sweat plus 1% of talent</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">HOME</a></li>
+                
+                    <li><a href="/archives/">POSTS</a></li>
+                
+                    <li><a href="/resume/">My RESUME</a></li>
+                
+                    <li><a href="/about/">My Beliefs</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/Kali-Hac" title="GitHub"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/" class="article-date">
+      <time datetime="2018-06-12T01:03:49.000Z" itemprop="datePublished">2018-06-12</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/CVPR-2018/">CVPR_2018</a><a class="article-category-link" href="/categories/CVPR-2018/论文研读笔记/">论文研读笔记</a><a class="article-category-link" href="/categories/CVPR-2018/论文研读笔记/计算机视觉-模式识别/">计算机视觉/模式识别</a><a class="article-category-link" href="/categories/CVPR-2018/论文研读笔记/计算机视觉-模式识别/语义分割与场景理解/">语义分割与场景理解</a><a class="article-category-link" href="/categories/CVPR-2018/论文研读笔记/计算机视觉-模式识别/语义分割与场景理解/细粒度情绪-动作识别与预测/">细粒度情绪/动作识别与预测</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/3D-pose-reconstruction/">3D pose reconstruction</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DMHS-SMPL/">DMHS & SMPL</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p></p><h2 id="intro">前言</h2><br>    <strong>细粒度动作识别和情绪预测任务 | 本博文为个人理解&amp;整理思路所写，仅供参考</strong><br>    <a href="http://openaccess.thecvf.com/content_cvpr_2018/papers/Zanfir_Monocular_3D_Pose_CVPR_2018_paper.pdf" target="_blank" rel="external">Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes - The Importance of Multiple Scene Constraints (CVPR 2018)</a><br><a id="more"></a><p></p>
+<blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB4.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/CVB15.png" alt=""></p>
+<h2 id="本论文目标："><a href="#本论文目标：" class="headerlink" title="本论文目标："></a>本论文目标：</h2><p>We analyze a large scale video dataset containing<br>child-therapist interactions and subtle behavioral annotations.The dataset is challenging for its long videos,large number of action and emotion (valence-arousal)annotations, difficult viewpoints, partial views, and occlusions between child and therapist.</p>
+<blockquote>
+<p><strong>1. 分析包含儿童-治疗师的大规模视频数据集，进行细微表情的注释，这些数据集包含大量动作和情绪(valence-arousal(可以理解为表示情绪类型和对应程度的一个坐标系))注释，和具有挑战性的场景——只看到部分视野以及会存在儿童与治疗师之间的occlusions(遮挡)。</strong></p>
+</blockquote>
+<p>We adapt state-of-the-art 3d human pose estimation models to this setting, making it possible to reliably<br>track and reconstruct both the child and the therapist,<br>from RGB data, at comparable performance levels with an industrial-grade Kinect system. This is desirable<br>as our proposed models offer not just 3d human pose reconstructions, but additionally detailed human body part segmentation information which can be effective, in the long run, in precisely capturing complex interactions or subtle behavior.</p>
+<blockquote>
+<p><strong>2. 我们将先进的三维人体姿态估计模型应用于该设置，使得可以使用工业级Kinect系统以可比较的性能水平从RGB数据中可靠地跟踪和重建儿童和治疗师。这是可取的，因为我们提出的模型不仅提供了三维人体姿态重建，还提供了详细的人体部位分割信息，从长远来看，它可以有效地捕捉复杂的相互作用或微妙的行为。</strong></p>
+</blockquote>
+<p>We establish several action and emotion recognition<br>baselines, including systems based on child representations, and models that jointly capture the<br>child and the therapist. The data, annotations and<br>recognition models are made available online at<br><a href="http://vision.imar.ro/de-enigma" target="_blank" rel="external">http://vision.imar.ro/de-enigma</a>.</p>
+<blockquote>
+<p><strong>3. 我们建立了几个动作和情绪识别基线，包括基于儿童表示的系统<br>和共同捕捉儿童和治疗师的模型。数据，注释和识别模型在上述的网站中可以获取。</strong></p>
+</blockquote>
+</blockquote>
+<h2 id="本论文的成果："><a href="#本论文的成果：" class="headerlink" title="本论文的成果："></a>本论文的成果：</h2><blockquote>
+<p>切入点：论文结合已有的一些辅助治疗手段，并处理已经诊断出的较大儿童的一些数据，在较少受限的环境中进行机器人辅助治疗，专注于理解针对儿童需求个性化技术发展的身体姿势。</p>
+</blockquote>
+<h2 id="模型基本过程"><a href="#模型基本过程" class="headerlink" title="模型基本过程"></a>模型基本过程</h2><h3 id="DE-ENIGMA-Action-Annotation-Setup"><a href="#DE-ENIGMA-Action-Annotation-Setup" class="headerlink" title="DE-ENIGMA Action Annotation Setup"></a>DE-ENIGMA Action Annotation Setup</h3><blockquote>
+<blockquote>
+<p><strong>The DE-ENIGMA dataset contains multi-modal recordings of therapy sessions of children with autism</strong></p>
+<p>In this paper, we consider only the RGB + depth modalities recorded using a Kinect v2 camera (at 30 FPS) placed right above the robot head, towards the child (see fig. 1).</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB1.png" alt=""></p>
+<blockquote>
+<p>首先是实验的启动，按照figure 1从左到右的一个说明，注意此处只有<strong>partial views of therapist and child</strong>，这也是与其它研究不太一样的点，本文接下来会提出一个提升识别部分人体适应性的方法。接下来的一个挑战是治疗师和儿童的交互可能会影响识别效果，后面也提出了针对这个挑战的解决方法。</p>
+<p>实验的一个记录和标注的过程：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB2.png" alt=""></p>
+<blockquote>
+<p>标注情况总览：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB3.png" alt=""></p>
+<blockquote>
+<p><strong>在所有标注的序列里，大概1/3(749/2031)是动作交互的序列</strong> </p>
+<p>标注的一些实例：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB4.png" alt=""></p>
+<blockquote>
+<p><strong>标注的类别存在较大的不平衡性，如下</strong>：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB5.png" alt=""></p>
+<blockquote>
+<p>对于同一类的标签，序列中存在较显著的不同：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB6.png" alt=""></p>
+</blockquote>
+<h3 id="Skeleton-Reconstruction-from-RGB-data"><a href="#Skeleton-Reconstruction-from-RGB-data" class="headerlink" title="Skeleton Reconstruction from RGB data"></a>Skeleton Reconstruction from RGB data</h3><blockquote>
+<blockquote>
+<p>目标：<strong>在有挑战性的治疗师情景设置里自动翻译和对一个儿童的行为做出反应</strong>。</p>
+</blockquote>
+<p><strong>DMHS</strong>(a multitask deep neural network that estimates both the 2d and 3d joint positions and the semantic human body part labeling of the person)这个在上一篇博文里有介绍了，此处不再赘述。</p>
+<blockquote>
+<p>本论文改进了<strong>DMHS</strong>，并提出<strong>DMHS Adaptation to Partially Visible People</strong>，即<strong>DMHSPV</strong>， 具体做法是先收集在自然场景里频繁可见的人类keypoint(特征点配置)，使用了COCO训练集(被标注了2d关节点)，只选择了50个最频繁的keypoint，创建了(H80KPartial)数据集，这是对<strong>Human80k</strong>的数据增强。</p>
+</blockquote>
+<p>对DMHS和DMHSPV在原数据集和增强数据集上进行对比：</p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB7.png" alt=""></p>
+<blockquote>
+<p>For Human80K, the accuracy of both DMHS and DMHSPV methods is similar (with slightly better results for DMHSPV). However, the tests on H80KPartial reveal considerably improved accuracy of our fined-tuned variant of DMHS over the original (from 59.6% to 78.0%). This shows success in extending the network’s capabilities for partially visible humans, while preserving its accuracy for fully visible ones.<br><strong>可以看到DMHSPV在保留DMHS原有的识别准确性的基础上，对Partial(只出现部分人体)场景的和别误差降低，鲁棒性更强</strong></p>
+<p>对比两个网络进行可视化姿势重建，可以看到后者的效果更好：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB8.png" alt=""></p>
+<blockquote>
+<p><strong>Parametric Human Model Inference</strong> 这个模型在上一篇博文里已有说明(这篇论文是和上一篇论文一起写的，基于上一篇的feedforward-feedback模型)，此处不再赘述。</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB9.png" alt=""> </p>
+</blockquote>
+<h3 id="Skeleton-based-Action-Classification"><a href="#Skeleton-based-Action-Classification" class="headerlink" title="Skeleton-based Action Classification"></a>Skeleton-based Action Classification</h3><blockquote>
+<blockquote>
+<p><strong>2d姿势特征</strong> + <strong>3d姿势特征</strong> + <strong>交互建模</strong> + <strong>移动姿势</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB10.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/CVB11.png" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/CVB12.png" alt=""></p>
+<blockquote>
+<p>通过CNN进行特征提取，网络结构为：</p>
+<p><strong>Conv(3x3)-ReLU-Conv(3x3)-ReLU-Pool(2x2)-Conv(3x3)-ReLUConv(3x3)-Pool(2x2)-Dropout-FC-FC</strong>，输入是被规则化为一个固定时间长度的3d骨架信息。这里加入了增强了数据以避免过拟合，对每一个训练序列以Y为坐标轴随机旋转15°。</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB13.png" alt=""></p>
+<blockquote>
+<p>输入通过Kinect获取的3d骨架特征特征和通过DMHS-SMPL-T(移动姿势模型)获取的特征到CNN模型中</p>
+<p>通过RNN进行预测：</p>
+<p>建立了分层双向循环网络基线HBRNN，之前已显示在标准骨架动作分类数据集中表现良好。该模型由5个双向循环网络组成，每个网络接收5个骨架子组件的关节：躯干，左臂，右臂，左腿和右腿</p>
+<p>因为治疗师和孩子的腿被遮挡，所以我们不使用腿部数据，只使用对应于躯干，左臂和右臂的关节子集。我们还分别将治疗师左右臂的关节分别作为第四和第五部分。我们使用Kinect 3d姿态估计和由DMHS-SMPL-T推断的那些来测试网络。 Kinect的行为分类准确率为37.8％，DMHS-SMPL-T的行为分类准确率为36.2％。</p>
+</blockquote>
+</blockquote>
+<h2 id="实验结果："><a href="#实验结果：" class="headerlink" title="实验结果："></a>实验结果：</h2><h3 id="Continuous-Emotion-Prediction"><a href="#Continuous-Emotion-Prediction" class="headerlink" title="Continuous Emotion Prediction"></a>Continuous Emotion Prediction</h3><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB14.png" alt=""></p>
+<blockquote>
+<p>开始进行预测以及可视化结果，本论文的可视化手段颇有新意(不过之前基于面部特征识别情绪似乎已经采用)，命名为Valence-arousal space，特点是<strong>Representing emotions in a continuous space allows to capture more subtle affect states than using a few categorical emotion classes</strong>，如下：</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB15.png" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/CVB16.png" alt=""></p>
+<blockquote>
+<p>进行了<strong>RMSE(均方根误差)</strong>、<strong>PCC(皮尔逊积矩相关系数)</strong>、<strong>SAGR(签署协议评分</strong>,原文说明是We use a personalized evaluation protocol for the 7 children.Each child’s individual sessions are split into train/test in a a leave-one-session-out procedure and we report mean results for all children)的对比，如下：<br><img src="http://op72m4y17.bkt.clouddn.com/CVB18.png" alt=""></p>
+<h2 id="实验总流程："><a href="#实验总流程：" class="headerlink" title="实验总流程："></a>实验总流程：</h2><p>本论文重点在于实验的开展，所有过程如上</p>
+</blockquote>
+</blockquote>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><blockquote>
+<blockquote>
+<p>1.本论文已经在自闭症儿童的机器人辅助治疗期间记​​录的非临时视频中引入了大规模的细粒度动作和情绪识别任务。由于大量的序列（超过3,700个），长视频（每个10-15分钟），大量高度变化的动作（37个儿童行动班，19个治疗师行动），并且由于儿童仅部分可见并在非标准相机视点下观察、年龄差异和不可预测的行为增加了挑战。</p>
+<blockquote>
+<p>拓展&amp;可研究点：(探索中，后续更新</p>
+</blockquote>
+<p>2.调查了如何结合Feedforward-Feedback组件的最先进的RGB三维人体姿态重建方法如何适应该问题，并基于儿童和治疗师的二维和三维表示评估了多个动作和情绪识别基线。</p>
+<blockquote>
+<p>拓展&amp;可研究点：(探索中，后续更新</p>
+</blockquote>
+<p>3.经过模型的适当调整后，RGB数据中的当前二维和三维重建方法与工业级RGB-D Kinect系统相比具有竞争力。行为识别基线在40-50％的性能范围内，本论文引入的大规模数据提出了建模行为的一个挑战，同时影响了计算机视觉和儿童机器人与自闭症应用的交互。</p>
+<blockquote>
+<p>拓展&amp;可研究点：(探索中，后续更新</p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+<blockquote>
+<p><strong>Discover Intelligence Future and Create More</strong></p>
+</blockquote>
+</blockquote>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/">CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kali-Hac</a></p>
+        <p><span>发布时间:</span>2018-06-12, 09:03:49</p>
+        <p><span>最后更新:</span>2018-06-12, 11:44:35</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/" title="CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition">http://yikunhaocong.com/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yikunhaocong.com/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/　　作者: Kali-Hac" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/06/08/CVPR-2018-Monocular-3D-Pose-and-Shape/">
+                    CVPR 2018 | Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#intro"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本论文目标："><span class="toc-number">2.</span> <span class="toc-text">本论文目标：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本论文的成果："><span class="toc-number">3.</span> <span class="toc-text">本论文的成果：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型基本过程"><span class="toc-number">4.</span> <span class="toc-text">模型基本过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DE-ENIGMA-Action-Annotation-Setup"><span class="toc-number">4.1.</span> <span class="toc-text">DE-ENIGMA Action Annotation Setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skeleton-Reconstruction-from-RGB-data"><span class="toc-number">4.2.</span> <span class="toc-text">Skeleton Reconstruction from RGB data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Skeleton-based-Action-Classification"><span class="toc-number">4.3.</span> <span class="toc-text">Skeleton-based Action Classification</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验结果："><span class="toc-number">5.</span> <span class="toc-text">实验结果：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Continuous-Emotion-Prediction"><span class="toc-number">5.1.</span> <span class="toc-text">Continuous Emotion Prediction</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验总流程："><span class="toc-number">6.</span> <span class="toc-text">实验总流程：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结："><span class="toc-number">7.</span> <span class="toc-text">总结：</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition　| Ykhc　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+	<div id="uyan_frame"></div>
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2128463';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/06/08/CVPR-2018-Monocular-3D-Pose-and-Shape/" title="下一篇: CVPR 2018 | Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/">CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/08/CVPR-2018-Monocular-3D-Pose-and-Shape/">CVPR 2018 | Monocular 3D Pose and Shape Estimation of Multiple People in Natural Scenes</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/07/L2T/">ICLR 2018 | Learning to Teach 论文品读</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/29/barnes-hut/">确认过眼神，四叉树Barnes-Hut算法的py实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/Yifanhu_source_code/">确认下眼神，Yifanhu Layout源码解析</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/17/2018-ICM-F/">(贻笑大方的论文)A Dynamic Privacy Trading System</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/20/Visual-Attention/">ICML 2015 | Show, Attend and Tell——Neural Image Caption Generation with Visual Attention</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider3/">趣味爬虫(下)定向爬取综测系统自身班级所有成绩并进行智育Z1分值排名</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/php-spider2/">趣味爬虫(中)制作模拟登录并具备教务查询功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/php-spider1/">趣味爬虫(上)制作模拟登录并具备教务查询功能的脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/06/djangocms-uwsgi/">利用uWSGI稳健地将Django(CMS)部署到Nginx上</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/p-table/">多级页表虚拟内存管理器C++、python和node.js的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/27/appV3-0/">(V3.0)基于AndroidSQLite和传感器的创意app(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/19/app/">(V3.0)基于AndroidSQLite和传感器的创意app(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat2/">Node.js+Express/socket.io，有点创意的动态即时聊天系统(下)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/30/node-js-chat/">Node.js+Express/socket.io，有点创意的动态即时聊天系统(上)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/31/tbb/">几行指令让你的C++代码速度提升100%+，了解一下？</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/kali-linux/">有点皮的安全渗透测试①:Kali-Linux 几行指令制作最简单的木马</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/public-dns/">(转)几个国内专用的公共 DNS</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/04/markdown-table-style/">(我转)Markdown 表格样式调整与自适应优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/16/front-end-tools/">(再转)前端工程化工具初选</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/02/hexo-comments/">(我又转)为 Hexo 主题添加评论模块 — Disqus, 多说, 友言</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/09/css-font-family/">(我转转转)CSS font-family 网页字体使用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/sublime-config/">Sublime Text 3 使用配置与插件安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/git-command/">Git 基础命令与相关术语</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/09/20/windows-mac-software/">自用 Windows 和 Mac 软件推荐</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017-2018 Kali-Hac
+            </div>
+            <div class="footer-right">
+                <a href="yikunhaocong.xyz" target="_blank" title="Contact with me">Hac's</a>  Blog Powered</a> by <a href="http://hexo.io/" target="_blank" >Hexo <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+             title: "a.article-title, .article-more-link a", 
+            
+             tags: ".article-tag a", 
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
