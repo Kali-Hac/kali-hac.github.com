@@ -4,6 +4,197 @@
   
     
     <entry>
+      <title><![CDATA[来自灵魂画手的Deep Learning可视化汇总&解析]]></title>
+      <url>http://yikunhaocong.com/2018/06/12/DL-review-1/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>把我珍藏的28张图送给大家，分享最生动&amp;重要的DL知识点 | 本博文为个人理解&amp;整理思路所写，仅供参考</strong><br>    <a href="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB.pdf" target="_blank" rel="external">深度学习知识点汇总.pdf / 19.13M</a><br><a id="more"></a><p></p>
+<blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-01.jpg" alt=""></p>
+</blockquote>
+<h2 id="a-A-Neural-Net-Logistic-Regression"><a href="#a-A-Neural-Net-Logistic-Regression" class="headerlink" title="a.A Neural Net(Logistic Regression)"></a>a.A Neural Net(Logistic Regression)</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-02.jpg" alt=""></p>
+<blockquote>
+<p><strong>1.建议逻辑回归自己手写推导一遍，这样才能加强理解,若还未理解可以见这里：<a href="https://zhuanlan.zhihu.com/p/28408516" target="_blank" rel="external">逻辑回归（Logistic Regression）（一）</a>和<a href="https://zhuanlan.zhihu.com/p/28415991" target="_blank" rel="external">逻辑回归（Logistic Regression）（二）</a></strong></p>
+<p><strong>2.要理解最大似然是如何变形到最小化Loss函数再总体构建Cost函数的</strong></p>
+<p><strong>3.对于求偏导中间的化简要牢记，对于符号的改变也要知其所以然</strong></p>
+</blockquote>
+</blockquote>
+<h2 id="b-Shallow-Deep-Neural-Nets"><a href="#b-Shallow-Deep-Neural-Nets" class="headerlink" title="b.Shallow/Deep Neural Nets"></a>b.Shallow/Deep Neural Nets</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-03.jpg" alt=""></p>
+<blockquote>
+<p><strong>1.要理解激活函数的实际意义，例如将线性关系转换为非线性</strong></p>
+<p><strong>2.要充分掌握各类激活函数的特性，例如Leaky ReLU(带泄露线性整流单元是用于避免梯度消失)</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-04.jpg" alt=""></p>
+<blockquote>
+<p><strong>对于深度神经网络，要注意学习率、激活函数选择、梯度动量的加入、批次规模和正则化这几点</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-05.jpg" alt=""></p>
+<blockquote>
+<p><strong>1. 偏差和方差的概念要理解清楚，一般而言只有在偏差已经通过训练达到稳定时才考虑方差(即如果模型还处于欠拟合的状态，那么方差大有可能是因为偏差大的原因，也有可能是因为模型本身有问题或选取训练集数据的原始分布和测试集数据的分布有较大差异)</strong></p>
+<p><strong>2. 当偏差过大时，可以考虑用更大的神经网络进行训练或训练更久或采用不同的网络结构(模型)</strong></p>
+<p><strong>3. 当偏差稳定方差过大时，可以考虑用更多的数据进行训练或进行正则化防止过拟合或采用不同的网络结构(模型)</strong></p>
+</blockquote>
+</blockquote>
+<h2 id="c-Regularization"><a href="#c-Regularization" class="headerlink" title="c.Regularization"></a>c.Regularization</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-06.jpg" alt=""></p>
+<blockquote>
+<p><strong>L1和L2正则化都惩罚了过大的权重，可能会导致某些权重趋于0，但总体会使得网络朝着更简单的方向训练</strong></p>
+</blockquote>
+</blockquote>
+<h2 id="d-Optimization-Algorithms"><a href="#d-Optimization-Algorithms" class="headerlink" title="d.Optimization Algorithms"></a>d.Optimization Algorithms</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-07.jpg" alt=""></p>
+<blockquote>
+<p><strong>1.<a href="https://www.zhihu.com/question/20455227" target="_blank" rel="external">特征工程中的「归一化」有什么作用？</a></strong></p>
+<p><strong>2.要理解“锯齿状”很可能是因为数据无归一化 =&gt; 使得不同维度(特征)的尺度差别大 =&gt; 梯度下降时由于学习率一致，所以尺度较大的那个维度(特征)下降的幅度更大 =&gt; 因此导致下降曲线在某个维度的方向更长 =&gt; 若归一化后可以使用更大的学习率，因为每个维度都保持较小的尺度而下降更稳健更高效</strong></p>
+<p><strong>3.何时使用归一化，何时用标准化？</strong></p>
+<blockquote>
+<p>1.如果对输出结果范围有要求，用归一化</p>
+<p>2.如果数据较为稳定，不存在极端的最大最小值，用归一化</p>
+<p>3.如果数据存在较多噪音和异常值，用标准化，可以间接通过中心化避免异常值和极端值的影响</p>
+</blockquote>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-08.jpg" alt=""></p>
+<blockquote>
+<p><strong>要理解各类梯度下降优化方法的原理及作用，Momentum、RMSProp、Adam以及Learning rate decay</strong></p>
+</blockquote>
+</blockquote>
+<h2 id="e-Hyperparameters-Tuning"><a href="#e-Hyperparameters-Tuning" class="headerlink" title="e.Hyperparameters Tuning"></a>e.Hyperparameters Tuning</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-09.jpg" alt=""></p>
+<blockquote>
+<p><strong>超参调节的重要程度排序：</strong></p>
+<blockquote>
+<p>1.学习率<br>2.隐藏层的神经元数<br>3.训练批次的规模数量<br>4.动量系数<br>5.网络层数<br>6.学习率衰减系数</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="f-F1-ROC-AUC-Error-Analysis"><a href="#f-F1-ROC-AUC-Error-Analysis" class="headerlink" title="f.F1/ROC/AUC/Error Analysis"></a>f.F1/ROC/AUC/Error Analysis</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-10.jpg" alt=""></p>
+<blockquote>
+<p>复习一下：</p>
+<p><strong>1.<a href="https://blog.csdn.net/baimafujinji/article/details/6495877" target="_blank" rel="external">机器学习中的Accuracy，Precision，Recall和F1-Score</a></strong></p>
+<p><strong>2.<a href="https://www.zhihu.com/question/34941131" target="_blank" rel="external">统计学中Precision，Recall和F1的来源是什么？</a></strong></p>
+<p><strong>3.<a href="http://alexkong.net/2013/06/introduction-to-auc-and-roc/" target="_blank" rel="external">ROC和AUC介绍以及如何计算AUC</a></strong></p>
+<p><strong>4.注意F1=0.5<em>(1/p+1/r)=(p+r)/(2</em>p*r),F1是precision和Recall的调和平均数</strong></p>
+<p><strong>5.与ROC相关的两个量，fp rate = FP / N 和 tp rate = TP /P，注意与precision区分</strong></p>
+<p><strong>6.画ROC曲线 =&gt; 首先将样本按正概率排序，再依次作为阈值画点(fp_rate,tp_rate) =&gt; AUC即ROC曲线下的面积</strong></p>
+<p><strong>7.AUC越大，说明当前分类算法越有可能将正样本排在负样本前面，即能够有更好的分类</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-11.jpg" alt=""></p>
+<blockquote>
+<p><strong>DL对随机错误具有鲁棒性，但是对系统错误则不具备 =&gt; 即DL可以容忍数据集里的部分噪音，但是如果数据集里标签和实际种类不对应(出现系统性整体性错误)，那么DL将失去准确性</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-12.jpg" alt=""></p>
+</blockquote>
+<h2 id="g-Transfer-Multitask-End-To-End-Learning"><a href="#g-Transfer-Multitask-End-To-End-Learning" class="headerlink" title="g.Transfer/Multitask/End-To-End Learning"></a>g.Transfer/Multitask/End-To-End Learning</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-13.jpg" alt=""></p>
+<blockquote>
+<p>端到端学习的优点：</p>
+<p><strong>1.能够让数据“说话”，也就是说可能会找到我们人类没有意识到的存在于数据里的一些显性/隐性特征</strong></p>
+<p><strong>2.不需要过多的手工特征组件设计，即机器学习中庞大的特征工程</strong></p>
+<p>缺点：</p>
+<p><strong>1.需要大量的学习数据</strong></p>
+<p><strong>2.排除了潜在的有用的手工特征工程</strong></p>
+</blockquote>
+</blockquote>
+<h2 id="h-CNN-Padding-Stride-Filters"><a href="#h-CNN-Padding-Stride-Filters" class="headerlink" title="h.CNN(Padding/Stride/Filters)"></a>h.CNN(Padding/Stride/Filters)</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-14.jpg" alt=""></p>
+<blockquote>
+<p><strong>卷积神经网络：解决了全连接网络参数过多的问题，同时也解决了物体不总在图片某一位置的问题，具有局部感受野</strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-15.jpg" alt=""></p>
+<blockquote>
+<p>复习一下：<br><strong><a href="https://www.jianshu.com/p/05c4f1621c7e" target="_blank" rel="external">Tensorflow中卷积的padding操作</a></strong></p>
+<p><strong>Padding（max）的好处：</strong></p>
+<blockquote>
+<p>1.降低了图像表示的数据量</p>
+<p>2.加快了卷积计算</p>
+<p>3.让某些被检测到的特征更具有鲁棒性</p>
+</blockquote>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-16.jpg" alt=""></p>
+</blockquote>
+<h2 id="i-LeNet-5-AlexNet-VGG-16"><a href="#i-LeNet-5-AlexNet-VGG-16" class="headerlink" title="i.LeNet-5/AlexNet/VGG-16"></a>i.LeNet-5/AlexNet/VGG-16</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-17.jpg" alt=""></p>
+<blockquote>
+<p>复习一下：<br><strong>1.<a href="http://noahsnail.com/2017/03/02/2017-3-2-LeNet%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">LeNet神经网络</a></strong></p>
+<p><strong>2.<a href="https://zhuanlan.zhihu.com/p/21562756" target="_blank" rel="external">【卷积神经网络-进化史】从LeNet到AlexNet</a></strong></p>
+<p><strong>3.LeNet:使用平均池化代替最大池化，使用sigmod/tanh而不是ReLU</strong></p>
+<p><strong>4.AlexNet:比LeNet更大，使用ReLU和Dropout</strong></p>
+</blockquote>
+</blockquote>
+<h2 id="j-Residual-Inception-Network"><a href="#j-Residual-Inception-Network" class="headerlink" title="j.Residual/Inception Network"></a>j.Residual/Inception Network</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-18.jpg" alt=""></p>
+<blockquote>
+<p>加强一下：</p>
+<p><strong>1.Residual nets残差网络，主要用于解决梯度爆炸和梯度消失问题</strong></p>
+<p><strong>2.<a href="https://blog.csdn.net/a1154761720/article/details/53411365" target="_blank" rel="external">1*1的卷积核与Inception</a></strong></p>
+<p><strong>3.<a href="https://blog.csdn.net/haolexiao/article/details/77073258" target="_blank" rel="external">【机器学习】关于CNN中1×1卷积核和Network in Network的理解</a></strong></p>
+</blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-19.jpg" alt=""></p>
+</blockquote>
+<h2 id="k-Detection-Recognition"><a href="#k-Detection-Recognition" class="headerlink" title="k.Detection/Recognition"></a>k.Detection/Recognition</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-20.jpg" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-21.jpg" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-22.jpg" alt=""></p>
+</blockquote>
+<h2 id="l-RNN-LSTM-BRNN"><a href="#l-RNN-LSTM-BRNN" class="headerlink" title="l.RNN(LSTM/BRNN)"></a>l.RNN(LSTM/BRNN)</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-23.jpg" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-24.jpg" alt=""></p>
+</blockquote>
+<h2 id="m-NLP-Word-Embeddings"><a href="#m-NLP-Word-Embeddings" class="headerlink" title="m.NLP(Word Embeddings)"></a>m.NLP(Word Embeddings)</h2><blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-25.jpg" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-26.jpg" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-27.jpg" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB-28.jpg" alt=""></p>
+<blockquote>
+<p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+<blockquote>
+<p><strong>“A creative man is motivated by the desire to achieve, not by the desire to beat others.” – Ayn Rand</strong></p>
+</blockquote>
+</blockquote>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> DL知识点汇总(全) </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> a.A Neural Net(Logistic Regression) </tag>
+            
+            <tag> b.Shallow/Deep Neural Nets </tag>
+            
+            <tag> c.Regularization </tag>
+            
+            <tag> d.Optimization Algorithms </tag>
+            
+            <tag> e.Hyperparameters Tuning </tag>
+            
+            <tag> g.Transfer/Multitask/End-To-End Learning </tag>
+            
+            <tag> h.CNN(Padding/Stride/Filters) </tag>
+            
+            <tag> i.LeNet-5/AlexNet/VGG-16 </tag>
+            
+            <tag> j.Residual/Inception Network </tag>
+            
+            <tag> k.Detection/Recognition </tag>
+            
+            <tag> l.RNN(LSTM/BRNN) </tag>
+            
+            <tag> m.NLP(Word Embeddings) </tag>
+            
+            <tag> f.F1/ROC/AUC/Error Analysis </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[CVPR 2018 | 3D Human Sensing, Action and Emotion Recognition in Robot Assisted Therapy of Children with Autism]]></title>
       <url>http://yikunhaocong.com/2018/06/12/CVPR-2018-3D-Human-Sensing-Action-and-Emotion-Recognition/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>细粒度动作识别和情绪预测任务 | 本博文为个人理解&amp;整理思路所写，仅供参考</strong><br>    <a href="http://202.38.196.91/cache/9/03/openaccess.thecvf.com/2d21db575aca55d1d7704080a3bdd4ae/Marinoiu_3D_Human_Sensing_CVPR_2018_paper.pdf" target="_blank" rel="external">3D Human Sensing, Action and Emotion Recognition in Robot Assisted Therapy of Children with Autism (CVPR 2018)</a><br><a id="more"></a><p></p>
