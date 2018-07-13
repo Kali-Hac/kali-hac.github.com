@@ -4,6 +4,46 @@
   
     
     <entry>
+      <title><![CDATA[NATURE 2017 | Mastering the game of Go without human knowledge]]></title>
+      <url>http://yikunhaocong.com/2018/07/13/AlpbaZero/</url>
+      <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>基于蒙特卡洛树搜索和深度卷积神经网络的自我对弈学习系统的构建 | 本博文为个人理解&amp;整理思路所写，仅供参考</strong><br>    <a href="http://openaccess.thecvf.com/content_cvpr_2018/papers/Zanfir_Monocular_3D_Pose_CVPR_2018_paper.pdf" target="_blank" rel="external">Mastering the game of Go without human knowledge (Nature 2017)</a><br><a id="more"></a><p></p>
+<blockquote>
+<blockquote>
+<p><a href="https://www.zhihu.com/question/39916945" target="_blank" rel="external">(知乎)蒙特卡洛树是什么算法？</a><br><a href="https://zhuanlan.zhihu.com/p/32089487" target="_blank" rel="external">(知乎)AlphaZero实战：从零学下五子棋</a><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_02.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_03.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_04.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_05.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_06.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_07.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_08.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_09.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_10.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_11.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_12.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_13.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_14.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_15.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_16.jpg" alt=""><br><img src="http://op72m4y17.bkt.clouddn.com/AlphaGo%20Zero_%E9%A1%B5%E9%9D%A2_17.jpg" alt=""></p>
+<p><img src="http://op72m4y17.bkt.clouddn.com/1.jpg" alt=""></p>
+<blockquote>
+<p><strong> When you have to make a choice and don’t make it, that is in itself a choice.<br>——William James<br>Do not miss any chance</strong></p>
+</blockquote>
+</blockquote>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> Nature </category>
+            
+            <category> 论文研读总结 </category>
+            
+            <category> 自我对弈 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Reinforcement learning </tag>
+            
+            <tag> Supervised learning </tag>
+            
+            <tag> Upper Confidence Bound </tag>
+            
+            <tag> Monte Carlo Tree Search </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[来自灵魂画手的Deep Learning可视化汇总&解析]]></title>
       <url>http://yikunhaocong.com/2018/06/12/DL-review-1/</url>
       <content type="html"><![CDATA[<p></p><h2 id="intro">前言</h2><br>    <strong>把我珍藏的28张图送给大家，分享最生动&amp;重要的DL知识点 | 本博文为个人理解&amp;整理思路所写，仅供参考</strong><br>    <a href="http://op72m4y17.bkt.clouddn.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB.pdf" target="_blank" rel="external">深度学习知识点汇总.pdf / 19.13M</a><br><a id="more"></a><p></p>
